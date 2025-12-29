@@ -1,0 +1,47 @@
+//$topnav-background-color: #222d32;
+.mid-sidebar {
+  //position: fixed;
+  //z-index: 1000;
+  //top: 56px;
+  //left: 235px;
+  //width: 235px;
+  //margin-left: -235px;
+  //margin-bottom: 48px;
+  border: none;
+  border-radius: 0;
+  overflow-y: auto;
+  //background-color: $topnav-background-color;
+  bottom: 0;
+  overflow-x: hidden;
+  //padding-bottom: 40px;
+  white-space: nowrap;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -ms-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+.mid-sidebar.collapsed {
+  width: 45px;
+  max-width: 45px;
+  span {
+    display: none;
+  }
+}
+.mid-sidebar.collapsed > div > div.notbtn {
+  display: none;
+}
+
+.non-sidebar.when-sidebar-collapsed {
+  width: 100%;
+  max-width: 100%;
+  flex-grow: 1;
+}
+
+.mx-0\.5 {
+  margin-right: 0.125rem !important;
+  margin-left: 0.125rem !important;
+}
+.minh90px {
+  min-height: 90px;
+}

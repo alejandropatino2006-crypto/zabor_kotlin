@@ -1,0 +1,95 @@
+<div class="row">
+  <div class="col col-xs-12">
+    <div class="card mb-3">
+      <div class="card-header">
+        <h4>{{ "Restaurants" | translate }}<button class="btn btn-primary btn-sm pull-right" routerLink="/owner/restaurants/create"> + {{ "Add" | translate }}
+          {{ "Restaurant" | translate }}</button></h4>
+
+      </div>
+      <div class="card-body table-responsive">
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table-hover table table-bordered">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>{{"Picture" | translate}}</th>
+              <th>{{"Name" | translate}}</th>
+              <th>{{"Store ID" | translate}}</th>
+              <th>{{"Created" | translate}}</th>
+              <th>{{"Status" | translate}}</th>
+              <th>{{"Actions" | translate}}</th>
+              <th>{{"Menu" | translate}}</th>
+              <th>{{"Gallery" | translate}}</th>
+            </tr>
+          </thead>
+
+          <tbody *ngIf="restaurantList.length > 0">
+
+            <tr *ngFor="let restaurant of restaurantList; index as i;">
+              <td scope="row">{{ i+1 }}</td>
+              <td><img src="{{ picUrl + restaurant.restaurantpic}}" width="100"></td>
+              <td>{{ restaurant.name}}</td>
+              <td>{{ restaurant.id}}</td>
+              <td>{{ restaurant.created_at}}</td>
+              <td *ngIf="restaurant.status == 1; else elseBlock">
+                <ui-switch [checked]="true" defaultBgColor="red" (change)="changeStatus($event,restaurant.id)"></ui-switch>
+              </td>
+              <ng-template #elseBlock>
+                <td>
+                  <ui-switch defaultBgColor="red" (change)="changeStatus($event,restaurant.id)"></ui-switch>
+                </td>
+              </ng-template>
+
+              <td><a routerLink="/owner/restaurants/edit/{{ restaurant.id}}" class="btn badge btn-primary btn-sm"><i
+                    class="fa fa-pencil"></i>{{"Edit" | translate}} </a> &nbsp;<a
+                  routerLink="/owner/restaurants/detail/{{ restaurant.id}}" class="btn badge btn-warning btn-sm"><i
+                    class="fa fa-eye"></i>{{"View" | translate}} </a>&nbsp;<a routerLink="/owner/restaurants/table/list/{{ restaurant.id}}/{{restaurant.name}}" class="btn badge btn-dark btn-sm"><i
+                      class="fa fa-cutlery" aria-hidden="true"></i>
+                      {{"Tables" | translate}}</a> &nbsp;
+                <a routerLink="/owner/restaurants/discounts/{{ restaurant.id}}" class="btn badge btn-info btn-sm"> <i
+                    class="fa fa-percent"></i> {{"Discounts" | translate}}</a>
+                <a  routerLink="/owner/restaurants/customer/{{ restaurant.id}}" class="btn badge btn-dark btn-sm ng-star-inserted"> <i
+                    class="fa fa-percent"></i> {{"Customer" | translate}}</a>
+
+              </td>
+              <td>
+                <a routerLink="/owner/restaurants/menu/{{ restaurant.id}}" class="btn badge btn-warning btn-sm"
+                  *ngIf="restaurant?.can_edit_menu == 1"><i class="fa fa-th-list" aria-hidden="true"></i> {{"Menu" | translate}} </a>
+                <a routerLink="/owner/restaurants/menu-retail/{{ restaurant.id}}" class="btn badge btn-warning btn-sm"
+                  *ngIf="restaurant?.can_edit_menu == 1"><i class="fa fa-th-list" aria-hidden="true"></i> {{"Menu Retail Mode" | translate}} </a>
+                &nbsp;<a routerLink="/owner/restaurants/review/{{ restaurant.id}}" class="btn badge btn-info btn-sm"><i
+                    class="fa fa-star" aria-hidden="true"></i> {{"Review" | translate}}</a>
+                <a routerLink="/owner/restaurants/reservation-time/{{ restaurant.id}}"
+                  class="btn badge btn-primary btn-sm" *ngIf="restaurant?.can_edit_reservation == 1"><i
+                    class="fa fa-ticket" aria-hidden="true"></i> {{"Reservation Seat" | translate}}
+                  </a>
+                  <a routerLink="/owner/restaurants/inventory/{{ restaurant.id}}"
+                  class="btn badge btn-danger btn-sm ng-star-inserted" *ngIf="restaurant?.can_edit_reservation == 1"><i
+                    class="fa fa-barcode" aria-hidden="true"></i> {{"Inventory" | translate}}
+                  </a><a routerLink="/owner/restaurants/employee/{{ restaurant.id}}"
+                  class="btn badge btn-dark btn-sm" *ngIf="restaurant?.can_edit_reservation == 1"><i
+                    class="fa fa-user" aria-hidden="true"></i> {{"Employees" | translate}}
+                  </a>
+              </td>
+              <td>
+                <a routerLink="/owner/restaurants/gallery/{{ restaurant.id}}" class="btn badge btn-success btn-sm"><i
+                    class="fa fa-picture-o" aria-hidden="true"></i> {{"Gallery" | translate}} </a>
+                &nbsp;
+                <a routerLink="/owner/restaurants/orders/{{ restaurant.id}}" class="btn badge btn-danger btn-sm"
+                  style="background-color: #ff192f;" *ngIf="restaurant?.can_edit_order == 1"><i
+                    class="fa fa-shopping-cart" style="font-size:16px;" aria-hidden="true"></i> {{"Orders" | translate}} </a>
+              </td>
+            </tr>
+
+          </tbody>
+          <tbody *ngIf="restaurantList.length == 0">
+            <tr>
+              <td class="no-data-available" colspan="8">{{ "No matching records found" | translate }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+
+      </div>
+    </div>
+  </div>
+</div>

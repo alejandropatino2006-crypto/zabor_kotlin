@@ -1,0 +1,141 @@
+<div class="container-fluid">
+  <h3>Reviews</h3>
+
+  <div class="row">
+    <div class="col-sm-4 avgrating-sec" *ngIf="reviewsatatus?.avgrating != 'NaN'">
+      <h2>{{reviewsatatus?.avgrating}} <span>({{reviewsatatus?.totaluser}} users)</span></h2>
+
+    </div>
+    <!-- <div class="col-sm-8">
+      <div class="rating-status">
+        <star-rating value="5" totalstars="5" checkedcolor="#ea9a0f" uncheckedcolor="#d4d3d3" size="24px"
+          readonly="true">
+        </star-rating><span>{{reviewsatatus?.fivestar }} users</span>
+      </div>
+      <star-rating value="4" totalstars="5" checkedcolor="#ea9a0f" uncheckedcolor="#d4d3d3" size="24px" readonly="true">
+      </star-rating><span>{{reviewsatatus?.fourstar }} users</span>
+      <star-rating value="3" totalstars="5" checkedcolor="#ea9a0f" uncheckedcolor="#d4d3d3" size="24px" readonly="true">
+      </star-rating><span>{{reviewsatatus?.threestar }} users</span>
+      <star-rating value="2" totalstars="5" checkedcolor="#ea9a0f" uncheckedcolor="#d4d3d3" size="24px" readonly="true">
+      </star-rating><span>{{reviewsatatus?.twostar }} users</span>
+      <star-rating value="1" totalstars="5" checkedcolor="#ea9a0f" uncheckedcolor="#d4d3d3" size="24px" readonly="true">
+      </star-rating><span>{{reviewsatatus?.onestar }} users</span>
+    </div> -->
+  </div>
+
+  <div class="row form-group">
+
+    <div class="col-sm-2">
+      <input type="text" name="search" class="form-control" placeholder="Search" #search>
+    </div>
+    <div class="col-sm-2">
+      <select class="custom-select" #sortby>
+        <option value=-1>Sort By</option>
+        <option value="1">Highest Popularity</option>
+        <option value="2">Lowest Popularity</option>
+        <option value="3">Newest First</option>
+        <option value="4">Oldest First</option>
+      </select>
+    </div>
+    <div class="col-sm-2">
+      <button class="btn btn-sm btn-success" (click)="searchReview()"> Search</button> &nbsp;
+      <button class="btn btn-sm btn-danger" (click)="reset()">Reset</button>
+    </div>
+
+  </div>
+  <div *ngIf="userReviews.length > 0 else noreview">
+    <div *ngFor="let item of userReviews">
+      <div class="card">
+        <div class="card-body">
+          <div class="rating-div row review-{{item.id}}">
+            <div class="col-xl-1 userdiv">
+
+              <img src="{{picurl+item.profileimage}}"
+                *ngIf="item.profileimage && item.profileimage != null && item.profileimage!= '' else showdummyImage">
+              <ng-template #showdummyImage>
+                <img src="assets/images/img_avatar.png">
+              </ng-template>
+
+              <p>{{item.name | titlecase}}</p>
+            </div>
+            <div class="col-xl-11 reatingdiv">
+              <div>
+                <star-rating [value]="item.rating" [totalstars]="5" checkedcolor="#ea9a0f" uncheckedcolor="#d4d3d3"
+                  size="24px" [readonly]="true">
+                </star-rating>
+              </div>
+              <!-- <span>{{item.rating}}</span> -->
+              <a href="javascript:void(0)" class="text-danger delete-review" (click)="delete(item.id)" title="delete"><i
+                  class="fa fa-trash" aria-hidden="true"></i></a>
+              <p>{{item.comment}}</p>
+              <div class="row">
+                <div class="extrarating">
+                  <p><span>Pricing </span>
+                    <star-rating [value]="item.pricing" [totalstars]="5" checkedcolor="#ea9a0f" uncheckedcolor="#d4d3d3"
+                      size="24px" [readonly]="true">
+                    </star-rating>
+                  </p>
+                </div>
+                <div class="extrarating">
+                  <p><span>Waiting </span>
+                    <star-rating [value]="item.waiting" [totalstars]="5" checkedcolor="#ea9a0f" uncheckedcolor="#d4d3d3"
+                      size="24px" [readonly]="true">
+                    </star-rating>
+                  </p>
+                </div>
+                <div class="extrarating">
+                  <p><span>Ambience</span>
+                    <star-rating [value]="item.ambience" [totalstars]="5" checkedcolor="#ea9a0f"
+                      uncheckedcolor="#d4d3d3" size="24px" [readonly]="true">
+                    </star-rating>
+                  </p>
+                </div>
+                <div class="extrarating">
+                  <p><span>Food</span>
+                    <star-rating [value]="item.food" [totalstars]="5" checkedcolor="#ea9a0f" uncheckedcolor="#d4d3d3"
+                      size="24px" [readonly]="true">
+                    </star-rating>
+                  </p>
+                </div>
+                <div class="extrarating">
+                  <p><span>Locality </span>
+                    <star-rating [value]="item.locality" [totalstars]="5" checkedcolor="#ea9a0f"
+                      uncheckedcolor="#d4d3d3" size="24px" [readonly]="true">
+                    </star-rating>
+                  </p>
+                </div>
+                <div class="extrarating">
+                  <p><span>Management </span>
+                    <star-rating [value]="item.management" [totalstars]="5" checkedcolor="#ea9a0f"
+                      uncheckedcolor="#d4d3d3" size="24px" [readonly]="true">
+                    </star-rating>
+                  </p>
+                </div>
+                <div class="extrarating">
+                  <p><span>Restrooms</span>
+                    <star-rating [value]="item.restrooms" [totalstars]="5" checkedcolor="#ea9a0f"
+                      uncheckedcolor="#d4d3d3" size="24px" [readonly]="true">
+                    </star-rating>
+                  </p>
+                </div>
+                <div class="extrarating">
+                  <p><span>Service</span>
+                    <star-rating [value]="item.service" [totalstars]="5" checkedcolor="#ea9a0f" uncheckedcolor="#d4d3d3"
+                      size="24px" [readonly]="true">
+                    </star-rating>
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-warning" (click)="moreReview()" *ngIf="showMoreButton">View More</button>
+  </div>
+  <ng-template #noreview>
+    <p>No Review Found</p>
+  </ng-template>
+
+</div>

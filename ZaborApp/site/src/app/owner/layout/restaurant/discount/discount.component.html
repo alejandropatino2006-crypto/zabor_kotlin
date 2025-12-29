@@ -1,0 +1,119 @@
+<div class="container-fluid">
+  <div class="mb-3 d-flex flex-row justify-content-end align-items-center" style="text-align: right;">
+    <div class="d-flex flex-row justify-content-start align-items-center gap-3">
+      <button (click)="handleBackClicked($event)" class="btn btn-secondary btn-padding-1" type="button">{{'Back' | translate}}</button>
+      <div><span>{{ "Store ID" | translate }}: </span>&nbsp;<span>{{res_id}}</span></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-4" *ngIf="showSpinner.list">
+      <div class="spinner">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+      </div>
+    </div>
+    <div class="col-sm-4" *ngIf="!showSpinner.list">
+      <p *ngIf="discounts.length < 1"> {{ "No discount found" | translate }}</p>
+      <div class="card text-white discount-Card" *ngFor="let item of discounts; let i = index"
+        (click)="editDiscount(i)">
+        <div class="card-header {{backgroundColors[i%5]}}">
+          <div class="row">
+            <div class="col col-md-8 col-sm-12 ">
+              <span *ngIf="item.user_type == 'first_time'">{{ "First Time User" | translate }}</span>
+              <span *ngIf="item.user_type == 'all_users'">{{ "All Users" | translate }}</span>
+            </div>
+            <div class="col col-md-4 col-sm-12 text-right">
+              <span> {{item.percentage}}%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-8">
+      <div class="spinner" *ngIf="showSpinner.edit">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+      </div>
+      <div class="card" *ngIf="!showSpinner.edit">
+        <div class="card-header">
+          <h4 *ngIf="discount_id == -1">{{ "Add Discount" | translate }}</h4>
+          <h4 *ngIf="discount_id != -1">{{ "Edit Discount" | translate }} <button class="btn btn-primary pull-right btn-sm"
+              (click)="addDiscount()">{{ "Add Discount" | translate }}</button></h4>
+        </div>
+        <div class="card-body">
+          <div class="discount-form">
+            <form role="form" [formGroup]="discountform" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+              <div>
+                <a *ngIf="discount_id != -1" href="javascript:void(0)" (click)="deleteDis()"
+                  class="text-danger pull-right"><i class="fa fa-trash" aria-hidden="true"></i> </a>
+              </div>
+              <div class="row ">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label>{{ "User Type" | translate }}</label>
+                    <select formControlName="user_type" class="custom-select">
+                      <option value="">{{ "Please select" | translate }}</option>
+                      <option value="first_time">{{ "First Time" | translate }} </option>
+                      <option value="all_users">{{ "All Users" | translate }}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label>{{ "Percentage" | translate }}*</label>
+                    <input type="number" class="form-control input-underline input-lg" id="percentage"
+                      formControlName="percentage" placeholder='{{ "Percentage" | translate }}' maxlength="60" max="100" />
+                    <span class="text-danger" *ngIf="
+                                    !discountform.controls['percentage'].valid &&
+                                    discountform.controls['percentage'].touched &&
+                                    discountform.controls['percentage'].hasError('required')
+                                ">{{ "Percentage is required" | translate }}.</span>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label>{{ "Min Order Amount" | translate }}*</label>
+                    <input type="number" class="form-control input-underline input-lg" id="moa" formControlName="moa"
+                      placeholder='{{ "Min Order Amount" | translate }}' maxlength="60" />
+                    <span class="text-danger" *ngIf="
+                                    !discountform.controls['moa'].valid &&
+                                    discountform.controls['moa'].touched &&
+                                    discountform.controls['moa'].hasError('required')
+                                ">{{ "Min Order Ammount is required" | translate }}.</span>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label>{{ "Max Price Discount" | translate }}*</label>
+                    <input type="number" class="form-control input-underline input-lg" id="mpd" formControlName="mpd"
+                      placeholder='{{ "Max Price Discount" | translate }}' maxlength="60" />
+                    <span class="text-danger" *ngIf="
+                                    !discountform.controls['mpd'].valid &&
+                                    discountform.controls['mpd'].touched &&
+                                    discountform.controls['mpd'].hasError('required')
+                                ">{{ "Max Price Discount is required" | translate }}.</span>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="form-group">
+                    <label>{{ "Conditions" | translate }}</label>
+                    <ejs-richtexteditor id='defaultRTE' [toolbarSettings]='tools' formControlName="dis_condition">
+                    </ejs-richtexteditor>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <button [disabled]="!discountform.valid" class="btn btn-success" type="submit">
+                  {{ "Save" | translate }}</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

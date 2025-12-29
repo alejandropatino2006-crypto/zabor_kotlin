@@ -1,0 +1,72 @@
+<div [@routerTransition]>
+    <h2 class="text-muted">Dashboard</h2>
+
+    <div class="row ">
+        <div class="col-xl-3 col-lg-6 dashboard-cards">
+            <app-stat [bgClass]="'warning'" [icon]="'fa-user'" [count]="dashboardData.users" [label]="'Users'"
+                [url]="'/admin/user/list'">
+            </app-stat>
+        </div>
+        <div class="col-xl-3 col-lg-6 dashboard-cards">
+            <app-stat [bgClass]="'primary'" [icon]="'fa-cutlery'" [count]="dashboardData.restaurant"
+                [label]="'Restaurants'" [url]="'/admin/restaurant/list'"></app-stat>
+        </div>
+        <div class="col-xl-3 col-lg-6 dashboard-cards">
+            <app-stat [bgClass]="'success'" [icon]="'fa fa-tag'" [count]="dashboardData.category" [label]="'Categories'"
+                [url]="'/admin/category'">
+            </app-stat>
+        </div>
+        <div class="col-xl-3 col-lg-6 dashboard-cards">
+            <app-stat [bgClass]="'danger'" [icon]="'fa-comments-o'" [count]="dashboardData.feedback"
+                [label]="'Feedback'" [url]="'/admin/user-feedback'"></app-stat>
+        </div>
+        <div class="col-xl-3 col-lg-6 dashboard-cards">
+            <app-stat [bgClass]="'dark'" [icon]="'fa-cart-arrow-down'" [count]="dashboardData.orders" [label]="'Orders'"
+                [url]="'/admin/orders'"></app-stat>
+        </div>
+        <div class="col-xl-3 col-lg-6 dashboard-cards">
+            <app-stat [bgClass]="'lightdark'" [icon]="'fa-ticket'" [count]="dashboardData.reservation"
+                [label]="'Reservation'" [url]="'/admin/orders'"></app-stat>
+        </div>
+    </div>
+    <hr />
+</div>
+
+<div class="notification-panel card card-default" *ngIf="notifications?.length > 0">
+    <div class="card-header">
+        <i class="fa fa-bell fa-fw"></i>
+        Notifications
+    </div>
+    <!-- /.panel-heading -->
+    <div class="card-body">
+        <ul class="notification" *ngFor="let noti of notifications">
+
+            <li class="left clearfix" attr.data-userid="{{noti.sender_id}}">
+                <a routerLink="/admin/user/view/{{noti.sender_id}}">
+                    <span class="notification-img pull-left">
+                        <img src="{{fileurl+'/'+noti.profileimage}}" alt="User Avatar" class="img-circle"
+                            *ngIf="noti.profileimage && noti.profileimage != null && noti.profileimage != '' else dummyimage">
+                        <ng-template #dummyimage><img src="assets/images/img_avatar.png" width="100"></ng-template>
+                    </span></a>
+                <div class="notification-body clearfix">
+                    <div class="header">
+                        <a routerLink="/admin/user/view/{{noti.sender_id}}"><strong
+                                class="primary-font">{{ noti.name | titlecase}}</strong></a>
+                        <small class="pull-right text-muted">
+                            <i class="fa fa-clock-o fa-fw"></i> {{noti.created_at}}
+                        </small>
+                    </div>
+                    <p>
+                        {{noti.msg}}
+                    </p>
+                </div>
+            </li>
+
+        </ul>
+        <div class="">
+            <button class="btn btn-warning btn-sm pull-right" (click)="morenotifiacations()"
+                *ngIf="showmorebutton">More</button>
+        </div>
+    </div>
+
+</div>

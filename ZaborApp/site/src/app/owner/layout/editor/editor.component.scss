@@ -1,0 +1,35 @@
+.widget-user-2 .widget-user-header {
+    border-top-left-radius: .25rem;
+    border-top-right-radius: .25rem;
+    padding: 8px;
+    background-color: #ffc1074f;
+}
+.widget-user-2 .widget-user-image>img {
+    float: left;
+    height: auto;
+    width: 65px;
+}
+// .widget-user-2 .widget-user-desc, .widget-user-2 .widget-user-username {
+//     margin-left: 75px;
+// }
+.widget-user-2 .widget-user-username {
+    font-size: 18px;
+    font-weight: 300;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+.widget-user-2 .widget-user-desc {
+    margin-top: 0;
+}
+
+.accordion .card-header:after {
+    content: none;
+}
+#editorResAccord button.btn.btn-link{ color: black !important; font-weight: bold;}
+.accordion .card{ background-color: white;}
+.accordion .card-header{     padding: 5px 0;}
+.widget-user-username span{ font-size: 16px; cursor: pointer;}
+.card-footer p{
+    margin: 2px 5px;
+    font-size: 16px;
+}

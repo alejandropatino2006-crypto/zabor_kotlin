@@ -1,0 +1,262 @@
+<div class="card">
+  <div class="card-header">
+    <h4>{{ "Edit Inventory" | translate }} </h4>
+    <button class="btn btn-secondary btn-padding-1 pull-right" routerLink="/owner/restaurants/inventory/{{ restaurantId }}">  {{ "Back to List" | translate }}</button>
+  </div>
+  <div class="card-body">
+    <div class="login-page">
+      <div class="row justify-content-md-center">
+        <div class="col-md-12">
+          <form role="form" (keydown.enter)="$event.preventDefault()" [formGroup]="inventoryForm" (ngSubmit)="onSubmit()">
+            <div class="row form-content">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="name">{{ "Name" | translate }}*</label>
+                  <input type="text" class="form-control input-underline input-lg" id="name" formControlName="name"
+                    placeholder='{{ "Name" | translate }}' maxlength="60" />
+
+                  <ng-container *ngIf="!inventoryForm.controls['name'].valid &&
+                    inventoryForm.controls['name'].touched">
+                    <span class="text-danger" *ngIf="inventoryForm.controls['name'].hasError('required') else elsename">{{"Name is required" | translate}}.</span>
+                    <ng-template #elsename>
+                      <span class="text-danger" *ngIf="inventoryForm.controls['name'].hasError('whitespace')">{{"only white space is not allowed" | translate}}.</span></ng-template>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="pack_size_description">{{ "Pack Size Description" | translate }}*</label>
+                  <textarea class="form-control input-underline input-lg" id="pack_size_description" formControlName="pack_size_description"
+                    placeholder='{{ "Pack Size Description" | translate }}' maxlength="200"></textarea>
+
+                  <ng-container *ngIf="!inventoryForm.controls['pack_size_description'].valid &&
+                    inventoryForm.controls['pack_size_description'].touched">
+                    <span class="text-danger" *ngIf="inventoryForm.controls['pack_size_description'].hasError('required') else elsedescription">{{ "Pack Size Description is required" | translate }}.</span>
+                    <ng-template #elsedescription>
+                      <span class="text-danger" *ngIf="inventoryForm.controls['pack_size_description'].hasError('whitespace')">{{"only white space is not allowed" | translate}}.</span></ng-template>
+                  </ng-container>
+
+                </div>
+              </div>
+            </div>
+            <div class="row form-content">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="pack_size_barcode">{{ "Pack Size Barcode" | translate }}</label>
+                  <input type="text" class="form-control input-underline input-lg" id="pack_size_barcode" formControlName="pack_size_barcode"
+                    placeholder='{{ "Pack Size Barcode" | translate }}' maxlength="60" />
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="each_item_barcode">{{ "Each Item Barcode" | translate }}</label>
+                  <input type="text" class="form-control input-underline input-lg" id="each_item_barcode" formControlName="each_item_barcode"
+                    placeholder='{{ "Each Item Barcode" | translate }}' maxlength="60" />
+                </div>
+              </div>
+            </div>
+            <div class="row form-content">
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label for="total_items_per_pack_size">{{ "Total Items Per Pack Size" | translate }}*</label>
+                  <input type="number" class="form-control input-underline input-lg" id="total_items_per_pack_size" formControlName="total_items_per_pack_size"
+                    placeholder='{{ "Total Items Per Pack Size" | translate }}' maxlength="60" />
+                  <ng-container *ngIf="!inventoryForm.controls['total_items_per_pack_size'].valid &&
+                    inventoryForm.controls['total_items_per_pack_size'].touched">
+                    <span class="text-danger" *ngIf="inventoryForm.controls['total_items_per_pack_size'].hasError('required') else elsename">{{"Total Items Per Pack Size is required" | translate}}.</span>
+                    <ng-template #elsename>
+                      <span class="text-danger" *ngIf="inventoryForm.controls['total_items_per_pack_size'].hasError('whitespace')">{{"only white space is not allowed" | translate}}.</span>
+                    </ng-template>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label for="recipe_units_per_pack_size">{{ "Recipe Units Per Pack Size" | translate }}*</label>
+                  <input type="number" class="form-control input-underline input-lg" id="recipe_units_per_pack_size" formControlName="recipe_units_per_pack_size"
+                    placeholder='{{ "Recipe Units Per Pack Size" | translate }}' maxlength="60" />
+
+                  <ng-container *ngIf="!inventoryForm.controls['recipe_units_per_pack_size'].valid &&
+                    inventoryForm.controls['recipe_units_per_pack_size'].touched">
+                    <span class="text-danger" *ngIf="inventoryForm.controls['recipe_units_per_pack_size'].hasError('required') else elsename">{{"Recipe Units Per Pack Size is required" | translate}}.</span>
+                    <ng-template #elsename>
+                      <span class="text-danger" *ngIf="inventoryForm.controls['recipe_units_per_pack_size'].hasError('whitespace')">{{"only white space is not allowed" | translate}}.</span>
+                    </ng-template>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label for="sort_order">{{ "Sort Order" | translate }}*</label>
+                  <input type="number" class="form-control input-underline input-lg" id="sort_order" formControlName="sort_order"
+                    placeholder='{{ "Sort Order" | translate }}' maxlength="60" />
+
+                  <ng-container *ngIf="!inventoryForm.controls['sort_order'].valid &&
+                    inventoryForm.controls['sort_order'].touched">
+                    <span class="text-danger" *ngIf="inventoryForm.controls['sort_order'].hasError('required') else elsename">{{"Sort Order is required" | translate}}.</span>
+                    <ng-template #elsename>
+                      <span class="text-danger" *ngIf="inventoryForm.controls['sort_order'].hasError('whitespace')">{{"only white space is not allowed" | translate}}.</span></ng-template>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+            <div class="row form-content">
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label for="pack_size_reorder_point">{{ "Pack Size Reorder Point" | translate }}*</label>
+                  <input type="number" class="form-control input-underline input-lg" id="pack_size_reorder_point" formControlName="pack_size_reorder_point"
+                    placeholder='{{ "Pack Size Reorder Point" | translate }}' maxlength="60" />
+
+                  <ng-container *ngIf="!inventoryForm.controls['pack_size_reorder_point'].valid &&
+                    inventoryForm.controls['pack_size_reorder_point'].touched">
+                    <span class="text-danger" *ngIf="inventoryForm.controls['pack_size_reorder_point'].hasError('required') else elsename">{{"Pack Size Reorder Point is required" | translate}}.</span>
+                    <ng-template #elsename>
+                      <span class="text-danger" *ngIf="inventoryForm.controls['pack_size_reorder_point'].hasError('whitespace')">{{"only white space is not allowed" | translate}}.</span></ng-template>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label for="pack_size_replenish_level">{{ "Pack Size Replenish Level" | translate }}*</label>
+                  <input type="text" class="form-control input-underline input-lg" id="pack_size_replenish_level" formControlName="pack_size_replenish_level"
+                    placeholder='{{ "Pack Size Replenish Level" | translate }}' maxlength="60" />
+
+                  <ng-container *ngIf="!inventoryForm.controls['pack_size_replenish_level'].valid &&
+                    inventoryForm.controls['pack_size_replenish_level'].touched">
+                    <span class="text-danger" *ngIf="inventoryForm.controls['pack_size_replenish_level'].hasError('required') else elsename">{{"Pack Size Replenish Level is required" | translate}}.</span>
+                    <ng-template #elsename>
+                      <span class="text-danger" *ngIf="inventoryForm.controls['pack_size_replenish_level'].hasError('whitespace')">{{"only white space is not allowed" | translate}}.</span></ng-template>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label for="pack_size_quantity_on_hand">{{ "Pack Size Quantity On Hand" | translate }}*</label>
+                  <input type="text" class="form-control input-underline input-lg" id="pack_size_quantity_on_hand" formControlName="pack_size_quantity_on_hand"
+                    placeholder='{{ "Pack Size Quantity On Hand" | translate }}' maxlength="60" />
+
+                  <ng-container *ngIf="!inventoryForm.controls['pack_size_quantity_on_hand'].valid &&
+                    inventoryForm.controls['pack_size_quantity_on_hand'].touched">
+                    <span class="text-danger" *ngIf="inventoryForm.controls['pack_size_quantity_on_hand'].hasError('required') else elsename">{{"Pack Size Quantity On Hand is required" | translate}}.</span>
+                    <ng-template #elsename>
+                      <span class="text-danger" *ngIf="inventoryForm.controls['pack_size_quantity_on_hand'].hasError('whitespace')">{{"only white space is not allowed" | translate}}.</span></ng-template>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+
+            <div class="row form-content">
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label for="inventory_description">{{ "Inventory Description" | translate }}*</label>
+                  <textarea class="form-control input-underline input-lg" id="inventory_description" formControlName="inventory_description"
+                    placeholder='{{ "Inventory Description" | translate }}' maxlength="200"></textarea>
+
+                  <ng-container *ngIf="!inventoryForm.controls['inventory_description'].valid &&
+                    inventoryForm.controls['inventory_description'].touched">
+                    <span class="text-danger" *ngIf="inventoryForm.controls['inventory_description'].hasError('required') else elsedescription">{{ "Inventory Description is required" | translate }}.</span>
+                    <ng-template #elsedescription>
+                      <span class="text-danger" *ngIf="inventoryForm.controls['inventory_description'].hasError('whitespace')">{{"only white space is not allowed" | translate}}.</span></ng-template>
+                  </ng-container>
+
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label for="pack_size_cost_per_qty">{{ "Pack Size Cost Per Quantity" | translate }}*</label>
+                  <input type="number" class="form-control input-underline input-lg" id="pack_size_cost_per_qty" formControlName="pack_size_cost_per_qty"
+                    placeholder='{{ "Pack Size Cost Per Quantity" | translate }}' maxlength="60" />
+
+                  <ng-container *ngIf="!inventoryForm.controls['pack_size_cost_per_qty'].valid &&
+                    inventoryForm.controls['pack_size_cost_per_qty'].touched">
+                    <span class="text-danger" *ngIf="inventoryForm.controls['pack_size_cost_per_qty'].hasError('required') else elsename">{{"Pack Size Cost Per Quantity is required" | translate}}.</span>
+                    <ng-template #elsename>
+                      <span class="text-danger" *ngIf="inventoryForm.controls['pack_size_cost_per_qty'].hasError('whitespace')">{{"only white space is not allowed" | translate}}.</span></ng-template>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label for="total_pack_size_value">{{ "Total Pack Size Value" | translate }}*</label>
+                  <input type="number" class="form-control input-underline input-lg" id="total_pack_size_value" formControlName="total_pack_size_value"
+                    placeholder='{{ "Total Pack Size Value" | translate }}' maxlength="60" />
+
+                  <ng-container *ngIf="!inventoryForm.controls['total_pack_size_value'].valid &&
+                    inventoryForm.controls['total_pack_size_value'].touched">
+                    <span class="text-danger" *ngIf="inventoryForm.controls['total_pack_size_value'].hasError('required') else elsename">{{"Total Pack Size Value is required" | translate}}.</span>
+                    <ng-template #elsename>
+                      <span class="text-danger" *ngIf="inventoryForm.controls['total_pack_size_value'].hasError('whitespace')">{{"only white space is not allowed" | translate}}.</span></ng-template>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+
+            <div class="row form-content">
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label for="inventory_group">{{ "Inventory Group" | translate }}*</label>
+                  <select class="custom-select" formControlName="inventory_group"  *ngIf="inventoryGroups.length > 0">
+                    <option value="">{{ "Select Inventory Group" | translate }}</option>
+                    <ng-container *ngFor="let group of inventoryGroups">
+                      <option value="{{ group.id }}">{{ group.name}}</option>
+                    </ng-container>
+                  </select>
+                  <ng-container *ngIf="!inventoryForm.controls['inventory_group'].valid &&
+                    inventoryForm.controls['inventory_group'].touched">
+                    <span class="text-danger" *ngIf="inventoryForm.controls['inventory_group'].hasError('required') else elsename">{{"Inventory Group is required" | translate}}.</span>
+                    <ng-template #elsename>
+                      <span class="text-danger" *ngIf="inventoryForm.controls['inventory_group'].hasError('whitespace')">{{"only white space is not allowed" | translate}}.</span></ng-template>
+                  </ng-container>
+                </div>
+
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label for="inventory_location">{{ "Inventory Location" | translate }}*</label>
+                <select class="custom-select" formControlName="inventory_location"  *ngIf="inventoryGroups.length > 0">
+                  <option value="">{{ "Select Inventory Location" | translate }}</option>
+                  <ng-container *ngFor="let location of inventoryLocations">
+                    <option value="{{ location.id }}">{{ location.name}}</option>
+                  </ng-container>
+                </select>
+                <ng-container *ngIf="!inventoryForm.controls['inventory_location'].valid &&
+                    inventoryForm.controls['inventory_location'].touched">
+                    <span class="text-danger" *ngIf="inventoryForm.controls['inventory_location'].hasError('required') else elsename">{{"Inventory Location is required" | translate}}.</span>
+                    <ng-template #elsename>
+                      <span class="text-danger" *ngIf="inventoryForm.controls['inventory_location'].hasError('whitespace')">{{"only white space is not allowed" | translate}}.</span></ng-template>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label for="inventory_vendor">{{ "Inventory Vendor" | translate }}*</label>
+                <select class="custom-select" formControlName="inventory_vendor"  *ngIf="inventoryGroups.length > 0">
+                  <option value="">{{ "Select Inventory Vendor" | translate }}</option>
+                  <ng-container *ngFor="let vendor of inventoryVendors">
+                    <option value="{{ vendor.id }}">{{ vendor.name}}</option>
+                  </ng-container>
+                </select>
+                <ng-container *ngIf="!inventoryForm.controls['inventory_vendor'].valid &&
+                    inventoryForm.controls['inventory_vendor'].touched">
+                    <span class="text-danger" *ngIf="inventoryForm.controls['inventory_vendor'].hasError('required') else elsename">{{"Inventory Vendor is required" | translate}}.</span>
+                    <ng-template #elsename>
+                      <span class="text-danger" *ngIf="inventoryForm.controls['inventory_vendor'].hasError('whitespace')">{{"only white space is not allowed" | translate}}.</span></ng-template>
+                  </ng-container>
+                </div>
+
+              </div>
+            </div>
+
+
+            <div class="row form-content">
+              <div class="col-sm-12">
+                <button [disabled]="!inventoryForm.valid" class="btn btn-success" type="submit">
+                  {{ "Save Inventory" | translate }}</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

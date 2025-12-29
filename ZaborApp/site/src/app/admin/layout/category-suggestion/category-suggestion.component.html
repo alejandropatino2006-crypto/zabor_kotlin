@@ -1,0 +1,41 @@
+<div class="row">
+  <div class="col col-xs-12">
+    <div class="card mb-3">
+      <div class="card-header">
+        <h4>Category Suggestions</h4>
+      </div>
+      <div class="card-body table-responsive">
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table-hover table-bordered">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>User Name</th>
+              <th>Category</th>
+              <th>Created date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="usersuggestions.length > 0">
+
+            <tr *ngFor="let suggestion of usersuggestions; index as i;">
+              <th scope="row">{{ i+1 }}</th>
+              <td><a routerLink="/admin/user/view/{{suggestion.user_id}}">{{ suggestion.username}}</a></td>
+              <td>{{ suggestion.category }}</td>
+              <td>{{suggestion.created_at}}</td>
+              <td><a href="javascript:void(0)" class="btn btn-danger btn-sm badge"
+                  (click)="deletesuggestion(suggestion.id)"><i class="fa fa-trash" aria-hidden="true"></i>
+                  Delete</a></td>
+            </tr>
+
+          </tbody>
+          <tbody *ngIf="usersuggestions.length == 0">
+            <tr>
+              <td class="no-data-available" colspan="5">No matching records found</td>
+            </tr>
+          </tbody>
+        </table>
+
+
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,20 @@
+<div class="card text-white" routerLink="{{url}}">
+    <div class="card-header bg-gradient-x-{{bgClass}}">
+        <div class="row">
+            <div class="col col-xs-3">
+                <i class="fa {{icon}} "></i>
+            </div>
+            <div class="col col-xs-9 text-right">
+                <div *ngIf="count < 0" class="d-block huge">Calculating...</div>
+                <div *ngIf="count >= 0" class="d-block huge">{{count}}</div>
+                <div class="d-block">{{label | translate}}</div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="card-footer">
+        <a routerLink="{{url}}" class="float-right card-inverse">
+            <span class="float-left">View Details {{data}}</span>
+            <span><i class="fa fa-arrow-circle-right"></i></span>
+        </a>
+    </div> -->
+</div>

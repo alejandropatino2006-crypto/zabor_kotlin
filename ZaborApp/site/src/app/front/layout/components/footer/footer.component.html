@@ -1,0 +1,83 @@
+<footer class="site-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 col-sm-6">
+        <div class="footer-box">
+          <a [routerLink]="['/']" class="footer-logo">
+            <img src="assets/images/logo.svg">
+          </a>
+          <p>{{translation.lang =='en' ? webdata?.f_l_en : webdata?.f_l_es}}
+          </p>
+          <ul class="contact-info">
+            <li>
+              <a href="mailto:{{site?.email}}"><img src="assets/images/envelope-open.svg">{{site?.email}}</a>
+            </li>
+            <li>
+              <a href="tel:{{site?.contact}}"><img src="assets/images/phone.svg">{{site?.contact}}</a>
+            </li>
+            <li>
+              <img src="assets/images/search-location.svg"> {{site?.address}}{{' , '+site?.city}}
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-2 col-sm-3">
+        <div class="footer-box">
+          <ul class="footer-link">
+            <h5>{{'Information'|translate }}</h5>
+            <li><a [routerLink]="['/pages/3']">{{'About us'|translate }}</a></li>
+            <li><a [routerLink]="['/contactus']">{{'Contact us'| translate}}</a></li>
+            <li><a [routerLink]="['/pages/2']">{{'Privacy Policy'|translate}}</a></li>
+            <li><a [routerLink]="['/pages/1']">{{'Terms and Conditions'|translate}}</a></li>
+            <li><a [routerLink]="['/faq']">{{'Faq'|translate}}</a></li>
+          </ul>
+        </div>{{
+      </div>
+      <div class="col-lg-2 col-sm-3">
+        <div class="footer-box">
+          <ul class="footer-link">
+            <h5>{{'My Account'|translate }}</h5>
+        <li><a [routerLink]="['/dashboard/profile']">{{'View Profile' |translate}}</a></li>
+        <li><a [routerLink]="['/dashboard/changepassword']">{{'Change Password' |translate}}</a></li>
+        <li><a [routerLink]="['/dashboard/orders']">{{'Order History' |translate}}</a></li>
+        <li><a [routerLink]="['/dashboard/address']">{{'Address'| translate }}</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-lg-4 col-sm-12 col-md-12">
+      <div class="footer-box">
+        <h5>{{'Welcome to Zabor Eats News' | translate}}</h5>
+        <p> {{translation.lang =='en' ? webdata?.f_r_en : webdata?.f_r_es}}</p>
+        <a class="btn-global btn-filled" [routerLink]="['/pages/5']">{{'Click Here'| translate }}</a>
+        <div class="subscribe-box">
+          <div class="banner-form">
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="row">
+      <div class="col-sm-6">
+        <p>Copyright © {{ currentYear }} Zabor. All rights reserved.</p>
+      </div>
+      <div class="col-sm-6">
+        <ul class="social-links">
+          <li *ngIf="site?.insta_link">
+            <a href="{{site?.insta_link}}"><i class="fa fa-instagram"></i></a>
+          </li>
+          <li *ngIf="site?.twitter_link">
+            <a href="{{site?.twitter_link}}"><i class="fa fa-twitter"></i></a>
+          </li>
+          <li *ngIf="site?.fb_link">
+            <a href="{{site?.fb_link}}"><i class="fa fa-facebook"></i></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  </div>
+</footer>
+<button type="button" class="scroll-top"><i class="fa fa-angle-up" aria-hidden="true"></i></button>

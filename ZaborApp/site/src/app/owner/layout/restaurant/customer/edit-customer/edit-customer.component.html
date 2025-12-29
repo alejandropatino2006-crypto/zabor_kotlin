@@ -1,0 +1,178 @@
+<div class="card">
+  <div class="card-header">
+    <h4>{{ "Edit Customer" | translate }}</h4>
+    <button class="btn btn-secondary btn-padding-1 pull-right"
+      [routerLink]="['/owner/restaurants/customer', restaurantId]">
+      {{ "Back to List" | translate }}
+    </button>
+  </div>
+  <div class="card-body">
+    <div class="login-page">
+      <div class="row justify-content-md-center">
+        <div class="col-md-12">
+          <form role="form" (keydown.enter)="$event.preventDefault()" [formGroup]="customerForm"
+            (ngSubmit)="onSubmit()">
+
+            <div class="row form-content">
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label>{{ "First Name" | translate }}*</label>
+                  <input type="text" class="form-control" formControlName="firstname"
+                    placeholder="{{ 'First Name' | translate }}" />
+                </div>
+              </div>
+
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label>{{ "Last Name" | translate }}*</label>
+                  <input type="text" class="form-control" formControlName="lastname"
+                    placeholder="{{ 'Last Name' | translate }}" />
+                </div>
+              </div>
+
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label>{{ "Email" | translate }}*</label>
+                  <input type="email" class="form-control" formControlName="email"
+                    placeholder="{{ 'Email' | translate }}" />
+                </div>
+              </div>
+
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label>{{ "Phone" | translate }}*</label>
+                  <input type="text" class="form-control" formControlName="phone"
+                    placeholder="{{ 'Phone' | translate }}" />
+                </div>
+              </div>
+            </div>
+
+            <div class="row form-content">
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label>{{ "Date of Birth" | translate }}*</label>
+                  <input type="date" class="form-control" formControlName="dob" />
+                </div>
+              </div>
+
+<div class="col-sm-6">
+  <div class="form-group">
+    <label>{{ 'Address' | translate }}</label>
+    <input type="text" class="form-control" formControlName="address" #addressSearch>
+  </div>
+</div>
+
+<!-- Physical Address -->
+<div class="col-sm-6">
+  <div class="form-group">
+    <label>{{ 'Physical Address' | translate }}</label>
+    <textarea class="form-control" formControlName="physical_address" #physicalSearch></textarea>
+  </div>
+</div>
+
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label>{{ "House Number" | translate }}</label>
+                  <input type="text" class="form-control" formControlName="houseno"
+                    placeholder="{{ 'House Number' | translate }}" />
+                </div>
+              </div>
+            </div>
+
+            <div class="row form-content">
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label>{{ "City" | translate }}*</label>
+                  <input type="text" class="form-control" formControlName="city" />
+                </div>
+              </div>
+
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label>{{ "Pincode" | translate }}*</label>
+                  <input type="text" class="form-control" formControlName="pincode" />
+                </div>
+              </div>
+
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label>{{ "State" | translate }}*</label>
+                  <input type="text" class="form-control" formControlName="state" />
+                </div>
+              </div>
+
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label>{{ "Country" | translate }}*</label>
+                  <input type="text" class="form-control" formControlName="country" />
+                </div>
+              </div>
+            </div>
+
+            <div class="row form-content">
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label>{{ "Point Balance" | translate }}</label>
+                  <input type="number" class="form-control" formControlName="point_balance" />
+                </div>
+              </div>
+
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label>{{ "Beginning Points" | translate }}</label>
+                  <input type="number" class="form-control" formControlName="beginning_points" />
+                </div>
+              </div>
+
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label>{{ "Discount (%)" | translate }}</label>
+                  <input type="number" class="form-control" formControlName="discount_percent" step="0.01" />
+                </div>
+              </div>
+
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label>{{ "Price Level" | translate }}</label>
+                  <input type="number" class="form-control" formControlName="price_level" />
+                </div>
+              </div>
+            </div>
+
+            <div class="row form-content">
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label>{{ "Preferred Language" | translate }}</label>
+                  <select class="form-control" formControlName="pref_lang">
+                    <option value="en">English</option>
+                    <option value="es">Español</option>
+                    <option value="fr">Français</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label>{{ "Status" | translate }}</label>
+                  <select class="form-control" formControlName="status">
+                    <option value="1">{{ "Active" | translate }}</option>
+                    <option value="0">{{ "Inactive" | translate }}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="row form-content">
+              <div class="col-sm-12">
+                <button [disabled]="!customerForm.valid" class="btn btn-success" type="submit">
+                  {{ "Save Customer" | translate }}
+                </button>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,129 @@
+<div class="row">
+  <div class="col col-xs-12">
+    <div class="card mb-3">
+      <div class="card-header">
+        <h4>{{ "Sales By Bar Menu Item" | translate }}</h4>
+        <button class="btn btn-secondary btn-padding-1 pull-right" routerLink="/owner/reports">  {{ "Back to List" | translate }}</button>
+      </div>
+      <div class="card-body table-responsive">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="restaurantId">{{ "Restaurant" | translate }}*</label>
+              <select
+                id="restaurantId"
+                class="form-control"
+                [(ngModel)]="resId"
+                (change)="onRestaurantChange()"
+              >
+                <option value="-1">
+                  {{ "Select Restaurant" | translate }}
+                </option>
+                <option
+                  value="{{ item.id }}"
+                  *ngFor="let item of restaurantList"
+                >
+                  {{ item.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="date-range"
+                >{{ "Select date" | translate }} *</label
+              >
+              <div class="input-group mb-3">
+                <input
+                  id="date-range"
+                  type="text"
+                  opens="right"
+                  placeholder="{{ 'Select date' | translate }}"
+                  ngxDaterangepickerMd
+                  [locale]="{ applyLabel: 'ok', format: 'DD-MM-YYYY' }"
+                  class="form-control"
+                  [maxDate]="maxDate"
+                  [(ngModel)]="selectedDate"
+                  [showDropdowns]="true"
+                  (datesUpdated)="inputChanged($event)"
+                  [singleDatePicker]="true"
+                  [closeOnAutoApply]="true"
+                  [autoApply]="true"
+                />
+                <div class="input-group-append">
+                  <span class="input-group-text" id="basic-addon1"
+                    ><i class="fa fa-calendar" aria-hidden="true"></i
+                  ></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="shiftId">{{ "Shifts" | translate }}*</label>
+              <select
+                id="shiftId"
+                class="form-control"
+                [(ngModel)]="shiftId"
+                (change)="onShiftChange()"
+              >
+                <option value="-1">{{ "Select Shift" | translate }}</option>
+                <option value="{{ shift.id }}" *ngFor="let shift of shiftList">
+                  {{
+                    "Start : " +
+                    convertDateToDDMMYYYYHHMMSS(shift.open_date_time) +
+                      " - End : " +
+                      convertDateToDDMMYYYYHHMMSS(shift.close_date_time)
+                  }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-3">
+            <div class="form-group">
+              <button class="btn btn-primary mr-2" (click)="rerender()">
+                {{ "Filter" | translate }}
+              </button>
+              <button class="btn btn-danger mr-2" (click)="resetFilters()">
+                {{ "Reset" | translate }}
+              </button>
+              <!--<button class="btn btn-info" (click)="report()">Report</button>-->
+            </div>
+          </div>
+
+
+        </div>
+        <div class="w-100">
+          <h3 class="w-100 text-center">{{ tableTitle }}</h3>
+          <h4 class="w-100 text-center">
+            {{ "Restaurant Name" | translate }} = {{ restaurantName }}
+          </h4>
+        </div>
+        <div class="w-100">
+          <h4 class="w-100 text-center">Total Sales Amount For All Bar Menu Item : {{ totalRefundAmount }}</h4>
+        </div>
+        <table
+          id="sales-data-table"
+          datatable
+          [dtOptions]="dtOptions"
+          [dtTrigger]="dtTrigger"
+          class="table-hover table-responsive table table-bordered w1-100"
+        >
+          <thead>
+            <tr>
+              <th class="w-20">#</th>
+              <th class="w-20">{{ "MenuItem ID" | translate }}</th>
+              <th class="w-30">{{ "MenuItem Name" | translate }}</th>
+              <th class="w-20">{{ "MenuItem Price" | translate }}</th>
+              <th class="w-20">{{ "Total Quantity Sold" | translate }}</th>
+              <th class="w-20">{{ "Total Sales" | translate }}</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

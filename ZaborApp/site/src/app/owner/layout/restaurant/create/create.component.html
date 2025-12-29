@@ -1,0 +1,841 @@
+<div class="card">
+  <div class="card-header">
+    <h4>
+      {{ "Create Restaurant" | translate }}
+      <button class="btn btn-primary btn-sm pull-right" (click)="openModel()">
+        + {{ "Add Opening time" | translate }}
+      </button>
+    </h4>
+  </div>
+  <div class="card-body">
+    <div class="login-page">
+      <div class="row justify-content-md-center">
+        <div class="col-md-12">
+          <form
+            role="form"
+            (keydown.enter)="$event.preventDefault()"
+            [formGroup]="restaurantForm"
+            (ngSubmit)="onSubmit()"
+            enctype="multipart/form-data"
+          >
+            <input type="hidden" name="role" />
+            <input type="hidden" name="id" />
+
+            <div class="row form-content">
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="name">{{ "Restaurant Name" | translate }}*</label>
+                  <input
+                    type="text"
+                    class="form-control input-underline input-lg"
+                    id="name"
+                    formControlName="name"
+                    placeholder="{{ 'Restaurant Name' | translate }}"
+                    maxlength="60"
+                  />
+
+                  <ng-container
+                    *ngIf="
+                      !restaurantForm.controls['name'].valid &&
+                      restaurantForm.controls['name'].touched
+                    "
+                  >
+                    <span
+                      class="text-danger"
+                      *ngIf="
+                        restaurantForm.controls['name'].hasError('required');
+                        else elsename
+                      "
+                      >{{ "name is required" | translate }}.</span
+                    >
+                    <ng-template #elsename>
+                      <span
+                        class="text-danger"
+                        *ngIf="
+                          restaurantForm.controls['name'].hasError('whitespace')
+                        "
+                        >{{
+                          "only white space is not allowed" | translate
+                        }}.</span
+                      ></ng-template
+                    >
+                  </ng-container>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="status">{{ "Status" | translate }}*</label>
+                  <select
+                    class="custom-select"
+                    id="status"
+                    formControlName="status"
+                  >
+                    <option value="1">{{ "Active" | translate }}</option>
+                    <option value="0">{{ "Inactive" | translate }}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="email">{{ "Email" | translate }}*</label>
+                  <input
+                    type="email"
+                    class="form-control input-underline input-lg"
+                    id="email"
+                    formControlName="email"
+                    placeholder="{{ 'Email' | translate }}"
+                    maxlength="60"
+                  />
+                  <span
+                    class="text-danger"
+                    *ngIf="
+                      !restaurantForm.controls['email'].valid &&
+                      restaurantForm.controls['email'].touched &&
+                      restaurantForm.controls['email'].hasError('required')
+                    "
+                    >{{ "Email is required" | translate }}.</span
+                  >
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="cod"
+                    >{{ "Allow Cash On delivery" | translate }}*</label
+                  >
+                  <select class="custom-select" id="cod" formControlName="cod">
+                    <option value="1">{{ "Yes" | translate }}</option>
+                    <option value="0">{{ "No" | translate }}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="description"
+                    >{{ "Description EN" | translate }}*</label
+                  >
+                  <textarea
+                    class="form-control input-underline input-lg"
+                    id="description"
+                    formControlName="description"
+                    placeholder="{{ 'Description EN' | translate }}"
+                    maxlength="200"
+                  ></textarea>
+
+                  <ng-container
+                    *ngIf="
+                      !restaurantForm.controls['description'].valid &&
+                      restaurantForm.controls['description'].touched
+                    "
+                  >
+                    <span
+                      class="text-danger"
+                      *ngIf="
+                        restaurantForm.controls['description'].hasError(
+                          'required'
+                        );
+                        else elsedescription
+                      "
+                      >{{ "description is required" | translate }}.</span
+                    >
+                    <ng-template #elsedescription>
+                      <span
+                        class="text-danger"
+                        *ngIf="
+                          restaurantForm.controls['description'].hasError(
+                            'whitespace'
+                          )
+                        "
+                        >{{
+                          "only white space is not allowed" | translate
+                        }}.</span
+                      ></ng-template
+                    >
+                  </ng-container>
+                </div>
+              </div>
+
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="descriptionEs"
+                    >{{ "Description ES" | translate }}*</label
+                  >
+                  <textarea
+                    class="form-control input-underline input-lg"
+                    id="descriptionEs"
+                    formControlName="descriptiones"
+                    placeholder="{{ 'Description ES' | translate }}"
+                    maxlength="200"
+                  ></textarea>
+
+                  <ng-container
+                    *ngIf="
+                      !restaurantForm.controls['description'].valid &&
+                      restaurantForm.controls['description'].touched
+                    "
+                  >
+                    <span
+                      class="text-danger"
+                      *ngIf="
+                        restaurantForm.controls['description'].hasError(
+                          'required'
+                        );
+                        else elsedescriptionES
+                      "
+                      >{{ "description ES is required" | translate }}.</span
+                    >
+                    <ng-template #elsedescriptionES>
+                      <span
+                        class="text-danger"
+                        *ngIf="
+                          restaurantForm.controls['description'].hasError(
+                            'whitespace'
+                          )
+                        "
+                        >{{
+                          "only white space is not allowed" | translate
+                        }}.</span
+                      ></ng-template
+                    >
+                  </ng-container>
+                </div>
+              </div>
+
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="address">{{ "Full address" | translate }}*</label>
+                  <textarea
+                    class="form-control input-underline input-lg"
+                    id="address"
+                    formControlName="address"
+                    placeholder="{{ 'Address' | translate }}"
+                    maxlength="200"
+                  ></textarea>
+
+                  <ng-container
+                    *ngIf="
+                      !restaurantForm.controls['address'].valid &&
+                      restaurantForm.controls['address'].touched
+                    "
+                  >
+                    <span
+                      class="text-danger"
+                      *ngIf="
+                        restaurantForm.controls['address'].hasError('required');
+                        else elseaddress
+                      "
+                      >{{ "address is required" | translate }}.</span
+                    >
+                    <ng-template #elseaddress>
+                      <span
+                        class="text-danger"
+                        *ngIf="
+                          restaurantForm.controls['address'].hasError(
+                            'whitespace'
+                          )
+                        "
+                        >{{
+                          "Only whitespace is not allowed" | translate
+                        }}.</span
+                      ></ng-template
+                    >
+                  </ng-container>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <label for="category">{{ "Category" | translate }}*</label>
+                <select
+                  class="custom-select"
+                  id="category"
+                  formControlName="category"
+                  (change)="getSubcats($event.target)"
+                >
+                  <option value="">
+                    {{ "" | translate }}{{ "Select Category" | translate }}
+                  </option>
+                  <ng-container *ngFor="let cat of Categories">
+                    <option value="{{ cat.id }}">{{ cat.name }}</option>
+                  </ng-container>
+                </select>
+              </div>
+
+              <div class="col-sm-3">
+                <label for="subcategory"
+                  >{{ "Sub-Categories" | translate }}*</label
+                >
+                <!--<angular2-multiselect [data]="subcategories" [(ngModel)]="selectedSubcats" [settings]="dropdownSettings"
+                  id="subcategory" formControlName="subcategory">
+                </angular2-multiselect>-->
+                <!--                <angular2-multiselect [data]="subcategories" [(ngModel)]="selectedSubcats" [settings]="dropdownSettings" id="subcategory" formControlName="subcategory"-->
+                <!--                      (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)"-->
+                <!-- >-->
+                <!--<angular2-multiselect [data]="subcategories" [settings]="dropdownSettings" id="subcategory" formControlName="subcategory"-->
+                <!--                      (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)"-->
+                <!-- >-->
+                <!-- ></angular2-multiselect>-->
+                <ng-multiselect-dropdown
+                  [placeholder]="'Select sub-categories'"
+                  [settings]="dropdownSettings"
+                  [data]="subcategories"
+                  (onSelect)="onItemSelect($event)"
+                  (onSelectAll)="onSelectAll($event)"
+                  id="subcategory"
+                  formControlName="subcategory"
+                  [(ngModel)]="selectedSubcats"
+                >
+                </ng-multiselect-dropdown>
+              </div>
+
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label>{{ "Cancel Charge" | translate }} (%)</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    formControlName="cancel_charge"
+                    id="cancel_charge"
+                    placeholder="{{ 'Cancel Charge' | translate }} (%)"
+                  />
+                </div>
+              </div>
+
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="min_order_value">{{
+                    "min order value" | translate
+                  }}</label>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">$</span>
+                    </div>
+                    <input
+                      type="number"
+                      class="form-control"
+                      formControlName="min_order_value"
+                      id="min_order_value"
+                      placeholder="{{ 'min order value' | translate }}"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="max_order_value">{{
+                    "max order value" | translate
+                  }}</label>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">$</span>
+                    </div>
+                    <input
+                      type="number"
+                      class="form-control"
+                      formControlName="max_order_value"
+                      id="max_order_value"
+                      placeholder="{{ 'max order value' | translate }}"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="avaragecost"
+                    >{{ "Average Cost($)" | translate }}*</label
+                  >
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">$</span>
+                    </div>
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="avaragecost"
+                      id="avaragecost"
+                      placeholder="{{ 'Average Cost($)' | translate }}"
+                    />
+                  </div>
+
+                  <ng-container
+                    *ngIf="
+                      !restaurantForm.controls['avaragecost'].valid &&
+                      restaurantForm.controls['avaragecost'].touched
+                    "
+                  >
+                    <span
+                      class="text-danger"
+                      *ngIf="
+                        restaurantForm.controls['avaragecost'].hasError(
+                          'required'
+                        );
+                        else elseavgcost
+                      "
+                      >{{ "Average Cost is required" | translate }}</span
+                    >
+                    <ng-template #elseavgcost>
+                      <span class="text-danger">{{
+                        "Average cost is invalid" | translate
+                      }}</span></ng-template
+                    >
+                  </ng-container>
+                </div>
+              </div>
+
+              <div class="col-sm-12">
+                <div class="row">
+                  <div class="col-sm-3">
+                    <label for="city">{{ "City" | translate }}*</label>
+                    <select
+                      id="city"
+                      formControlName="city"
+                      class="form-control"
+                    >
+                      <option value="">
+                        {{ "Please select" | translate }}
+                      </option>
+                      <option value="{{ item }}" *ngFor="let item of cityList">
+                        {{ item }}
+                      </option>
+                    </select>
+                    <ng-container
+                      *ngIf="
+                        !restaurantForm.controls['city'].valid &&
+                        restaurantForm.controls['city'].touched
+                      "
+                    >
+                      <span
+                        class="text-danger"
+                        *ngIf="
+                          restaurantForm.controls['city'].hasError('required');
+                          else elsecity
+                        "
+                        >{{ "City is required" | translate }}.</span
+                      >
+                      <ng-template #elsecity>
+                        <span
+                          class="text-danger"
+                          *ngIf="
+                            restaurantForm.controls['city'].hasError(
+                              'whitespace'
+                            )
+                          "
+                          >{{
+                            "Only whitespace is not allowed" | translate
+                          }}.</span
+                        ></ng-template
+                      >
+                    </ng-container>
+                  </div>
+                  <div class="col-sm-3">
+                    <label for="contact"
+                      >{{ "Contact No" | translate }}.*</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="contact"
+                      id="contact"
+                      placeholder="{{ 'Contact No' | translate }}"
+                    />
+                    <ng-container
+                      *ngIf="
+                        !restaurantForm.controls['contact'].valid &&
+                        restaurantForm.controls['contact'].touched
+                      "
+                    >
+                      <span
+                        class="text-danger"
+                        *ngIf="
+                          restaurantForm.controls['contact'].hasError(
+                            'required'
+                          );
+                          else elsecontact
+                        "
+                        >{{ "Contact is required" | translate }}.</span
+                      >
+                      <ng-template #elsecontact>
+                        <span class="text-danger">{{
+                          "Contact is invalid" | translate
+                        }}</span></ng-template
+                      >
+                    </ng-container>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <label for="website">{{
+                        "Website Link" | translate
+                      }}</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        formControlName="website"
+                        id="website"
+                        placeholder="{{ 'Website Link' | translate }}"
+                      />
+                      <ng-container
+                        *ngIf="
+                          !restaurantForm.controls['website'].valid &&
+                          restaurantForm.controls['website'].touched
+                        "
+                      >
+                        <span
+                          class="text-danger"
+                          *ngIf="
+                            restaurantForm.controls['website'].hasError(
+                              'pattern'
+                            )
+                          "
+                          >{{ "invalid Website link" | translate }}</span
+                        >
+                      </ng-container>
+                    </div>
+                  </div>
+                  <div class="col-sm-2">&nbsp;</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label>{{ "Choose your address on Map" | translate }}*</label>
+                  <input
+                    placeholder="{{ 'search for location' | translate }}"
+                    autocorrect="off"
+                    autocapitalize="off"
+                    spellcheck="off"
+                    type="text"
+                    class="form-control auto-location"
+                    #search
+                    [formControl]="searchControl"
+                  />
+                </div>
+                <agm-map
+                  [latitude]="lat"
+                  [longitude]="lng"
+                  (mapClick)="chooseLocation($event)"
+                  [zoom]="zoom"
+                >
+                  <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+                </agm-map>
+              </div>
+
+              <div class="col-sm-6">
+                <label>{{ "Choose Restaurant Pic" | translate }}</label>
+                <div class="custom-file">
+                  <input
+                    type="file"
+                    name="restaurantPic"
+                    class="custom-file-input"
+                    id="restaurantPic"
+                    (change)="fileChangeEvent($event, 'restaurantPic')"
+                    accept="image/*"
+                  />
+                  <label class="custom-file-label" for="restaurantPic">{{
+                    "Choose file" | translate
+                  }}</label>
+                </div>
+                <div *ngIf="showImagecropper" class="col-sm-12">
+                  <image-cropper
+                    [imageChangedEvent]="imageChangedEvent"
+                    [maintainAspectRatio]="true"
+                    [aspectRatio]="4 / 3"
+                    [resizeToWidth]="600"
+                    format="png"
+                    (imageCropped)="imageCropped($event)"
+                  >
+                    <!--(imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()">-->
+                  </image-cropper>
+
+                  <img [src]="croppedImage" width="100" />
+                </div>
+              </div>
+            </div>
+
+            <button
+              [disabled]="!restaurantForm.valid"
+              class="btn btn-success mt-5"
+              type="submit"
+            >
+              {{ "Create" | translate }}
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="openTimeModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <!-- 16:9 aspect ratio -->
+        <form
+          class=""
+          id="openTimeForm"
+          [formGroup]="openTimeForm"
+          (ngSubmit)="submitTimeform()"
+        >
+          <div class="row">
+            <div class="col-sm-12">
+              <h6>
+                {{
+                  "Fill Opening and closing time (Left Unfilled if Restaurant is closed that day)"
+                    | translate
+                }}
+              </h6>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-2">
+              {{ "Monday" | translate }}
+            </div>
+            <div class="col-3">
+              <input
+                atp-time-picker
+                changeToMinutes="true"
+                animation="rotate"
+                formControlName="monopen_time"
+                class="form-control"
+              />
+            </div>
+            <div class="col-3">
+              <input
+                atp-time-picker
+                changeToMinutes="true"
+                animation="rotate"
+                formControlName="monclose_time"
+                class="form-control"
+              />
+            </div>
+            <div class="col-3">
+              <span class="btn btn-primary badge" (click)="copyTiming()">{{
+                "Same all day" | translate
+              }}</span
+              ><br /><span
+                class="btn btn-danger badge"
+                (click)="clearTimining('mon')"
+                >{{ "clear/closed" | translate }}</span
+              >
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-2">
+              {{ "Tuesday" | translate }}
+            </div>
+            <div class="col-3">
+              <input
+                atp-time-picker
+                changeToMinutes="true"
+                animation="rotate"
+                formControlName="tueopen_time"
+                class="form-control"
+              />
+            </div>
+            <div class="col-3">
+              <input
+                atp-time-picker
+                changeToMinutes="true"
+                animation="rotate"
+                formControlName="tueclose_time"
+                class="form-control"
+              />
+            </div>
+            <div class="col-3">
+              <span
+                class="btn btn-danger badge"
+                (click)="clearTimining('tue')"
+                >{{ "clear/closed" | translate }}</span
+              >
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-2">
+              {{ "Wednesday" | translate }}
+            </div>
+            <div class="col-3">
+              <input
+                atp-time-picker
+                changeToMinutes="true"
+                animation="rotate"
+                formControlName="wedopen_time"
+                class="form-control"
+              />
+            </div>
+            <div class="col-3">
+              <input
+                atp-time-picker
+                changeToMinutes="true"
+                animation="rotate"
+                formControlName="wedclose_time"
+                class="form-control"
+              />
+            </div>
+            <div class="col-3">
+              <span
+                class="btn btn-danger badge"
+                (click)="clearTimining('wed')"
+                >{{ "clear/closed" | translate }}</span
+              >
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-2">
+              {{ "Thursday" | translate }}
+            </div>
+            <div class="col-3">
+              <input
+                atp-time-picker
+                changeToMinutes="true"
+                animation="rotate"
+                formControlName="thuopen_time"
+                class="form-control"
+              />
+            </div>
+            <div class="col-3">
+              <input
+                atp-time-picker
+                changeToMinutes="true"
+                animation="rotate"
+                formControlName="thuclose_time"
+                class="form-control"
+              />
+            </div>
+            <div class="col-3">
+              <span
+                class="btn btn-danger badge"
+                (click)="clearTimining('thu')"
+                >{{ "clear/closed" | translate }}</span
+              >
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-2">
+              {{ "Friday" | translate }}
+            </div>
+            <div class="col-3">
+              <input
+                atp-time-picker
+                changeToMinutes="true"
+                animation="rotate"
+                formControlName="friopen_time"
+                class="form-control"
+              />
+            </div>
+            <div class="col-3">
+              <input
+                atp-time-picker
+                changeToMinutes="true"
+                animation="rotate"
+                formControlName="friclose_time"
+                class="form-control"
+              />
+            </div>
+            <div class="col-3">
+              <span
+                class="btn btn-danger badge"
+                (click)="clearTimining('fri')"
+                >{{ "clear/closed" | translate }}</span
+              >
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-2">
+              {{ "Saturday" | translate }}
+            </div>
+            <div class="col-3">
+              <input
+                atp-time-picker
+                changeToMinutes="true"
+                animation="rotate"
+                formControlName="satopen_time"
+                class="form-control"
+              />
+            </div>
+            <div class="col-3">
+              <input
+                atp-time-picker
+                changeToMinutes="true"
+                animation="rotate"
+                formControlName="satclose_time"
+                class="form-control"
+              />
+            </div>
+            <div class="col-3">
+              <span
+                class="btn btn-danger badge"
+                (click)="clearTimining('sat')"
+                >{{ "clear/closed" | translate }}</span
+              >
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-2">
+              {{ "Sunday" | translate }}
+            </div>
+            <div class="col-3">
+              <input
+                atp-time-picker
+                changeToMinutes="true"
+                animation="rotate"
+                formControlName="sunopen_time"
+                class="form-control"
+              />
+            </div>
+            <div class="col-3">
+              <input
+                atp-time-picker
+                changeToMinutes="true"
+                animation="rotate"
+                formControlName="sunclose_time"
+                class="form-control"
+              />
+            </div>
+            <div class="col-3">
+              <span
+                class="btn btn-danger badge"
+                (click)="clearTimining('sun')"
+                >{{ "clear/closed" | translate }}</span
+              >
+            </div>
+          </div>
+
+          <div class="col-sm-12">
+            <button
+              [disabled]="!openTimeForm.valid"
+              type="submit"
+              class="btn btn-success"
+            >
+              {{ "Save" | translate }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

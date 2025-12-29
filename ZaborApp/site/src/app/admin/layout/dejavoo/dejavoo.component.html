@@ -1,0 +1,84 @@
+<div class="row">
+  <div class="col col-xs-12">
+    <div class="card mb-3">
+      <div class="card-header">
+        <h5>Dejavoo Terminals</h5>
+        <button
+          class="btn btn-success btn-sm pull-right"
+          routerLink="/admin/dejavoo/terminal/create"
+        >
+          + Add terminal
+        </button>
+      </div>
+      <div class="card-body table-responsive">
+        <table
+          datatable
+          [dtOptions]="dtOptions"
+          [dtTrigger]="dtTrigger"
+          class="table-hover table-bordered"
+        >
+          <thead>
+            <tr>
+              <th width="10%">Id</th>
+              <th width="20%">Restaurant ID</th>
+              <th width="10%">Device ID</th>
+              <th width="5%">Device Name</th>
+              <th width="20%">TPN</th>
+              <th width="10%">Register ID</th>
+              <th width="5%">Auth Key</th>
+              <th width="5%">Security Key</th>
+              <th width="10%">Action</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="terminalList.length > 0">
+            <tr *ngFor="let terminal of terminalList; index as i">
+              <td>{{ terminal.id }}</td>
+              <td style="color:red;" *ngIf="terminal.rest_id == null; else elseBlock1">No Restaurant Linked</td>
+              <ng-template #elseBlock1><td>{{ terminal.rest_id }}</td></ng-template>              
+              <td>{{ terminal.device_id }}</td>
+              <td>{{ terminal.device_name?terminal.device_name:'' }}</td>
+              <td>{{ terminal.tpn }}</td>
+              <td>{{ terminal.register_id }}</td>
+              <td>{{ terminal.authkey }}</td>
+              <td>{{ terminal.security_key }}</td>       
+              <td *ngIf="terminal.rest_id == null; else elseBlock">
+                <a  
+                  routerLink="/admin/dejavoo/terminal/edit/{{ terminal.id }}"
+                  class="btn btn-info btn-sm badge"
+                  ><i class="fa fa-star" aria-hidden="true"></i> Edit</a
+                >Not Linked
+                <br>
+                <a
+                  (click)="doDelete(terminal.id)"
+                  class="btn btn-danger btn-sm badge"
+                  ><i class="fa fa-thrash" aria-hidden="true"></i> Delete</a
+                >
+
+              </td>
+              <ng-template #elseBlock>
+                <td>
+                  <a
+                  (click)="doUnlink(terminal.id)"
+                  class="btn btn-danger btn-sm badge"
+                  ><i class="fa fa-star" aria-hidden="true"></i> Un-Link Restaurant</a
+                >
+                </td>
+              </ng-template>       
+              <td>
+                
+              </td>
+            </tr>
+          </tbody>
+
+          <tbody *ngIf="terminalList.length == 0">
+            <tr>
+              <td class="no-data-available" colspan="11">
+                No terminals available
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

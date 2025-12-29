@@ -1,0 +1,39 @@
+<main>
+  <section class="inner-banner overlay search-banner">
+
+  </section>
+
+
+  <section class="sec sec-faq-wrap small-container">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="sec-heading">
+            <h2 class="heading-2 text-center text-uppercase">faq's</h2>
+          </div>
+        </div>
+        <div class="col-md-12">
+
+          <div id="accordion" class="accordion">
+            <div class="card mb-0">
+              <ng-container *ngFor="let faq of faqs; let i=index">
+                <div class="card-header">
+                  <a class="card-title" data-toggle="collapse" href="#collapse{{i}}" aria-expanded="true">{{i+1}}.
+                    {{translation.lang =='en' ? faq.faq_title : faq.faq_title_es}} </a>
+                </div>
+                <div id="collapse{{i}}" class="card-body collapse" [ngClass]="{show: i==0}" data-parent="#accordion">
+                  {{translation.lang =='en' ? faq.faq_des : faq.faq_des_es}}
+                </div>
+
+              </ng-container>
+
+            </div>
+          </div>
+
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+</main>

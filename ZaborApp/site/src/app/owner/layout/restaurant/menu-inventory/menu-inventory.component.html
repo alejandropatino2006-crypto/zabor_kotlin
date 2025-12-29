@@ -1,0 +1,54 @@
+<div>
+  Name : {{ item_name }}
+  <div *ngIf="inventoryListForItem.length == 0">
+    No Data Available...
+  </div>
+  <div *ngIf="inventoryListForItem.length > 0">
+    <ol>
+      <li *ngFor="let iitem of inventoryListForItem; let i = index">{{ i+1 }}) {{ iitem.inventory_item_name }}, CPQ : {{iitem.pack_size_cost_per_qty}}, Q : {{ iitem.inventory_qty }}, Total : ${{ (iitem.pack_size_cost_per_qty) * (iitem.inventory_qty) }} <a (click)="deleteInventory($event, iitem.id)" class="btn badge btn-danger btn-sm"><i
+        class="fa fa-trash"></i> </a></li>
+    </ol>
+    <div> Total Inventory Cost For The Item : ${{ totalCostForItem }} </div>
+  </div>
+  <form role="form" [formGroup]="inventoryForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="inventory_qty">{{ "Inventory Item" | translate }}*</label>
+          <select class="custom-select" (change)="selectInventory($event.target)" formControlName="inventoryitem"  *ngIf="inventoryList.length > 0">
+            <option value="">{{ "Select Inventory" | translate }}*</option>
+            <ng-container *ngFor="let item of inventoryList">
+              <option value="{{ item.id }}">{{ item.name}}</option>
+            </ng-container>
+          </select>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label for="inventory_qty">{{ "Qty" | translate }}*</label>
+          <input type="number" class="form-control input-underline input-lg" id="inventory_qty" formControlName="inventory_qty"
+            placeholder="{{ 'Qty' | translate }}" maxlength="25" />
+          <span class="text-danger"
+            *ngIf="!inventoryForm.controls['inventory_qty'].valid && inventoryForm.controls['inventory_qty'].touched && inventoryForm.controls['inventory_qty'].hasError('required')">{{
+            "inventory_qty is required" | translate }}.</span>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label for="inventory_qty">{{ "Qty On Hand" | translate }}*</label>
+          <br/>
+          {{ availableQty }}
+        </div>
+      </div>
+    </div>
+    <div class="row form-content">
+      <div class="col-sm-12">
+        <button [disabled]="!inventoryForm.valid" class="btn btn-success" type="submit">
+          {{ "Add inventory" | translate }}</button>
+      </div>
+    </div>
+
+    <!--  -->
+  </form>
+</div>
+

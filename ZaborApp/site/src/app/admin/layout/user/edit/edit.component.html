@@ -1,0 +1,84 @@
+<div class="card">
+  <div class="card-header">
+    <h4>User Detail</h4>
+  </div>
+  <div class="card-body">
+    <div>
+      <img src="{{fileurl}}/{{userdata.profileimage}}"
+        *ngIf="userdata.profileimage && userdata.profileimage!=null && userdata.profileimage != ''" class="profileImage"
+        alt="profilepic" width="150px">
+    </div>
+    <div class="login-page">
+      <div class="row justify-content-md-center">
+        <div class="col-md-12">
+
+          <div class="row form-content">
+            <div class="col-sm-4">
+              <div class="form-group">
+                <b for="name">Full Name</b>
+                <p>{{ userdata.name | titlecase}}</p>
+              </div>
+            </div>
+
+            <div class="col-sm-4">
+              <div class="form-group">
+                <b for="name">Email</b>
+                <p>{{ userdata.email}}</p>
+              </div>
+            </div>
+
+            <div class="col-sm-4" *ngIf="userdata.city">
+              <div class="form-group">
+                <b for="city">City</b>
+                <p>{{userdata.city}}</p>
+              </div>
+            </div>
+
+            <div class="col-sm-4">
+              <div class="form-group">
+                <b for="status">Status</b>
+                <p *ngIf="userdata.status ==1  else statusblock">Active</p>
+                <ng-template #statusblock>
+                  <p> Inactive </p>
+                </ng-template>
+
+              </div>
+            </div>
+
+            <div class="col-sm-4" *ngIf="userdata.phone">
+              <div class="form-group">
+                <b for="phone">Contact No</b>
+                <p>{{userdata.phone}}</p>
+              </div>
+            </div>
+            <div class="col-sm-4" *ngIf="userdata.address">
+              <div class="form-group">
+                <b for="address">Addess</b>
+                <p>{{userdata.address}}</p>
+              </div>
+            </div>
+            <div class="col-sm-4" *ngIf="userdata.role">
+              <div class="form-group">
+                <b for="address">Role</b>
+                <p>{{userdata.role | titlecase}}</p>
+              </div>
+            </div>
+            <div class="col-sm-4" *ngIf="userdata.bob">
+              <div class="form-group">
+                <b for="address">DOB</b>
+                <p>{{userdata.dob}}</p>
+              </div>
+            </div>
+            <div class="col-sm-12" *ngIf="userdata.about">
+              <div class="form-group">
+                <b for="address">About</b>
+                <p>{{userdata.about}}</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

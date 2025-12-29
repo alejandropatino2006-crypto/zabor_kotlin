@@ -1,0 +1,543 @@
+<div class="card">
+  <div class="card-header">
+    <h4>{{ "Create Employee" | translate }} </h4>
+    <button class="btn btn-secondary btn-padding-1 pull-right" routerLink="/owner/restaurants/employee/{{ restaurantId }}">  {{ "Back to List" | translate }}</button>
+  </div>
+  <div class="card-body">
+    <div class="login-page">
+      <div class="row justify-content-md-center">
+        <div class="col-md-12">
+          <form role="form" (keydown.enter)="$event.preventDefault()" [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+            <div class="row form-content">
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="name">{{ "Full Name" | translate }}*</label>
+                  <input type="text" class="form-control input-underline input-lg" id="name"  formControlName="name" placeholder='{{ "Full Name" | translate }}' maxlength="60" />
+
+                  <ng-container *ngIf="!employeeForm.controls['name'].valid &&
+                    employeeForm.controls['name'].touched">
+                    <span class="text-danger" *ngIf="employeeForm.controls['name'].hasError('required') else elsename">{{"Full Name is required" | translate}}.</span>
+                    <ng-template #elsename>
+                      <span class="text-danger" *ngIf="employeeForm.controls['name'].hasError('whitespace')">{{"only white space is not allowed" | translate}}.</span></ng-template>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="email">{{ "Email" | translate }}*</label>
+                  <input type="text" class="form-control input-underline input-lg" id="email" formControlName="email"
+                    placeholder='{{ "Email" | translate }}' maxlength="60" />
+                  <ng-container *ngIf="!employeeForm.controls['email'].valid &&
+                    employeeForm.controls['email'].touched">
+                    <span class="text-danger" *ngIf="employeeForm.controls['email'].hasError('required') else elseemail">{{"Email is required" | translate}}.</span>
+                    <ng-template #elseemail>
+                      <span class="text-danger" *ngIf="employeeForm.controls['email'].hasError('whitespace')">{{"only white space is not allowed" | translate}}.</span></ng-template>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="password">{{ "Password" | translate }}*</label>
+                  <input type="password" class="form-control input-underline input-lg" id="password" formControlName="password"
+                    placeholder='{{ "Password" | translate }}' maxlength="60" />
+                  <div [ngSwitch]="getPasswordErrors">
+                    <span class="form-field-error-msg" *ngSwitchCase="'required'">{{ "Password is required" | translate }}.</span>
+                    <span class="form-field-error-msg" *ngSwitchCase="'whitespace'">{{ "Password must not contain whitespace characters" | translate }}.</span>
+                    <span class="form-field-error-msg" *ngSwitchCase="'passwordExists'">{{ "Password is already taken by someone in the restaurant" | translate }}.</span>
+                    <span class="form-field-error-msg" *ngSwitchCase="'minlength'">{{ "Minimum 6 characters are needed to create Password" | translate }}.</span>
+                    <p *ngSwitchDefault>&nbsp;</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="confirmPassword">{{ "Confirm Password" | translate }}*</label>
+                  <input type="password" class="form-control input-underline input-lg" id="confirmPassword" formControlName="confirmPassword"
+                    placeholder='{{ "Confirm Password" | translate }}' maxlength="60" />
+
+                    <span class="text-danger" *ngIf="
+                    !employeeForm.controls[
+                        'confirmPassword'
+                    ].hasError('required') &&
+                    !employeeForm.controls['confirmPassword'].valid &&
+                    employeeForm.controls['confirmPassword']
+                        .touched &&
+                        employeeForm.controls['confirmPassword'].hasError(
+                        'mustMatch'
+                    )
+                ">Passwords must match.</span>
+
+                  <ng-container *ngIf="!employeeForm.controls['confirmPassword'].valid &&
+                    employeeForm.controls['confirmPassword'].touched">
+                    <span class="text-danger" *ngIf="employeeForm.controls['confirmPassword'].hasError('required') else elsename">{{"Confirm Password is required" | translate}}.</span>
+                    <ng-template #elsename>
+                      <span class="text-danger" *ngIf="employeeForm.controls['confirmPassword'].hasError('whitespace')">{{"only white space is not allowed" | translate}}.</span></ng-template>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+            <div class="row form-content">
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="job_title">{{ "Job Title" | translate }}*</label>
+                  <select class="custom-select" id="job_title" formControlName="job_title" *ngIf="jobTitles.length > 0">
+                    <option value="">{{ "Select Job Title" | translate }}</option>
+                    <ng-container *ngFor="let title of jobTitles">
+                      <option value="{{ title.id }}">{{ title.name}}</option>
+                    </ng-container>
+                  </select>
+                  <ng-container *ngIf="!employeeForm.controls['job_title'].valid &&
+                    employeeForm.controls['job_title'].touched">
+                    <span class="text-danger" *ngIf="employeeForm.controls['job_title'].hasError('required') else elsename">{{"Job Title is required" | translate}}.</span>
+                    <ng-template #elsename>
+                      <span class="text-danger" *ngIf="employeeForm.controls['job_title'].hasError('whitespace')">{{"only white space is not allowed" | translate}}.</span></ng-template>
+                  </ng-container>
+                </div>
+
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="status">{{ "Status" | translate }}*</label>
+                  <select class="custom-select" id="status" formControlName="status">
+                    <option value="">{{ "Select Status" | translate }}</option>
+                    <option value="1">Active</option>
+                    <option value="0">Inactive</option>
+                  </select>
+                  <ng-container *ngIf="!employeeForm.controls['status'].valid &&
+                    employeeForm.controls['status'].touched">
+                    <span class="text-danger" *ngIf="employeeForm.controls['status'].hasError('required') else elsename">{{"Status is required" | translate}}.</span>
+                    <ng-template #elsename>
+                      <span class="text-danger" *ngIf="employeeForm.controls['status'].hasError('whitespace')">{{"only white space is not allowed" | translate}}.</span></ng-template>
+                  </ng-container>
+                </div>
+
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="phone">{{ "Mobile Number" | translate }}*</label>
+                  <input type="number" class="form-control input-underline input-lg" id="phone" formControlName="phone"
+                    placeholder='{{ "Mobile Number" | translate }}' maxlength="60" />
+                  <ng-container *ngIf="!employeeForm.controls['phone'].valid &&
+                    employeeForm.controls['phone'].touched">
+                    <span class="text-danger" *ngIf="employeeForm.controls['phone'].hasError('required') else elsename">{{"Mobile Number is required" | translate}}.</span>
+                    <ng-template #elsename>
+                      <span class="text-danger" *ngIf="employeeForm.controls['phone'].hasError('whitespace')">{{"only white space is not allowed" | translate}}.</span></ng-template>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="tax_account_number">{{ "Tax Account Number" | translate }}*</label>
+                  <input type="number" class="form-control input-underline input-lg" id="tax_account_number" formControlName="tax_account_number"
+                    placeholder='{{ "Tax Account Number" | translate }}' maxlength="60" />
+                  <ng-container *ngIf="!employeeForm.controls['tax_account_number'].valid &&
+                    employeeForm.controls['tax_account_number'].touched">
+                    <span class="text-danger" *ngIf="employeeForm.controls['tax_account_number'].hasError('required') else elsename">{{"Tax Account Number is required" | translate}}.</span>
+                    <ng-template #elsename>
+                      <span class="text-danger" *ngIf="employeeForm.controls['tax_account_number'].hasError('whitespace')">{{"only white space is not allowed" | translate}}.</span></ng-template>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+            <div class="row form-content">
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="social_security">{{ "Social Security Number" | translate }}*</label>
+                  <input type="number" class="form-control input-underline input-lg" id="social_security" formControlName="social_security"
+                    placeholder='{{ "Social Security Number" | translate }}' maxlength="60" />
+                  <ng-container *ngIf="!employeeForm.controls['tax_account_number'].valid &&
+                    employeeForm.controls['social_security'].touched">
+                    <span class="text-danger" *ngIf="employeeForm.controls['social_security'].hasError('required') else elsenametan">{{"Social Security Number is required" | translate}}.</span>
+                    <ng-template #elsenametan>
+                      <span class="text-danger" *ngIf="employeeForm.controls['social_security'].hasError('whitespace')">{{"only white space is not allowed" | translate}}.</span></ng-template>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="address">{{ "Address" | translate }}*</label>
+                  <textarea class="form-control input-underline input-lg" id="address" formControlName="address"
+                    placeholder='{{ "Address" | translate }}' maxlength="200"></textarea>
+
+                  <ng-container *ngIf="!employeeForm.controls['address'].valid &&
+                    employeeForm.controls['address'].touched">
+                    <span class="text-danger" *ngIf="employeeForm.controls['address'].hasError('required') else elsedescription">{{ "Address is required" | translate }}.</span>
+                    <ng-template #elsedescription>
+                      <span class="text-danger" *ngIf="employeeForm.controls['address'].hasError('whitespace')">{{"only white space is not allowed" | translate}}.</span></ng-template>
+                  </ng-container>
+
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="city">{{ "City" | translate }}*</label>
+                  <input type="text" class="form-control input-underline input-lg" id="city" formControlName="city"
+                         placeholder='{{ "City" | translate }}' maxlength="60" />
+
+                  <ng-container *ngIf="!employeeForm.controls['city'].valid &&
+                                 employeeForm.controls['city'].touched">
+                    <span class="text-danger" *ngIf="employeeForm.controls['city'].hasError('required') else elsedescription">{{ "City is required" | translate }}.</span>
+                    <ng-template #elsedescription>
+                      <span class="text-danger" *ngIf="employeeForm.controls['city'].hasError('whitespace')">{{"only white space is not allowed" | translate}}.</span></ng-template>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="postal_code">{{ "Postal Code" | translate }}*</label>
+                  <input type="text" class="form-control input-underline input-lg" id="postal_code" formControlName="postal_code"
+                         placeholder='{{ "Postal Code" | translate }}' maxlength="60" />
+
+                  <ng-container *ngIf="!employeeForm.controls['postal_code'].valid &&
+                                 employeeForm.controls['postal_code'].touched">
+                    <span class="text-danger" *ngIf="employeeForm.controls['postal_code'].hasError('required') else elsedescription">{{ "Postal Code is required" | translate }}.</span>
+                    <ng-template #elsedescription>
+                      <span class="text-danger" *ngIf="employeeForm.controls['postal_code'].hasError('whitespace')">{{"only white space is not allowed" | translate}}.</span></ng-template>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+            <div class="row form-content">
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="employee_notes">{{ "Employee Notes" | translate }}*</label>
+                  <textarea class="form-control input-underline input-lg" id="employee_notes" formControlName="employee_notes"
+                            placeholder='{{ "Employee Notes" | translate }}' maxlength="200"></textarea>
+
+                  <ng-container *ngIf="!employeeForm.controls['employee_notes'].valid &&
+                                 employeeForm.controls['employee_notes'].touched">
+                    <span class="text-danger" *ngIf="employeeForm.controls['employee_notes'].hasError('required') else elsedescription">{{ "Employee Notes are required" | translate }}.</span>
+                    <ng-template #elsedescription>
+                      <span class="text-danger" *ngIf="employeeForm.controls['employee_notes'].hasError('whitespace')">{{"only white space is not allowed" | translate}}.</span></ng-template>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="hired_date">{{ "Hired Date" | translate }}*</label>
+                  <input type="date" class="form-control input-underline input-lg" id="hired_date" formControlName="hired_date"
+                         placeholder='{{ "Hired Date" | translate }}' />
+
+                  <ng-container *ngIf="!employeeForm.controls['hired_date'].valid &&
+                                 employeeForm.controls['hired_date'].touched">
+                    <span class="text-danger" *ngIf="employeeForm.controls['hired_date'].hasError('required') else elsedescription">{{ "Hired Date is required" | translate }}.</span>
+                    <ng-template #elsedescription>
+                      <span class="text-danger" *ngIf="employeeForm.controls['hired_date'].hasError('whitespace')">{{"only white space is not allowed" | translate}}.</span>
+                    </ng-template>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="dob">{{ "Date of Birth" | translate }}*</label>
+                  <input type="date" class="form-control input-underline input-lg" id="dob" formControlName="dob"
+                         placeholder='{{ "Date of Birth" | translate }}' />
+
+                  <ng-container *ngIf="!employeeForm.controls['dob'].valid &&
+                                 employeeForm.controls['dob'].touched">
+                    <span class="text-danger" *ngIf="employeeForm.controls['dob'].hasError('required') else elsedescription">{{ "Date of Birth is required" | translate }}.</span>
+                    <ng-template #elsedescription>
+                      <span class="text-danger" *ngIf="employeeForm.controls['dob'].hasError('whitespace')">{{"only white space is not allowed" | translate}}.</span>
+                    </ng-template>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="terminated_date">{{ "Terminated Date" | translate }}</label>
+                  <input type="date" class="form-control input-underline input-lg" id="terminated_date" formControlName="terminated_date"
+                         placeholder='{{ "Terminated Date" | translate }}' />
+                </div>
+              </div>
+            </div>
+
+            <div class="row form-content">
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="pay_basis">{{ "Pay Basis" | translate }}*</label>
+                  <select class="custom-select" id="pay_basis" formControlName="pay_basis">
+                    <option value="">{{ "Select Pay Basis" | translate }}</option>
+                    <option value="hourly">Hourly</option>
+                    <option value="salary">Salary</option>
+                  </select>
+                  <ng-container *ngIf="!employeeForm.controls['pay_basis'].valid &&
+                                 employeeForm.controls['pay_basis'].touched">
+                    <span class="text-danger" *ngIf="employeeForm.controls['pay_basis'].hasError('required') else elsedescription">{{ "Pay Basis is required" | translate }}.</span>
+                    <ng-template #elsedescription>
+                      <span class="text-danger" *ngIf="employeeForm.controls['pay_basis'].hasError('whitespace')">{{"only white space is not allowed" | translate}}.</span>
+                    </ng-template>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="pay_rate">{{ "Pay Rate" | translate }}*</label>
+                  <input type="number" class="form-control input-underline input-lg" id="pay_rate" formControlName="pay_rate"
+                         placeholder='{{ "Pay Rate" | translate }}' />
+
+                  <ng-container *ngIf="!employeeForm.controls['pay_rate'].valid &&
+                                 employeeForm.controls['pay_rate'].touched">
+                    <span class="text-danger" *ngIf="employeeForm.controls['pay_rate'].hasError('required') else elsedescription">{{ "Pay Rate is required" | translate }}.</span>
+                    <ng-template #elsedescription>
+                      <span class="text-danger" *ngIf="employeeForm.controls['pay_rate'].hasError('whitespace')">{{"only white space is not allowed" | translate}}.</span>
+                    </ng-template>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="tips_received">{{ "Tips Received" | translate }}</label>
+                  <select class="custom-select" id="tips_received" formControlName="tips_received">
+                    <option value="Y">Yes</option>
+                    <option value="N">No</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="use_hostess_features">{{ "Use Hostess Features" | translate }}</label>
+                  <select class="custom-select" id="use_hostess_features" formControlName="use_hostess_features">
+                    <option value="Y">Yes</option>
+                    <option value="N">No</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="row form-content">
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="schedule_not_enforced">{{ "Schedule Not Enforced" | translate }}</label>
+                  <select class="custom-select" id="schedule_not_enforced" formControlName="schedule_not_enforced">
+                    <option value="Y">Yes</option>
+                    <option value="N">No</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="is_a_server">{{ "Is a Server" | translate }}</label>
+                  <select class="custom-select" id="is_a_server" formControlName="is_a_server">
+                    <option value="Y">Yes</option>
+                    <option value="N">No</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="cannot_finalise_cashier_out">{{ "Cannot Finalise Cashier Out" | translate }}</label>
+                  <select class="custom-select" id="cannot_finalise_cashier_out" formControlName="cannot_finalise_cashier_out">
+                    <option value="Y">Yes</option>
+                    <option value="N">No</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="allow_create_or_reply_emails">{{ "Allow Create or Reply Emails" | translate }}</label>
+                  <select class="custom-select" id="allow_create_or_reply_emails" formControlName="allow_create_or_reply_emails">
+                    <option value="Y">Yes</option>
+                    <option value="N">No</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row form-content">
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="disallow_create_edit_dine_in_orders">{{ "Disallow Create/Edit Dine-In Orders" | translate }}</label>
+                  <select class="custom-select" id="disallow_create_edit_dine_in_orders" formControlName="disallow_create_edit_dine_in_orders">
+                    <option value="Y">Yes</option>
+                    <option value="N">No</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="disallow_create_edit_bar_tab_orders">{{ "Disallow Create/Edit Bar Tab Orders" | translate }}</label>
+                  <select class="custom-select" id="disallow_create_edit_bar_tab_orders" formControlName="disallow_create_edit_bar_tab_orders">
+                    <option value="Y">Yes</option>
+                    <option value="N">No</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="disallow_create_edit_take_out_orders">{{ "Disallow Create/Edit Take-Out Orders" | translate }}</label>
+                  <select class="custom-select" id="disallow_create_edit_take_out_orders" formControlName="disallow_create_edit_take_out_orders">
+                    <option value="Y">Yes</option>
+                    <option value="N">No</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="disallow_create_edit_drive_thru_orders">{{ "Disallow Create/Edit Drive-Thru Orders" | translate }}</label>
+                  <select class="custom-select" id="disallow_create_edit_drive_thru_orders" formControlName="disallow_create_edit_drive_thru_orders">
+                    <option value="Y">Yes</option>
+                    <option value="N">No</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row form-content">
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="disallow_create_edit_delivery_orders">{{ "Disallow Create/Edit Delivery Orders" | translate }}</label>
+                  <select class="custom-select" id="disallow_create_edit_delivery_orders" formControlName="disallow_create_edit_delivery_orders">
+                    <option value="Y">Yes</option>
+                    <option value="N">No</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="driving_license_number">{{ "Driving License Number" | translate }}</label>
+                  <input type="text" class="form-control input-underline input-lg" id="driving_license_number" formControlName="driving_license_number"
+                         placeholder='{{ "Driving License Number" | translate }}' />
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="driving_license_expires">{{ "Driving License Expires" | translate }}</label>
+                  <input type="date" class="form-control input-underline input-lg" id="driving_license_expires" formControlName="driving_license_expires"
+                         placeholder='{{ "Driving License Expires" | translate }}' />
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="car_insurance_career">{{ "Car Insurance Carrier" | translate }}</label>
+                  <input type="text" class="form-control input-underline input-lg" id="car_insurance_career" formControlName="car_insurance_career"
+                         placeholder='{{ "Car Insurance Carrier" | translate }}' />
+                </div>
+              </div>
+            </div>
+            <div class="row form-content">
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="insurance_policy_number">{{ "Insurance Policy Number" | translate }}</label>
+                  <input type="text" class="form-control input-underline input-lg" id="insurance_policy_number" formControlName="insurance_policy_number"
+                         placeholder='{{ "Insurance Policy Number" | translate }}' />
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="insurance_policy_expires">{{ "Insurance Policy Expires" | translate }}</label>
+                  <input type="date" class="form-control input-underline input-lg" id="insurance_policy_expires" formControlName="insurance_policy_expires"
+                         placeholder='{{ "Insurance Policy Expires" | translate }}' />
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="insurance_policy_notes">{{ "Insurance Policy Notes" | translate }}</label>
+                  <textarea class="form-control input-underline input-lg" id="insurance_policy_notes" formControlName="insurance_policy_notes" placeholder='{{ "Insurance Policy Notes" | translate }}' maxlength="200"></textarea>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="is_driver">{{ "Is a Driver" | translate }}</label>
+                  <select class="custom-select" id="is_driver" formControlName="is_driver">
+                    <option value="">{{ "Select Is Driver" | translate }}</option>
+                    <option value="Y">Yes</option>
+                    <option value="N">No</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row form-content">
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="pref_lang">{{ "Preferred Language" | translate }}*</label>
+                  <select class="custom-select" id="pref_lang" formControlName="pref_lang">
+                    <option value="en">English</option>
+                    <option value="es">Spanish</option>
+                    <option value="fr">French</option>
+                  </select>
+                  <ng-container *ngIf="!employeeForm.controls['pref_lang'].valid &&
+                                 employeeForm.controls['pref_lang'].touched">
+                    <span class="text-danger" *ngIf="employeeForm.controls['pref_lang'].hasError('required') else elsedescription">{{ "Preferred Language is required" | translate }}.</span>
+                    <ng-template #elsedescription>
+                      <span class="text-danger" *ngIf="employeeForm.controls['pref_lang'].hasError('whitespace')">{{"only white space is not allowed" | translate}}.</span>
+                    </ng-template>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="order_entry_sec_lang">{{ "Order Entry Secondary Language" | translate }}</label>
+                  <select class="custom-select" id="order_entry_sec_lang" formControlName="order_entry_sec_lang">
+                    <option value="Y">Yes</option>
+                    <option value="N">No</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="msr_card">{{ "MSR Card" | translate }}</label>
+                  <input type="text" class="form-control input-underline input-lg" id="msr_card" formControlName="msr_card"
+                         placeholder='{{ "MSR Card" | translate }}' />
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <app-tr-label labelText="{{ 'Access Code' | translate }}" for="access_code" [required]="true"></app-tr-label>&nbsp;
+                  <input type="number" class="form-control input-underline input-lg" id="access_code" formControlName="access_code"
+                         placeholder='{{ "Access Code" | translate }}' />
+                  <div [ngSwitch]="getAccessCodeErrors">
+                    <span class="form-field-error-msg" *ngSwitchCase="'required'">{{ "Access Code is required" | translate }}.</span>
+                    <span class="form-field-error-msg" *ngSwitchCase="'whitespace'">{{ "Access Code must not contain whitespace characters" | translate }}.</span>
+                    <span class="form-field-error-msg" *ngSwitchCase="'AccessCodeExists'">{{ "Access Code is already taken by someone in the restaurant" | translate }}.</span>
+                    <span class="form-field-error-msg" *ngSwitchCase="'minlength'">{{ "Minimum 1 character is needed to create Access Code" | translate }}.</span>
+                    <p *ngSwitchDefault>&nbsp;</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row form-content">
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="security_level">{{ "Security Level" | translate }}</label>
+                  <input type="text" class="form-control input-underline input-lg" id="security_level" formControlName="security_level"
+                         placeholder='{{ "Security Level" | translate }}' />
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="holiday_pay_scale">{{ "Holiday Pay Scale" | translate }}</label>
+                  <input type="text" class="form-control input-underline input-lg" id="holiday_pay_scale" formControlName="holiday_pay_scale"
+                         placeholder='{{ "Holiday Pay Scale" | translate }}' />
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <app-tr-label labelText="{{ 'Sub Role' | translate }}" for="sub_role_id" [required]="true"></app-tr-label>&nbsp;
+                  <select class="custom-select" id="sub_role_id" formControlName="sub_role_id" *ngIf="subRoles.length > 0">
+                    <option value="">{{ "Select Sub Role" | translate }}</option>
+                    <ng-container *ngFor="let role of subRoles">
+                      <option value="{{ role.id }}">{{ role.name}}</option>
+                    </ng-container>
+                  </select>
+                  <ng-container *ngIf="!employeeForm.controls['sub_role_id'].valid &&
+                    employeeForm.controls['sub_role_id'].touched">
+                    <span class="text-danger" *ngIf="employeeForm.controls['sub_role_id'].hasError('required') else elsenamesr">{{"Sub Role is required" | translate}}.</span>
+                    <ng-template #elsenamesr>
+                      <span class="text-danger" *ngIf="employeeForm.controls['sub_role_id'].hasError('whitespace')">{{"only white space is not allowed" | translate}}.</span></ng-template>
+                  </ng-container>
+                </div>
+
+              </div>
+            </div>
+
+
+            <div class="row form-content">
+              <div class="col-sm-12">
+                <button [disabled]="!employeeForm.valid" class="btn btn-success" type="submit">
+                  {{ "Create Employee" | translate }}</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

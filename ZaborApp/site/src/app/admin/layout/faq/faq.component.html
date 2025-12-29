@@ -1,0 +1,139 @@
+<div class="row">
+  <div class="col-sm-4">
+    <div class="card">
+      <div class="card-header">Faqs</div>
+      <div class="card-body table-responsive">
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table-hover table-bordered">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Title</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="faqs.length > 0">
+            <tr *ngFor="let item of faqs; index as i;">
+              <th scope="row">{{ i+1 }}</th>
+              <td>{{ item.faq_title}}</td>
+              <td><button class="btn btn-primary btn-sm badge" (click)="editfaq(item.id)">Edit</button>&nbsp;<button
+                  class="btn btn-danger btn-sm badge" (click)="deleteFaq(item.id)">Delete</button></td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="faqs.length == 0">
+            <tr>
+              <td class="no-data-available" colspan="3">No matching records found</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-8">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header">{{ title }}<button class="btn btn-success btn-sm pull-right" *ngIf="this.faq_id > 0"
+            (click)="addfaq()">Add Faq</button>
+        </div>
+        <div class="card-body">
+          <div class="login-page">
+            <div class="row justify-content-md-center">
+              <div class="col-md-12">
+
+                <form role="form" [formGroup]="faqForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+
+                  <div class="row form-content">
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <label for="name">Title*</label>
+                        <input type="text" class="form-control input-underline input-lg" id="tile"
+                          formControlName="title" placeholder="{{ 'Title'  }}" />
+                        <ng-container *ngIf="!faqForm.controls['title'].valid &&
+                          faqForm.controls['title'].touched">
+                          <span class="text-danger" *ngIf="faqForm.controls['title'].hasError(
+                                                      'required'
+                                                  ) else elsetitle
+                                              ">title is required.</span>
+                          <ng-template #elsetitle>
+                            <span class="text-danger" *ngIf="faqForm.controls['title'].hasError(
+                                                      'whitespace'
+                                                  )
+                                              ">only white space is not allowed.</span></ng-template>
+                        </ng-container>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <label for="description">Description*</label>
+                        <textarea class="form-control input-underline input-lg" id="description"
+                          formControlName="description" placeholder="{{ 'description'  }}"></textarea>
+
+                        <ng-container *ngIf="!faqForm.controls['description'].valid &&
+                        faqForm.controls['description'].touched">
+                          <span class="text-danger" *ngIf="faqForm.controls['description'].hasError(
+                                                    'required'
+                                                ) else elsedes
+                                            ">description is required.</span>
+                          <ng-template #elsedes>
+                            <span class="text-danger" *ngIf="faqForm.controls['description'].hasError(
+                                                    'whitespace'
+                                                )
+                                            ">only white space is not allowed.</span></ng-template>
+                        </ng-container>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <label for="name">Title Es*</label>
+                        <input type="text" class="form-control input-underline input-lg" id="tile"
+                          formControlName="title_es" placeholder="{{ 'Title'  }}" />
+                        <ng-container *ngIf="!faqForm.controls['title_es'].valid &&
+                          faqForm.controls['title_es'].touched">
+                          <span class="text-danger" *ngIf="faqForm.controls['title_es'].hasError(
+                                                      'required'
+                                                  ) else elsetitle
+                                              ">title is required.</span>
+                          <ng-template #elsetitle>
+                            <span class="text-danger" *ngIf="faqForm.controls['title_es'].hasError(
+                                                      'whitespace'
+                                                  )
+                                              ">only white space is not allowed.</span></ng-template>
+                        </ng-container>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <label for="description">Description Es*</label>
+                        <textarea class="form-control input-underline input-lg" id="description"
+                          formControlName="description_es" placeholder="{{ 'description'  }}"></textarea>
+
+                        <ng-container *ngIf="!faqForm.controls['description_es'].valid &&
+                        faqForm.controls['description_es'].touched">
+                          <span class="text-danger" *ngIf="faqForm.controls['description_es'].hasError(
+                                                    'required'
+                                                ) else elsedes
+                                            ">description is required.</span>
+                          <ng-template #elsedes>
+                            <span class="text-danger" *ngIf="faqForm.controls['description_es'].hasError(
+                                                    'whitespace'
+                                                )
+                                            ">only white space is not allowed.</span></ng-template>
+                        </ng-container>
+                      </div>
+                    </div>
+
+
+                  </div>
+                  <button [disabled]="!faqForm.valid" class="btn btn-success" type="submit">
+                    Save</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

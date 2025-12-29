@@ -1,0 +1,280 @@
+<div *ngIf="showRestaurant ">
+    <div class="card" *ngIf="isAdmin">
+        <div class="card-body">
+          <div class="row">
+
+            <div class="col-3" style="min-width: 240px;">
+              <div class="row py-2 px-0 neo1 flex-column mb-3" style="margin-right: -7px;">
+                <div class="col-12">
+                  <div class="form-group col-12 pl-0">
+                    <div class="form-check form-check-inline">
+                      <p class="form-check-label" for="inlineCheckbox1">{{ "Claimed" | translate }}</p>
+                      <ui-switch [checked]="claimedcheck" defaultBgColor="red" [disabled]="!isAdmin"
+                                 (change)="changeClaimStatus($event)"></ui-switch>
+                    </div>
+                  </div>
+                  <div class="form-group col-12 pl-0">
+                    <label><b>{{ "Change Owner" | translate }}</b></label>
+                    <select class="form-control" [(ngModel)]="resowner">
+                      <option value={{item.id}} *ngFor="let item of ownerlist">
+                        {{item.name}}</option>
+                    </select>
+                  </div>
+                  <div *ngIf="isAdmin">
+                    <button class="btn btn-primary btn-sm" (click)="changeOwner()">{{ "Change Ownership" | translate }}</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row py-2 px-0 neo1 flex-column mb-3" style="margin-right: -7px;">
+                <div class="col-12">
+                  <div class="form-group col-12 pl-0">
+                    <label for="terminal_qty_max_limit">{{ "Terminal QTY Max. Limit" | translate }}*</label>
+                    <input type="text" class="form-control input-underline input-lg" id="terminal_qty_max_limit"
+                           [(ngModel)]="terminal_qty_max_limit" placeholder='{{ "Terminal QTY Max. Limit" | translate }}' maxlength="60" />
+                  </div>
+                  <button class="btn btn-primary" (click)="SubmitTerminalQtyMaxLimit()" style="white-space: normal"> {{ "Update Terminal QTY Max. Limit" | translate }} </button>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="col-2" style="min-width: 190px;">
+              <div class="row p-2 neo1" style="margin-right: -7px;">
+                <div class="col-12">
+                  <div class="row justify-content-between">
+                    <p>{{ "Kiosk, POS" | translate }}</p>
+                    <ui-switch [checked]="editAllow.pos" defaultBgColor="red" [disabled]="!isAdmin"
+                               (change)="changePosStatus($event)"></ui-switch>
+                  </div>
+                  <div class="row justify-content-between">
+                    <p>{{ "Menu Edit" | translate }}</p>
+                    <ui-switch [checked]="editAllow.menu" defaultBgColor="red" [disabled]="!isAdmin"
+                               (change)="changemenuStatus($event)"></ui-switch>
+                  </div>
+                  <div class="row justify-content-between">
+                    <p for=""> {{ "Reservation Edit" | translate }}</p>
+                    <ui-switch [checked]="editAllow.reservation" defaultBgColor="red" [disabled]="!isAdmin"
+                               (change)="changeReservationStatus($event)"></ui-switch>
+                  </div>
+                  <div class="row justify-content-between">
+                    <p>{{ "Order Edit" | translate }}</p>
+                    <ui-switch [checked]="editAllow.order" defaultBgColor="red" [disabled]="!isAdmin"
+                               (change)="changeOrderEditStatus($event)"></ui-switch>
+                  </div>
+                  <div class="row justify-content-between">
+                    <p>{{ "Discount Edit" | translate }}</p>
+                    <ui-switch [checked]="editAllow.Discount" defaultBgColor="red" [disabled]="!isAdmin"
+                               (change)="changediscountEditStatus($event)"></ui-switch>
+                  </div>
+                  <div class="row justify-content-between">
+                    <button class="btn btn-success btn-sm1 pull-right" (click)="changePermission()" style="margin: auto">{{ "Update Permissions" | translate }}</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-3" style="min-width: 270px;">
+              <div class="row py-2 px-0 neo1" style="margin-right: -7px;">
+                <div class="col-12">
+                  <div class="row px-2 mb-5">
+                    <div class="form-group w-100">
+                      <label for="stripe_acc">{{ "Stripe Account ID" | translate }}*</label>
+                      <input type="text" class="form-control input-underline input-lg" id="stripe_acc"
+                             [(ngModel)]="stripe_acc" placeholder='{{ "Stripe Account" | translate }}' maxlength="80" />
+                    </div>
+                    <button class="btn btn-primary" (click)="SubmitStripe()"> {{ "Update Stripe Account ID" | translate }} </button>
+                  </div>
+                  <div class="row px-2">
+                    <label for="stripe_fee_5">{{ "Stripe Fee" | translate }}</label>
+                    <div class="row">
+                      <div class="col-sm-3" style="display: flex;">
+                        <label for="stripe_fee_5">5%</label>
+                        <ui-switch id="stripe_fee_5" [checked]="isFive" defaultBgColor="red" [disabled]="!isAdmin"
+                                   (change)="changeStripeFee($event, 5)"></ui-switch>
+                      </div>
+                      <div class="col-1-type-half">&nbsp;</div>
+                      <div class="col-sm-3" style="display: flex;">
+                        <label for="stripe_fee_10">10%</label>
+                        <ui-switch id="stripe_fee_10" [checked]="isTen" defaultBgColor="red" [disabled]="!isAdmin"
+                                   (change)="changeStripeFee($event, 10)"></ui-switch>
+                      </div>
+                      <div class="col-1-type-half">&nbsp;</div>
+                      <div class="col-sm-3" style="display: flex;">
+                        <label for="stripe_fee_15">15%</label>
+                        <ui-switch id="stripe_fee_15" [checked]="isFifteen" defaultBgColor="red" [disabled]="!isAdmin"
+                                   (change)="changeStripeFee($event, 15)"></ui-switch>
+                      </div>
+                    </div>
+                    <button class="btn btn-primary" (click)="submitFee()" style="float: right;"> {{ "Save Stripe Fee" | translate }} </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-3a" style="margin-left: 15px; margin-right: 15px;">
+              <div class="row py-2 px-0 neo1">
+                <div class="col-12">
+                  <div class="form-group">
+                    <label for="ath_acc">{{ "ATH Public" | translate }}*</label>
+                    <input type="text" class="form-control input-underline input-lg" id="ath_acc"
+                           [(ngModel)]="ath_acc" placeholder='{{ "ATH Public" | translate }}' maxlength="60" />
+                  </div>
+                  <div class="form-group">
+                    <label for="ath_secret">{{ "ATH Secret" | translate }}*</label>
+                    <input type="text" class="form-control input-underline input-lg" id="ath_secret"
+                           [(ngModel)]="ath_secret" placeholder='{{ "ATH Secret" | translate }}' maxlength="60" />
+                  </div>
+                  <button class="btn btn-primary float-left" (click)="SubmitAth()" style="float: right;"> {{ "Update ATH Public/Secret" | translate }} </button>
+                </div>
+              </div>
+            </div>
+
+            <!--<div class="col-3">
+              <div class="row py-2 px-0 neo1">
+                <div class="col-12">
+                </div>
+              </div>
+            </div>-->
+
+          </div>
+
+        </div>
+    </div>
+    <div class="d-flex flex-row justify-content-end align-items-center" style="text-align: right;">
+        <div class="d-flex flex-row justify-content-start align-items-center gap-3">
+            <button (click)="handleBackClicked($event)" class="btn btn-secondary btn-padding-1" type="button">{{'Back' | translate}}</button>
+            <div><span>{{ "Store ID" | translate }}: </span>&nbsp;<span>{{restaurantId}}</span></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <h4>{{ "Restaurant Pic" | translate }}</h4>
+            <img class="restaurantpic" src="{{fileurl+restaurant?.restaurantpic}}" width="100%" />
+        </div>
+        <div class="col-sm-8">
+            <h4>{{ "Restaurant Details" | translate }}</h4>
+            <div class="row">
+                <div class="col-sm-6">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <th>{{ "Name" | translate }}</th>
+                                <td>{{restaurant?.restaurant_name}}<span class="unclaimed-link ml-1"
+                                        *ngIf="restaurant?.claimed == 0"><i
+                                            class="fa fa-question-circle text-secondary"></i></span><span
+                                        class="unclaimed-link ml-1" *ngIf="restaurant?.claimed == 1"><i
+                                            class="fa fa-check-circle text-success"></i></span></td>
+                            </tr>
+                            <tr>
+                                <th>{{ "Status" | translate }}</th>
+                                <td>{{(restaurant?.status ? 'Active' : 'Inactive') | translate }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ "Category Name" | translate }}</th>
+                                <td>{{restaurant?.category_name}}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ "Subcategories" | translate }}</th>
+                                <td>{{restaurant?.subcat_name}}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ "City" | translate }}</th>
+                                <td>{{restaurant?.city}}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ "Address" | translate }}</th>
+                                <td>{{restaurant?.address}}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ "Contact No" | translate }}.</th>
+                                <td>{{restaurant?.contact}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-sm-6">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <th>{{ "Description" | translate }}</th>
+                                <td>{{restaurant?.description}}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ "Description ES" | translate }}</th>
+                                <td>{{restaurant?.description_es}}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ "Average Cost (Per Person)" | translate }}</th>
+                                <td>{{restaurant?.avg_cost | currency}}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ "Rating" | translate }}</th>
+                                <td>{{restaurant?.rating?.toFixed(2)}}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ "Website Link" | translate }}</th>
+                                <td>{{restaurant?.website}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <h4> {{ "Location" | translate }} </h4>
+            <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
+                <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+            </agm-map>
+        </div>
+        <div class="col-sm-6">
+            <h4> {{ "Opening & Closing Time" | translate }} </h4>
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td>{{ "Day" | translate }}</td>
+                        <td>{{ "Opening Time" | translate }}</td>
+                        <td>{{ "Closing Time" | translate }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ "Monday" | translate }}</td>
+                        <td>{{res_time?.monopen_time | timeformateChange}}</td>
+                        <td>{{res_time?.monclose_time | timeformateChange}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ "Tuesday" | translate }}</td>
+                        <td>{{res_time?.tueopen_time | timeformateChange}}</td>
+                        <td>{{res_time?.tueclose_time | timeformateChange}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ "Wednesday" | translate }}</td>
+                        <td>{{res_time?.wedopen_time | timeformateChange}}</td>
+                        <td>{{res_time?.wedclose_time | timeformateChange}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ "Thursday" | translate }}</td>
+                        <td>{{res_time?.thuopen_time | timeformateChange}}</td>
+                        <td>{{res_time?.thuclose_time | timeformateChange}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ "Friday" | translate }}</td>
+                        <td>{{res_time?.friopen_time | timeformateChange}}</td>
+                        <td>{{res_time?.friclose_time | timeformateChange}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ "Saturday" | translate }}</td>
+                        <td>{{res_time?.satopen_time | timeformateChange}}</td>
+                        <td>{{res_time?.satclose_time | timeformateChange}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ "Sunday" | translate }}</td>
+                        <td>{{res_time?.sunopen_time | timeformateChange}}</td>
+                        <td>{{res_time?.sunclose_time | timeformateChange}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

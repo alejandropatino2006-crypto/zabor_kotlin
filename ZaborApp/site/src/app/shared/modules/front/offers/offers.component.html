@@ -1,0 +1,46 @@
+<div class="offer-tag">
+  <h2 class="sml-hd">{{'Offer Available' | translate}}</h2>
+  <div class="offer-list box-shadow" [style.background-color]="item.id == selectedOfferId ? 'white' : '#F9F9F9'"
+    *ngFor="let item of offers">
+    <div class="offer-Tag">
+      <img src="/assets/images/ic-tag.svg" alt="">
+    </div>
+    <div class="offer-dp">
+      <p><span *ngIf="item.user_type == 'all_users'">{{'All User Offer' | translate}}</span><span
+          *ngIf="item.user_type == 'first_time'">{{'New User Offer' | translate}}</span>: {{'Get Flat' | translate}}
+        {{item.percentage}}% {{'OFF' | translate}} <span *ngIf="item.moa && item.moa > 0"> {{'on Order of' | translate}}
+          ${{item.moa}} {{'& Above' | translate}} </span><span *ngIf="item.mpd && item.mpd > 0">(Max Discount:
+          ${{item.mpd}})</span></p>
+      <button class="btn btn-warning" (click)="selectedOffer(item)" *ngIf="showApply == 1"
+        [disabled]="item.id == selectedOfferId"><span
+          *ngIf="item.id == selectedOfferId">{{'Applied' | translate}}</span><span
+          *ngIf="item.id != selectedOfferId">{{'Apply' | translate}}</span> </button>
+      <a href="javascript:void(0)" class="text-danger" (click)="getTerms(item.dis_condition)"
+        *ngIf="item.dis_condition">
+        {{'Terms and Conditions' | translate}}</a>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade condition-pop" id="termsmodal" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="right: 0px;">
+          <img src="assets/images/close.svg" alt="">
+        </button>
+        <h4 class="modal-title">{{'Terms and Conditions' | translate}}</h4>
+      </div>
+      <div class="modal-body">
+        <div class="col-md-12" [innerHTML]="terms | safe: 'html'">
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>

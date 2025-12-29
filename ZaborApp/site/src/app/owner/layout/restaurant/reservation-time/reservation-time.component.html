@@ -1,0 +1,92 @@
+<div class="mb-3 d-flex flex-row justify-content-end align-items-center" style="text-align: right;">
+  <div class="d-flex flex-row justify-content-start align-items-center gap-3">
+    <button (click)="handleBackClicked($event)" class="btn btn-secondary btn-padding-1" type="button">{{'Back' | translate}}</button>
+    <div><span>{{ "Store ID" | translate }}: </span>&nbsp;<span>{{res_id}}</span></div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-6">
+    <div class='app-calendar'>
+      <full-calendar #calendar defaultView="dayGridMonth" [header]="{
+        left: 'prev,next today' | translate,
+          center: 'title' | translate,
+          right: 'dayGridMonth' | translate
+        }" [eventLimit]="true" [plugins]="calendarPlugins" (dateClick)="handleDateClick($event)"
+        [validRange]="validRange" [events]="calendarEvents">
+      </full-calendar>
+    </div>
+  </div>
+  <div class="col-sm-6" *ngIf="selectedDate != ''">
+    <div class="card">
+      <div class="card-header">
+        <h3>{{ "Timeslot" | translate }} </h3>
+      </div>
+      <div class="card-body">
+        <h3> {{selectedDate}} </h3>
+        <form role="form" [formGroup]="seatForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+          <div formArrayName="options">
+            <div class="row">
+              <div class="col-4">
+                <div class="form-group">
+                  <label>{{ "Time" | translate }} *</label>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group">
+                  <label>{{ "Available Seat" | translate }}*</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="row" *ngFor="let ele of  slotsList">
+              <div class="col-4">
+                <div class="form-group">
+                  <label>{{ele.slot_time}}</label>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group">
+                  <label>{{ele.seat}}</label>
+                </div>
+              </div>
+            </div>
+
+            <div *ngFor="let item of Options.controls; let i=index" [formGroupName]="i">
+
+              <div class="row">
+
+
+                <div class="col-4">
+
+                  <div class="form-group">
+
+                    <input type="text" atp-time-picker changeToMinutes="true" animation="rotate" class="form-control input-underline input-lg"
+                      formControlName="timeslot" placeholder="00:00" maxlength="80" readonly />
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="form-group">
+
+                    <input type="number" class="form-control input-underline input-lg" formControlName="seats"
+                      placeholder={{ "Available Seat" | translate }} maxlength="25" />
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="btn-div form-group">
+              <button type="button" (click)="addOptions()" class="btn btn-primary btn-sm">+ {{ "Add Slots" | translate }} </button>
+            </div>
+          </div>
+          <div class="btn-div">
+            <button class="btn btn-success " type="submit" [disabled]="!seatForm.valid">
+              {{ "Save" | translate }}
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

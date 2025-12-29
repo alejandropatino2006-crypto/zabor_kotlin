@@ -1,0 +1,102 @@
+<div class="row">
+  <div class="col col-xs-12">
+    <div class="card mb-3">
+      <div class="card-header">
+        <h4>Sales Amount Report</h4>
+      </div>
+      <div class="card-body table-responsive">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="date-range">Select date Range *</label>
+              <div class="input-group mb-3">
+                <input id="date-range" type="text" opens="right" placeholder="Select Date Range" ngxDaterangepickerMd
+                       [locale]="{applyLabel: 'ok', format: 'DD-MM-YYYY'}" class="form-control" [maxDate]="maxDate"
+                       [(ngModel)]="selectedDateRange" [showDropdowns]="true" (endDateChanged)="inputChanged($event)"
+                       [disabled]="disableDateRangeBox"
+                />
+                <div class="input-group-append">
+                  <span class="input-group-text" id="basic-addon1"><i class="fa fa-calendar"
+                                                                      aria-hidden="true"></i></span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="sales-year">Sales Year*</label>
+              <select id="sales-year" class="form-control" [disabled]="disableSalesYearCombo" (change)="onSalesYearChange()" [(ngModel)]="selectedYear">
+                <option value="">Select</option>
+                <option *ngFor="let year of reportYears; let i = index" value="{{year.value_text}}">{{year.display_text}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="sales-month">Sales Month*</label>
+              <select id="sales-month" class="form-control" [disabled]="disableSalesMonthCombo" (change)="onSalesMonthChange()" [(ngModel)]="selectedMonth">
+                <option value="">Select</option>
+                <option *ngFor="let monthY of reportMonths; let i = index" value="{{monthY.value_text}}">{{monthY.display_text}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="sales-date">Sales Date/Day*</label>
+              <select id="sales-date" class="form-control" [disabled]="disableSalesDateCombo" (change)="onSalesDateChange()" [(ngModel)]="selectedDate">
+                <option value="">Select</option>
+                <option *ngFor="let dateVal of reportDates; let i = index" value="{{dateVal.value_text}}">{{dateVal.display_text}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="sales-restaurant">Restaurant*</label>
+              <!--<select id="sales-restaurant" class="form-control" (change)="onSalesRestaurantChange()" [(ngModel)]="selectedRestaurantId">
+                <option value="0">Select All</option>
+                <option *ngFor="let restaurants of reportRestaurants; let i = index" value="{{restaurants.id}}">{{restaurants.name}}</option>
+              </select>-->
+              <ng-select class="form-control" [items]="reportRestaurants" bindLabel="name" bindValue="id" [(ngModel)]="selectedRestaurantId" (change)="onSalesRestaurantChange()">
+              </ng-select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-3">
+            <div class="form-group">
+              <button class="btn btn-primary mr-2" (click)="datatablesNetTable.rerender()">Filter</button>
+              <button class="btn btn-danger mr-2" (click)="resetFilters()">Reset</button>
+              <!--<button class="btn btn-info" (click)="report()">Report</button>-->
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="alert alert-primary text-center" style="cursor: pointer;" (click)="handleCriteria('last-week')" role="alert">
+              <span>Last week's report</span>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="alert alert-warning text-center" style="cursor: pointer;" (click)="handleCriteria('last-30-days')" role="alert">
+              <span>Last 30 days' report</span>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="alert alert-warning text-center" style="cursor: pointer;" (click)="handleCriteria('last-nn-days')" role="alert">
+              <span>Last nn days' report</span>
+            </div>
+            <input type="number" min="40" max="6000" style="max-width: 120px;" [(ngModel)]="lastNnDays" />
+          </div>
+        </div>
+        <div class="w-100">
+          <h3 class="w-100 text-center">{{tableTitle}}</h3>
+          <h4 class="w-100 text-center">Restaurant Name = {{restaurantName}}</h4>
+        </div>
+        <app-datatables-net-table [rowsCount]="rowsCount" [headingColumnsCount]="headingColumnsCount"></app-datatables-net-table>
+      </div>
+    </div>
+  </div>
+</div>

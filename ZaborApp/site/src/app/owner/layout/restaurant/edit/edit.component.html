@@ -1,0 +1,599 @@
+<div class="card">
+  <div class="card-header d-flex flex-row justify-content-between align-items-center">
+    <h4>{{ 'Edit Restaurant' | translate }}</h4>
+    <div class="d-flex flex-row justify-content-start align-items-center gap-1">
+      <button (click)="handleBackClicked($event)" class="btn btn-secondary btn-padding-1" type="button">{{'Back' | translate}}</button>
+      <button class="btn btn-primary btn-sm pull-right" (click)="openModel()">+ {{ 'Edit Opening time' | translate }}</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="login-page">
+      <div style="text-align: right;">
+        {{ 'Store ID' | translate }}: {{restaurantId}}
+      </div>
+      <div class="row justify-content-md-center">
+        <div class="col-md-12">
+          <form (keydown.enter)="$event.preventDefault()" role="form" [formGroup]="restaurantForm"
+            (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+            <input type="hidden" name="role">
+            <input type="hidden" name="id">
+            <div class="row form-content">
+
+              <div class="col-sm-6">
+                <img [src]="restaurantImage" *ngIf="restaurantImage != ''" class="profileImage" alt="profilepic"
+                  width="150px">
+              </div>
+
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="name">{{ 'Full Name' | translate }}*</label>
+                  <input type="text" class="form-control input-underline input-lg" id="name" formControlName="name"
+                    placeholder='{{ "Full Name" | translate }}' maxlength="60" />
+                  <span class="text-danger" *ngIf="
+                                !restaurantForm.controls['name'].valid &&
+                                restaurantForm.controls['name'].touched &&
+                                restaurantForm.controls['name'].hasError('required')
+                            ">{{ 'Full Name' | translate }}&nbsp;{{ 'is required' | translate }}</span>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="email">{{ 'Email' | translate }}*</label>
+                  <input type="email" class="form-control input-underline input-lg" id="email" formControlName="email"
+                    placeholder='{{ "Email" | translate }}' maxlength="60" />
+                  <span class="text-danger" *ngIf="
+                                !restaurantForm.controls['email'].valid &&
+                                restaurantForm.controls['email'].touched &&
+                                restaurantForm.controls['email'].hasError('required')
+                            ">{{ 'Email' | translate }}&nbsp;{{ 'is required' | translate }}</span>
+                </div>
+              </div>
+              <div class="col-sm-6">&nbsp;</div>
+
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="currency_code">{{ 'Currency' | translate }}*</label>
+                  <select class="custom-select" id="currency_code" formControlName="currency_code" (change)="currencyChanged($event)">
+                    <ng-container *ngFor="let cinfo of symbolsInformation">
+                      <option value="{{ cinfo.code }}">{{ cinfo.symbol }} - {{ cinfo.code }}</option>
+                    </ng-container>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="langauge_code">{{ 'Language' | translate }}*</label>
+                  <select class="custom-select" id="langauge_code" (change)="languageChanged($event)" formControlName="default_display_language_code">
+                    <ng-container *ngFor="let linfo of languageInformation">
+                      <option value="{{ linfo.code }}">{{ linfo.symbol }} - {{ linfo.code }}</option>
+                    </ng-container>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="status">{{ 'Status' | translate }}*</label>
+                  <select class="custom-select" id="status" formControlName="status">
+                    <option value="1">Active</option>
+                    <option value="0">Inactive</option>
+                  </select>
+
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="cod">{{ 'Allow Cash On delivery' | translate }}*</label>
+                  <select class="custom-select" id="cod" formControlName="cod">
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                  </select>
+
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="description">{{ 'Description' | translate }}*</label>
+                  <textarea class="form-control input-underline input-lg" id="description" formControlName="description"
+                    placeholder='{{ "Description" | translate }}' maxlength="200"></textarea>
+                  <span class="text-danger" *ngIf="
+                                !restaurantForm.controls['description'].valid &&
+                                restaurantForm.controls['description'].touched &&
+                                restaurantForm.controls['description'].hasError(
+                                    'required'
+                                )
+                            ">{{ 'Description' | translate }}&nbsp;{{ 'is required' | translate }}</span>
+                  <span class="text-danger" *ngIf="
+                                !restaurantForm.controls['description'].hasError(
+                                    'required'
+                                ) &&
+                                !restaurantForm.controls['description'].valid &&
+                                restaurantForm.controls['description'].touched &&
+                                restaurantForm.controls['description'].hasError('description')
+                            ">{{ 'Description' | translate }}&nbsp;{{ 'is invalid' | translate }}</span>
+                </div>
+              </div>
+
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="descriptiones">{{ 'Description ES' | translate }}*</label>
+                  <textarea class="form-control input-underline input-lg" id="descriptiones"
+                    formControlName="descriptiones" placeholder='{{ "Description ES" | translate }}' maxlength="200"></textarea>
+                  <span class="text-danger" *ngIf="
+                                !restaurantForm.controls['descriptiones'].valid &&
+                                restaurantForm.controls['descriptiones'].touched &&
+                                restaurantForm.controls['descriptiones'].hasError(
+                                    'required'
+                                )
+                            ">{{ 'Description ES' | translate }}&nbsp;{{ 'is required' | translate }}</span>
+                  <span class="text-danger" *ngIf="
+                                !restaurantForm.controls['descriptiones'].hasError(
+                                    'required'
+                                ) &&
+                                !restaurantForm.controls['descriptiones'].valid &&
+                                restaurantForm.controls['descriptiones'].touched &&
+                                restaurantForm.controls['descriptiones'].hasError('descriptiones')
+                            ">{{ 'Description ES' | translate }}&nbsp;{{ 'is invalid' | translate }}</span>
+                </div>
+              </div>
+
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="address">{{ 'Address' | translate }}*</label>
+                  <textarea class="form-control input-underline input-lg" id="address" formControlName="address"
+                    placeholder='{{ "Address" | translate }}' maxlength="200"></textarea>
+
+                  <span class="text-danger" *ngIf="
+                                !restaurantForm.controls['address'].valid &&
+                                restaurantForm.controls['address']
+                                    .touched &&
+                                restaurantForm.controls['address'].hasError(
+                                    'required'
+                                )
+                            ">{{ 'Address' | translate }}&nbsp;{{ 'is required' | translate }}</span>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <label for="category">{{ 'Category' | translate }}*</label>
+                <select class="custom-select" id="category" formControlName="category" (change)="getSubcat()">
+                  <ng-container *ngFor="let cat of Categories">
+                    <option value="{{ cat.id }}">{{ cat.name}}</option>
+                  </ng-container>
+                </select>
+              </div>
+              <div class="col-sm-3">
+                <label for="subcategory">{{ 'SubCategory' | translate }}*</label>
+                <angular2-multiselect [data]="subcategories" [(ngModel)]="selectedSubcats" [settings]="dropdownSettings"
+                  id="subcategory" formControlName="subcategory">
+                </angular2-multiselect>
+              </div>
+
+              <div class="col-sm-3">
+
+                <div class="form-group">
+                  <label>{{ 'Cancel Charge' | translate }} (%)</label>
+                  <input type="number" class="form-control" formControlName="cancel_charge" id="cancel_charge"
+                    placeholder='{{ "Cancel Charge" | translate }}'>
+                </div>
+
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="min_order_value">{{ 'Min. order value' | translate }}</label>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="minov-addon" [title]="currentCurrencySymbol">{{currentCurrencySymbol}}</span>
+                    </div>
+                    <input type="number" class="form-control" formControlName="min_order_value" id="min_order_value" min="1" max="1000000"
+                      placeholder='{{ "Min. order value" | translate }}'>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="max_order_value">{{ 'Max. order value' | translate }}</label>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="maxov-addon" [title]="currentCurrencySymbol">{{currentCurrencySymbol}}</span>
+                    </div>
+                    <input type="number" class="form-control" formControlName="max_order_value" id="max_order_value" min="1" max="3000000"
+                      placeholder='{{ "Max. order value" | translate }}'>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-3">
+                <!--<label for="fee_type">{{ 'Convenience Fee' | translate }}</label>-->
+                <label for="fee_type">{{ 'Cash discount' | translate }}</label>
+                <select id="fee_type" formControlName="convenience_fee_type" class="form-control">
+                  <option value="0">None</option>
+                  <option value="1">Fixed Amount</option>
+                  <option value="2">Percentage</option>
+                </select>
+              </div>
+
+              <div class="col-sm-3" [style.display]="restaurantForm.get('convenience_fee_type').value=='0' ? 'none' : ''">
+                <label for="fee">{{ 'Fee' | translate }}</label>
+                <input type="number" class="form-control" formControlName="convenience_fee" id="fee"
+                      placeholder='{{ "Fee" | translate }}'>
+              </div>
+
+                <div class="col-md-2">
+                  <div class="form-group">
+                    <label>{{ 'Food Tax' | translate }}*</label>
+                    <input type="number" class="form-control input-underline input-lg" formControlName="food_tax"
+                      placeholder='{{ "Food Tax" | translate }}' maxlength="5" />
+                  </div>
+                </div>
+
+                <div class="col-md-2">
+                  <div class="form-group">
+                    <label>{{ 'State Tax' | translate }}*</label>
+                    <input type="number" class="form-control input-underline input-lg" formControlName="drink_tax"
+                      placeholder='{{ "State Tax" | translate }}' maxlength="5" />
+                  </div>
+                </div>
+
+                <div class="col-md-2">
+                  <div class="form-group">
+                    <label>{{ 'City Tax' | translate }}*</label>
+                    <input type="number" class="form-control input-underline input-lg" formControlName="grand_tax"
+                      placeholder='{{ "City Tax" | translate }}' maxlength="5" />
+                  </div>
+                </div>
+
+                <!--<div [ngClass]="{'col-sm-2': currentLanguageCode === 'en', 'col-sm-3' : currentLanguageCode === 'es'}">-->
+                <div class="col-sm-3">
+                  <div class="form-group">
+                    <label>{{ 'Delivery Distance' | translate }} (Km)</label>
+                    <input type="number" class="form-control input-underline input-lg"
+                      formControlName="base_delivery_distance" placeholder='{{ "Delivery Distance" | translate }}' />
+                  </div>
+                </div>
+
+                <div class="col-sm-2">
+                  <div class="form-group">
+                    <label>{{ 'Delivery charge' | translate }}</label>
+                    <input type="number" class="form-control input-underline input-lg" formControlName="delivery_charge"
+                      placeholder='{{ "Delivery charge" | translate }}' />
+                  </div>
+                </div>
+
+
+                <!-- <div class="col-sm-2">
+                  <div class="form-group">
+                    <label>{{ 'Extra Charge' | translate }}</label>
+                    <input type="number" class="form-control input-underline input-lg"
+                      formControlName="extra_delivery_charge" placeholder="{{ 'Extra Charge'  }}" />
+                  </div>
+                </div> -->
+
+                <div class="col-sm-2">
+                  <div class="form-group">
+                    <label>{{ 'Driver Fee' | translate }}</label>
+                    <input type="number" class="form-control input-underline input-lg" formControlName="driver_fee"
+                      placeholder='{{ "Driver Fee" | translate }}' />
+                  </div>
+                </div>
+
+
+
+
+              <div class="col-sm-12">
+                <div class="row">
+                  <div class="col-sm-3">
+                    <label for="city">{{ 'City' | translate }}*</label>
+                    <select id="city" formControlName="city" class="form-control">
+                      <option value="">Please select</option>
+                      <option value="{{item}}" *ngFor="let item of cityList">{{item}}</option>
+                    </select>
+                    <ng-container *ngIf="!restaurantForm.controls['city'].valid &&
+                      restaurantForm.controls['city'].touched">
+                      <span class="text-danger" *ngIf="restaurantForm.controls['city'].hasError(
+                                                  'required'
+                                              ) else elsecity
+                                          ">{{ 'City' | translate }}&nbsp;{{ 'is required' | translate }}</span>
+                      <ng-template #elsecity>
+                        <span class="text-danger" *ngIf="restaurantForm.controls['city'].hasError(
+                                                  'whitespace'
+                                              )
+                                          ">{{ 'Only whitespace is not allowed.' | translate }}</span></ng-template>
+                    </ng-container>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="form-group">
+                      <label for="contact">{{ 'Contact No.' | translate }}*</label>
+                      <input type="text" class="form-control" formControlName="contact" id="contact">
+                      <ng-container *ngIf="!restaurantForm.controls['contact'].valid &&
+                      restaurantForm.controls['contact'].touched">
+                        <span class="text-danger" *ngIf="restaurantForm.controls['contact'].hasError(
+                                                  'required'
+                                              ) else elsecontact
+                                          ">{{ 'Contact No.' | translate }}&nbsp;{{ 'is required' | translate }}</span>
+                        <ng-template #elsecontact>
+                          <span class="text-danger">{{ 'Contact No.' | translate }}&nbsp;{{ 'is invalid' | translate }}</span></ng-template>
+                      </ng-container>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <label for="website">{{ 'Website Link' | translate }}</label>
+                      <input type="text" class="form-control" formControlName="website" id="website"
+                        placeholder='{{ "Website Link" | translate }}'>
+                      <ng-container *ngIf="!restaurantForm.controls['website'].valid &&
+                      restaurantForm.controls['website'].touched">
+                        <span class="text-danger" *ngIf="restaurantForm.controls['website'].hasError(
+                                                  'pattern'
+                                              )
+                                          ">{{ 'Website Link' | translate }}&nbsp;{{ 'is invalid' | translate }}</span>
+
+                      </ng-container>
+                    </div>
+                  </div>
+                  <div class="col-sm-2">
+
+                    <div class="form-group">
+                      <label for="avaragecost">{{ 'Average Cost' | translate }}*</label>
+                      <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text" id="avaragecost-addon" [title]="currentCurrencySymbol">{{currentCurrencySymbol}}</span>
+                        </div>
+                        <input type="text" class="form-control" formControlName="avaragecost" id="avaragecost"
+                          placeholder='{{ "Average Cost" | translate }}'>
+                      </div>
+
+                      <ng-container *ngIf="!restaurantForm.controls['avaragecost'].valid &&
+                            restaurantForm.controls['avaragecost'].touched">
+                        <span class="text-danger" *ngIf="restaurantForm.controls['avaragecost'].hasError(
+                                                        'required'
+                                                    )
+                                                else elseavgcost">{{ 'Average cost' | translate }}&nbsp;{{ 'is required' | translate }}</span>
+                        <ng-template #elseavgcost>
+                          <span class="text-danger">{{ 'Average cost' | translate }}&nbsp;{{ 'is invalid' | translate }}</span></ng-template>
+
+                      </ng-container>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-6">
+                <label>{{ 'Choose your address on Map' | translate }}*</label>
+                <input placeholder="{{ 'search for location' | translate }}" autocorrect="off" autocapitalize="off" spellcheck="off"
+                       type="text" class="form-control auto-location" #search [formControl]="searchControl">
+                <agm-map [latitude]="lat" [longitude]="lng" (mapClick)="chooseLocation($event)" [zoom]="zoom">
+                  <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+                </agm-map>
+              </div>
+              <div class="col-sm-6">
+                <div class="row">
+                  <label>{{ 'Choose Restaurant Pic' | translate }}</label>
+                  <div class="custom-file">
+                    <input type="file" name="restaurantPic" class="custom-file-input" id="restaurantPic"
+                      (change)="fileChangeEvent($event,'restaurantPic')" accept="image/*">
+                    <label class="custom-file-label" for="restaurantPic">{{ 'Choose file' | translate }}</label>
+                  </div>
+                  <div *ngIf="showImagecropper" class="col-sm-12">
+                    <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
+                      [aspectRatio]="4 / 3" [resizeToWidth]="600" format="png" (imageCropped)="imageCropped($event)">
+                      <!--(imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()">-->
+                    </image-cropper>
+
+                    <img [src]="croppedImage" width="100" />
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="row my-2 mx-0">
+<!--
+              <div class="col-xs-6 col-sm-3 d-flex flex-row justify-content-end align-items-center">
+              </div>
+-->
+              <div class="col-xs-8 col-sm-6 d-flex flex-column justify-content-start align-items-start gap-1">
+                <div *ngFor="let info of cardImages; let i=index" [ngClass]="{'new-payment-card-image': info.isNew}" class="row1 w-100 d-flex flex-row justify-content-start align-items-center gap-1" style="margin-left: -15px; margin-right: -15px; height: 100px;">
+                  <!--<label *ngIf="info.isCard" style="width: 22%;">{{ 'Choose ' + info.type + ' Card image' | translate }}</label>
+                  <label *ngIf="!info.isCard" style="width: 22%;">{{ 'Choose ' + info.type + ' image' | translate }}</label>-->
+                  <label *ngIf="info.isCard" style="width: 22%;">{{ 'Choose XXX Card image' | translate:{'XXX':info.type} }}</label>
+                  <label *ngIf="!info.isCard" style="width: 22%;">{{ 'Choose XXX image' | translate:{'XXX':info.type} }}</label>
+                  <div class="custom-file" style="width: 61%;">
+                    <input *ngIf="info.imageSrc == null" type="file" [name]="'visaPic'+(i+1)" class="custom-file-input" [id]="'visaPic'+(i+1)" style="width: 280px;"
+                           (change)="cardFileChangeEvent($event, info.type)" accept="image/*">
+                    <input *ngIf="info.imageSrc != null" type="file" [name]="'visaPic'+(i+1)" class="custom-file-input" [id]="'visaPic'+(i+1)" style="width: 280px;"
+                           (change)="cardFileChangeEvent($event, info.type)" accept="image/*">
+                    <label [title]="info.imageFilename" class="custom-file-label" [attr.for]="'visaPic'+(i+1)" style="width: 100%; overflow-x: hidden; white-space: nowrap;">{{ info.imageFilename }}</label>
+                  </div>
+                  <div class="bg-danger mt-1" style="width: 15%; height: max-content;">
+                    <img [src]="info.imageSrc" *ngIf="info.imageSrc != null" alt="visapic" class="image-pmt-cards" style="width: 100%; border-left: 1px solid #0C4E8A;">
+                  </div>
+                </div>
+
+                <div *ngIf="cardImagesOptions.length > 0" class="row1 w-100 d-flex flex-row justify-content-start align-items-center gap-1" style="margin: 0 -15px; height: 100px;">
+                  <div class="row w-100 align-items-center m-0">
+                    <div class="col-sm-4 p-0">
+                      <label for="card_images">{{ 'Add card image for' | translate }}</label>
+                    </div>
+                    <div class="col-sm-6 p-0">
+                      <select #card_image_select class="custom-select" id="card_images" (change)="cardForImageSelected($event)">
+                        <option selected="selected" value="NONE">{{'Select payment card' | translate}}</option>
+                        <ng-container *ngFor="let info of cardImagesOptions">
+                          <option value="{{ info }}">{{ info }}</option>
+                        </ng-container>
+                      </select>
+                    </div>
+                    <div class="col-sm-2 p-0 d-flex flex-row justify-content-center align-items-center gap-1 mt-1">
+                      <button (click)="addCardImage($event)" class="btn btn-iceblue h3" style="font-size: 1.45rem; padding: 0.05rem 0.75rem;" type="submit" data-balloon-length="medium" data-balloon-pos="up">+</button>
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="row d-flex flex-row justify-content-start align-items-center gap-1 mt-3">
+                  <button #saveBtn [disabled]="!restaurantForm.valid" class="btn btn-success" type="submit" data-balloon-length="medium" data-balloon-pos="up">
+                    {{ "Update" | translate }}</button>
+                  <button (click)="handleBackClicked($event)" class="btn btn-secondary btn-padding-2" type="button">{{'Back' | translate}}</button>
+                </div>
+              </div>
+              <div class="d-xs-none col-sm-3"></div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="openTimeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+
+      <div class="modal-body">
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+
+
+
+
+        <!-- 16:9 aspect ratio -->
+        <form class="" id="openTimeForm" [formGroup]="openTimeForm" (ngSubmit)="submitTimeform()">
+          <div class="row">
+            <div class="col-sm-12">
+              <h6>{{ "Fill Opening and closing time (Left Unfilled if Restaurant closed that day)" | translate }}</h6>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-2">
+              {{ "Monday" | translate }}
+            </div>
+            <div class="col-3">
+              <input atp-time-picker changeToMinutes="true" animation="rotate" formControlName="monopen_time" class="form-control" readonly />
+            </div>
+            <div class="col-3">
+              <input atp-time-picker changeToMinutes="true" animation="rotate" formControlName="monclose_time" class="form-control" readonly />
+            </div>
+            <div class="col-3">
+              <span class="btn btn-primary badge" (click)="copyTiming()">{{ "Same all day" | translate }}</span><br><span
+                class="btn btn-danger badge" (click)="clearTimining('mon')">{{ "clear/closed" | translate }}</span>
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="col-2">
+              {{ "Tuesday" | translate }}
+            </div>
+            <div class="col-3">
+              <input atp-time-picker changeToMinutes="true" animation="rotate" formControlName="tueopen_time" class="form-control" readonly />
+            </div>
+            <div class="col-3">
+              <input atp-time-picker changeToMinutes="true" animation="rotate" formControlName="tueclose_time" class="form-control" readonly />
+            </div>
+            <div class="col-3">
+              <span class="btn btn-danger badge" (click)="clearTimining('tue')">{{ "clear/closed" | translate }}</span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-2">
+              {{ "Wednesday" | translate }}
+            </div>
+            <div class="col-3">
+              <input atp-time-picker changeToMinutes="true" animation="rotate" formControlName="wedopen_time" class="form-control" readonly />
+            </div>
+            <div class="col-3">
+              <input atp-time-picker changeToMinutes="true" animation="rotate" formControlName="wedclose_time" class="form-control" readonly />
+            </div>
+            <div class="col-3">
+              <span class="btn btn-danger badge" (click)="clearTimining('wed')">{{ "clear/closed" | translate }}</span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-2">
+              {{ "Thursday" | translate }}
+            </div>
+            <div class="col-3">
+              <input atp-time-picker changeToMinutes="true" animation="rotate" formControlName="thuopen_time" class="form-control" readonly />
+            </div>
+            <div class="col-3">
+              <input atp-time-picker changeToMinutes="true" animation="rotate" formControlName="thuclose_time" class="form-control" readonly />
+            </div>
+            <div class="col-3">
+              <span class="btn btn-danger badge" (click)="clearTimining('thu')">{{ "clear/closed" | translate }}</span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-2">
+              {{ "Friday" | translate }}
+            </div>
+            <div class="col-3">
+              <input atp-time-picker changeToMinutes="true" animation="rotate" formControlName="friopen_time" class="form-control" readonly />
+            </div>
+            <div class="col-3">
+              <input atp-time-picker changeToMinutes="true" animation="rotate" formControlName="friclose_time" class="form-control" readonly />
+            </div>
+            <div class="col-3">
+              <span class="btn btn-danger badge" (click)="clearTimining('fri')">{{ "clear/closed" | translate }}</span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-2">
+              {{ "Saturday" | translate }}
+            </div>
+            <div class="col-3">
+              <input atp-time-picker changeToMinutes="true" animation="rotate" formControlName="satopen_time" class="form-control" readonly />
+            </div>
+            <div class="col-3">
+              <input atp-time-picker changeToMinutes="true" animation="rotate" formControlName="satclose_time" class="form-control" readonly />
+            </div>
+            <div class="col-3">
+              <span class="btn btn-danger badge" (click)="clearTimining('sat')">{{ "clear/closed" | translate }}</span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-2">
+              {{ "Sunday" | translate }}
+            </div>
+            <div class="col-3">
+              <input atp-time-picker changeToMinutes="true" animation="rotate" formControlName="sunopen_time" class="form-control" readonly />
+            </div>
+            <div class="col-3">
+              <input atp-time-picker changeToMinutes="true" animation="rotate" formControlName="sunclose_time" class="form-control" readonly />
+            </div>
+            <div class="col-3">
+              <span class="btn btn-danger badge" (click)="clearTimining('sun')">{{ "clear/closed" | translate }}</span>
+            </div>
+          </div>
+
+          <div class="col-sm-12">
+            <button [disabled]="!openTimeForm.valid " type="submit" class="btn btn-success">{{ "Ok" | translate }}</button>
+          </div>
+        </form>
+
+
+
+
+
+
+
+
+      </div>
+
+    </div>
+  </div>
+</div>

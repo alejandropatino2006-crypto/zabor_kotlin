@@ -1,0 +1,23 @@
+<div class="lang-radio-container">
+  <label for="langRadioEN" class="langLabel">Select Language:</label>
+  <input
+    type="radio"
+    id="langRadioEN"
+    name="langRadio"
+    value="en"
+    class="classRadio"
+    (change)="changeLang($event.target)"
+    [checked]="selectedLang === 'en'"
+  />
+  <label for="langRadioEN" class="LangOptionLabel">EN - English</label><br />
+  <input
+    type="radio"
+    id="langRadioES"
+    name="langRadio"
+    value="es"
+    class="classRadio"
+    (change)="changeLang($event.target)"
+    [checked]="selectedLang === 'es'"
+  />
+  <label for="langRadioES" class="LangOptionLabel">ES - Spanish</label>
+</div>

@@ -1,0 +1,95 @@
+<nav class="sidebar" [ngClass]="{sidebarPushRight: isActive, collapsed: collapsed}">
+    <div class="list-group">
+        <a routerLink="/owner/dashboard" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-fw fa-dashboard"></i>
+            <span>{{ "Dashboard" | translate }}</span>
+        </a>
+        <a routerLink="/owner/restaurants/list" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-cutlery" aria-hidden="true"></i>
+            <span>{{ "Restaurants" | translate }}</span>
+        </a>
+        <a routerLink="/owner/promotionals/advert" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-gift" aria-hidden="true"></i>
+            <span>{{ "Promotional Advert" | translate }}</span>
+        </a>
+        <a routerLink="/owner/promotionals/video" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-gift" aria-hidden="true"></i>
+            <span>{{ "Promotional Video" | translate }}</span>
+        </a>
+        <a routerLink="/owner/orders" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+            <span>{{ "Orders" | translate }}</span>
+        </a>
+        <a routerLink="/owner/reservation" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-ticket" aria-hidden="true"></i>
+            <span>{{ "Reservations" | translate }}</span>
+        </a>
+        <!-- <a routerLink="/owner/editors" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-user" aria-hidden="true"></i>
+            <span>{{ "Employee" | translate }}</span>
+        </a> -->
+        <a routerLink="/owner/reports" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-table" aria-hidden="true"></i>
+            <span>{{ "Reports" | translate }}</span>
+        </a>
+        <a (click)="messagemodel()" class="list-group-item">
+            <i class="fa fa-envelope" aria-hidden="true"></i>
+            <span>{{ "Send Message" | translate }} </span>
+        </a>
+        <a class="list-group-item" href="javascript:void(0);" (click)="onLoggedout()">
+            <i class="fa fa-fw fa-power-off"></i>
+            <span>{{ "Log Out" | translate }}</span>
+        </a>
+
+
+    </div>
+    <div class="toggle-button" [ngClass]="{collapsed: collapsed}" (click)="toggleCollapsed()">
+        <i class="fa fa-fw fa-angle-double-{{collapsed?'right':'left'}}"></i>&nbsp;
+        <span>{{ "Collapse Sidebar" | translate }}</span>
+    </div>
+</nav>
+
+
+<div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+
+            <div class="modal-body">
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="messagemodel">
+                    <form role="form" [formGroup]="sendmessageform" (ngSubmit)="submitmsg()">
+                        <div class="row">
+                            <div class="form-group col-sm-12">
+                                <label>{{ "Message" | translate }}</label>
+                                <textarea class="form-control" formControlName="msg" rows=5>
+                                 </textarea>
+                            </div>
+                            <div class="col-sm-12 form-group">
+
+                                <label class="radio-inline">
+                                    <input type="radio" formControlName="role" value="admin" checked> {{ "Admin" | translate }}
+                                </label>
+                                &nbsp;
+                                <label class="radio-inline">
+                                    <input type="radio" formControlName="role" value="user"> {{ "App User" | translate }}
+                                </label>
+
+                            </div>
+                            <div class="col-sm-12 form-group">
+                                <button [disabled]="!sendmessageform.valid" class="btn btn-success mt-2"
+                                    type="submit">{{ "Send" | translate }}</button>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

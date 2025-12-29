@@ -1,0 +1,112 @@
+<main>
+    <section class="inner-banner search-banner">
+    </section>
+
+    <div class="sec sec-menu-wrap">
+        <div class="container">
+            <h2>{{'Zabor Driver Registration Form' | translate}}</h2>
+            <form [formGroup]="driverForm" (ngSubmit)="submit()">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>{{'First Name'|translate}}*</label>
+                            <input type="text" class="form-control" placeholder="{{'First Name'|translate}}"
+                                formControlName="firstname">
+                            <span class="text-danger" *ngIf="
+                                !driverForm.controls['firstname'].valid &&
+                                driverForm.controls['firstname']
+                                    .touched 
+                            ">{{'First Name is Invalid'|translate}}</span>
+                        </div>
+                        <div class="form-group">
+                            <label>{{'Last Name'|translate}}*</label>
+                            <input type="text" class="form-control" placeholder="{{'Last Name'|translate}}"
+                                formControlName="lastname">
+                            <span class="text-danger" *ngIf="
+                                !driverForm.controls['lastname'].valid &&
+                                driverForm.controls['lastname']
+                                    .touched 
+                            ">{{'Last Name is invalid'|translate}}</span>
+                        </div>
+                        <div class="form-group">
+                            <label>{{'Email'|translate}}*</label>
+                            <input type="email" class="form-control" placeholder="{{'Email'|translate}}"
+                                formControlName="email">
+                            <span class="text-danger" *ngIf="
+                                !driverForm.controls['email'].valid &&
+                                driverForm.controls['email']
+                                    .touched 
+                            ">{{'Email is invalid'|translate}}</span>
+                        </div>
+                        <div class="form-group">
+                            <label>{{'Phone'|translate}}*</label>
+                            <input type="text" class="form-control" placeholder="{{'Phone'|translate}}"
+                                formControlName="phone">
+                            <span class="text-danger" *ngIf="
+                                !driverForm.controls['phone'].valid &&
+                                driverForm.controls['phone']
+                                    .touched 
+                            ">{{'Phone is invalid'|translate}}</span>
+                        </div>
+                        <div class="form-group">
+                            <label>{{'Job Availability'|translate}}*</label>
+                            <select formControlName="job_avail" class="form-control">
+                                <option value="part">{{'Part-Time'|translate}} (15-30 hours)</option>
+                                <option value="full">{{'Full-Time'|translate}} (30-40 hours)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>{{'Date that can start'|translate}}*</label>
+                            <div class="input-group">
+
+                                <input type="text" class='form-control' formControlName='date_can_start'
+                                    ngxDaterangepickerMd [showDropdowns]="true" [singleDatePicker]="true"
+                                    [autoApply]="true" readonly />
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="fa fa-calendar"
+                                            aria-hidden="true"></i></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>{{'Vehicle Type'|translate}}*</label>
+                            <select formControlName="vahical_type" class="form-control">
+                                <option value="bicycle">{{'Bicycle'|translate}}</option>
+                                <option value="scooter">{{'Motorboat or Scooter'|translate}}</option>
+                                <option value="car">{{'Car'|translate}}</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>{{'Driver License'|translate}}</label>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" accept="image/*"
+                                    (change)="fileChangeEvent($event,'driverlic')">
+                                <label class="custom-file-label" for="customFile">{{'Driver License'|translate}}</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>{{'Criminal Record Certificate'|translate}}</label>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" accept="image/*"
+                                    (change)="fileChangeEvent($event,'criminalRec')">
+                                <label class="custom-file-label"
+                                    for="customFile">{{'Criminal Record Certificate'|translate}}</label>
+                            </div>
+                        </div>
+
+
+                        <div class="user-top-info">
+                            <button type="submit" class="btn btn-lg btn-global btn-filled"
+                                [disabled]="!driverForm.valid">{{'Submit'|translate}}</button>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</main>

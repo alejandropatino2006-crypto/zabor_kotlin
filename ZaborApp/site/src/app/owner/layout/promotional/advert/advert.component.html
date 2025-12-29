@@ -1,0 +1,135 @@
+<div class="row">
+
+  <div class="col-sm-4">
+    <div class="card">
+      <div class="card-header">
+        <h5>{{ "Promotion Adverts" | translate }}</h5>
+        <button class="btn btn-primary btn-sm pull-right" *ngIf="showAddform" (click)="addAd()">{{ButtonTitle}}
+        </button>
+      </div>
+      <div class="card-body">
+        <form class="" id="" [formGroup]="advertForm" (ngSubmit)="submitAdvert()">
+          <div class="col-sm-12">
+            <img class="advert-img" *ngIf='promoAdImage!=""' src={{promoAdImage}} width="150">
+          </div>
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label>{{ "Select Restaurant" | translate }} *</label>
+              <select class="custom-select" formControlName="restaurant">
+                <option value="">{{ "Please select" | translate }}</option>
+                <ng-container *ngFor="let restaurant of restaurantList">
+                  <option value="{{ restaurant.id }}"> {{ restaurant.name}} </option>
+                </ng-container>
+              </select>
+            </div>
+          </div>
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label>{{ "Select date Range" | translate }} *</label>
+              <div class="input-group mb-3">
+                <input type="text" opens="right" placeholder='{{ "Select date Range" | translate }}' ngxDaterangepickerMd
+                  [locale]="{applyLabel: 'ok', format: 'DD-MM-YYYY'}" class="form-control" formControlName="dateRange"
+                  [minDate]="minDate" />
+                <div class="input-group-append">
+                  <span class="input-group-text" id="basic-addon1"><i class="fa fa-calendar"
+                      aria-hidden="true"></i></span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label> {{ "Advert Pic Upload ( Format: .jpg,.png,.jpeg , max-size : 20MB)" | translate }}*</label>
+              <!-- <label>{{ "Choose Advert Pic" | translate }} *</label> -->
+              <app-custom-file-button (fileChangeEvent)="fileChangeEvent($event)" browseText="{{ 'Choose Advert Pic' | translate }}" acceptFiles="image/*"></app-custom-file-button>
+              <!-- <div class="custom-file">
+                <input type="file" name="restaurantPic" class="custom-file-input" id="restaurantPic"
+                  (change)="fileChangeEvent($event,'advertpic')" accept="image/*">
+                <label class="custom-file-label" for="customFile">{{ chooseFileText }}</label>
+              </div> -->
+              <div *ngIf="showImagecropper" class="col-sm-12">
+                <image-cropper [imageChangedEvent]="imageChangedEvent" (imageCropped)="imageCropped($event)"
+                  [maintainAspectRatio]="true" [cropperMinHeight]="100" [aspectRatio]="3" format="png">
+                </image-cropper>
+
+                <img [src]="croppedImage" width="100" />
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-12">
+            <button [disabled]="!advertForm.valid" type="submit" class="btn btn-success">{{ "new save" | translate }}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+
+  </div>
+  <div class="col-sm-8">
+    <div class="card">
+      <div class="card-header">{{ "Adverts" | translate }}</div>
+      <div class="card-body table-responsive">
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="w-100 table-hover table-bordered">
+          <thead>
+            <tr>
+              <th>&nbsp;#</th>
+              <th>&nbsp;{{ "Image" | translate }}</th>
+              <th>&nbsp;{{ "Restaurant Name" | translate }}</th>
+              <th>&nbsp;{{ "Start Date" | translate }}</th>
+              <th>&nbsp;{{ "End Date" | translate }}</th>
+              <th>&nbsp;{{ "Status" | translate }}</th>
+              <th>&nbsp;{{ "Action" | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let advert of Adverts; index as i;">
+              <th scope="row">{{ i+1 }}</th>
+              <td><img src="{{ fileUrl }}/{{ advert.pic}}" width="100" (click)="openModel( pic_url+advert.pic)"></td>
+              <td>{{ advert.restaurant_name}}</td>
+              <td>{{ advert.start_date}}</td>
+              <td>{{ advert.end_date}}</td>
+              <td *ngIf="advert.status == 1; else elseBlock">
+                <ui-switch [checked]="true" defaultBgColor="red" (change)="changeStatus($event,advert.id)"></ui-switch>
+              </td>
+              <ng-template #elseBlock>
+                <td>
+                  <ui-switch defaultBgColor="red" (change)="changeStatus($event,advert.id)"></ui-switch>
+                </td>
+              </ng-template>
+              <td><button class="btn btn-primary btn-sm badge" (click)="editad(advert.id)">{{ "Edit" | translate }}</button>&nbsp;<button
+                  class="btn btn-danger btn-sm badge" (click)="deletead(advert.id)">{{ "Delete" | translate }}</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="advertModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+
+      <div class="modal-body">
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <img src="" id='advert-image'>
+
+
+
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,7 @@
+<label [class]="class" [for]="for" [style]="style">
+  <span *ngIf="labelText != null && labelText.length > 0">{{labelText}}</span>
+  <span *ngIf="serialNumber != null">&nbsp;#{{serialNumber}}</span>
+  <strong *ngIf="required" class="text-danger">*</strong>
+  <ng-container *ngIf="doubleLine"><br /></ng-container>
+  <ng-content></ng-content>
+</label>

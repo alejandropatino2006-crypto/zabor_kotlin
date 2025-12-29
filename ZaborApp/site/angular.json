@@ -1,0 +1,299 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "zabor-app": {
+      "root": "",
+      "sourceRoot": "src",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "tsConfig": "src/tsconfig.app.json",
+            "polyfills": "src/polyfills.ts",
+            "aot": true,
+            "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              "src/.well-known",
+              "src/manifest.webmanifest",
+              "src/manifest.json",
+              "src/firebase-messaging-sw.js",
+              "src/combined-sw.js"
+            ],
+            "styles": [
+              "node_modules/ngx-ui-switch/ui-switch.component.css",
+              "node_modules/ngx-toastr/toastr.css",
+              "node_modules/font-awesome/css/font-awesome.min.css",
+              "node_modules/datatables.net-dt/css/jquery.dataTables.min.css",
+              "node_modules/datatables.net-buttons-dt/css/buttons.dataTables.min.css",
+              "src/styles/app.scss",
+              "src/styles/layout.css",
+              "src/styles/nice-select.css",
+              "src/styles/responsive.css",
+              "node_modules/@syncfusion/ej2-base/styles/material.css",
+              "node_modules/@syncfusion/ej2-icons/styles/material.css",
+              "node_modules/@syncfusion/ej2-buttons/styles/material.css",
+              "node_modules/@syncfusion/ej2-splitbuttons/styles/material.css",
+              "node_modules/@syncfusion/ej2-inputs/styles/material.css",
+              "node_modules/@syncfusion/ej2-lists/styles/material.css",
+              "node_modules/@syncfusion/ej2-navigations/styles/material.css",
+              "node_modules/@syncfusion/ej2-popups/styles/material.css",
+              "node_modules/@syncfusion/ej2-richtexteditor/styles/material.css",
+              "node_modules/angular2-multiselect-dropdown/themes/default.theme.css",
+              "./node_modules/ngx-lightbox/lightbox.css",
+              "node_modules/ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.carousel.min.css",
+              "node_modules/ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.theme.default.min.css",
+              "node_modules/@ng-select/ng-select/themes/default.theme.css"
+            ],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.js",
+              "node_modules/pdfmake/build/pdfmake.min.js",
+              "node_modules/pdfmake/build/vfs_fonts.js",
+              "node_modules/jszip/dist/jszip.min.js",
+              "./src/assets/js/bootstrap.min.js",
+              "./src/assets/js/jquery.nice-select.min.js",
+              "node_modules/chart.js/dist/Chart.js",
+              "node_modules/datatables.net/js/jquery.dataTables.min.js",
+              "node_modules/datatables.net-dt/js/dataTables.dataTables.min.js",
+              "node_modules/datatables.net-buttons/js/dataTables.buttons.min.js",
+              "node_modules/datatables.net-buttons/js/buttons.colVis.js",
+              "node_modules/datatables.net-buttons/js/buttons.html5.js",
+              "node_modules/datatables.net-buttons/js/buttons.print.js",
+              "node_modules/datatables.net-buttons-dt/js/buttons.dataTables.min.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "outputPath": "dist/production",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "6mb",
+                  "maximumError": "9mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "15kb",
+                  "maximumError": "25kb"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": true,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "serviceWorker": false,
+              "ngswConfigPath": "ngsw-config.json"
+            },
+            "stagingLocal": {
+              "outputPath": "dist/stagingLocal",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.stagingLocal.ts"
+                }
+              ],
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "vendorChunk": true,
+              "buildOptimizer": true,
+              "sourceMap": true,
+              "optimization": false
+            },
+            "staging": {
+              "outputPath": "dist/staging",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.staging.ts"
+                }
+              ],
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "3mb",
+                  "maximumError": "25mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "70kb"
+                }
+              ],
+              "vendorChunk": true,
+              "buildOptimizer": true,
+              "sourceMap": true,
+              "optimization": false
+            },
+            "testing": {
+              "outputPath": "dist/testing",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.testing.ts"
+                }
+              ],
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "vendorChunk": true,
+              "buildOptimizer": true,
+              "sourceMap": true,
+              "optimization": false
+            },
+            "umar": {
+              "outputPath": "dist/umar",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.umar.ts"
+                }
+              ],
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ],
+              "vendorChunk": true,
+              "buildOptimizer": true,
+              "sourceMap": true,
+              "optimization": false,
+              "serviceWorker": false,
+              "ngswConfigPath": "ngsw-config.json"
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "zabor-app:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "zabor-app:build:production"
+            },
+            "stagingLocal": {
+              "browserTarget": "zabor-app:build:stagingLocal"
+            },
+            "staging": {
+              "browserTarget": "zabor-app:build:staging"
+            },
+            "testing": {
+              "browserTarget": "zabor-app:build:testing"
+            },
+            "umar": {
+              "browserTarget": "zabor-app:build:umar"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "zabor-app:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/test.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "src/tsconfig.spec.json",
+            "karmaConfig": "src/karma.conf.js",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              "src/manifest.webmanifest"
+            ],
+            "styles": [
+              "node_modules/font-awesome/css/font-awesome.css",
+              "src/styles/app.scss"
+            ],
+            "scripts": [
+              "node_modules/chart.js/dist/Chart.js"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "src/tsconfig.app.json",
+              "src/tsconfig.spec.json",
+              "e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "zabor-app-e2e": {
+      "root": "e2e/",
+      "projectType": "application",
+      "prefix": "",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "e2e/protractor.conf.js",
+            "devServerTarget": "zabor-app:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "zabor-app:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "e2e/tsconfig.json",
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "zabor-app",
+  "schematics": {
+    "@schematics/angular:component": {
+      "prefix": "app",
+      "style": "scss"
+    },
+    "@schematics/angular:directive": {
+      "prefix": "app"
+    }
+  }
+}

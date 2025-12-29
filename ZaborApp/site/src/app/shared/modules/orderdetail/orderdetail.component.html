@@ -1,0 +1,326 @@
+<div class="row" *ngIf="orderDetail?.order_id">
+  <div class="col-lg-9">
+    <div class="row">
+      <div class="col col-xs-12">
+        <div class="card mb-3">
+          <div class="alert"
+            [ngClass]="{'alert-danger':orderDetail?.status==='cancelled' ,'alert-success':orderDetail?.status==='received' ,'alert-warning':orderDetail?.status==='preparing','alert-info':orderDetail?.status==='ready','alert-dark':orderDetail?.status==='pickup','alert-primary':orderDetail?.status==='delivered'}"
+            role="alert">
+            {{'Order Status'| translate}}: <a href="#" class="alert-link">{{orderDetail?.status | titlecase | translate}}</a>
+          </div>
+          <div class="card-body table-responsive">
+            <app-order-progress-bar [order_id]="orderDetail?.order_id" [delivery_mode]="orderDetail?.delivery_mode"
+              *ngIf="orderDetail?.status != 'cancelled'" #orderProgressbar>
+            </app-order-progress-bar>
+            <div class="container-fluid">
+              <h3>{{ "Order" | translate }} #{{orderDetail.order_id}} </h3>
+              <p>{{formatedCreatedDate}}</p>
+              <div class="row">
+                <div class="col-sm-4">
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <h4>{{ "Billing Address" | translate }}</h4>
+                    </div>
+                    <div class="col-sm-6">
+                      <span>{{ "First Name" | translate }}</span>
+                      <p>{{orderDetail.firstname}}</p>
+                    </div>
+                    <div class="col-sm-6">
+                      <span>{{ "Last Name" | translate }}</span>
+                      <p>{{orderDetail.lastname}}</p>
+                    </div>
+                    <div class="col-sm-6">
+                      <span>{{ "Email" | translate }}</span>
+                      <p>{{orderDetail.email}}</p>
+                    </div>
+                    <div class="col-sm-6">
+                      <span>{{ "Phone" | translate }}</span>
+                      <p>{{orderDetail.phone}}</p>
+                    </div>
+                    <div class="col-sm-6">
+                      <span>{{ "City" | translate }}</span>
+                      <p>{{orderDetail.city}}</p>
+                    </div>
+                    <div class="col-sm-6">
+                      <span>{{ "Address" | translate }}</span>
+                      <p>{{orderDetail.houseno}}</p>
+                      <p>{{orderDetail.address}}</p>
+                    </div>
+
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <h4>{{ "Rastaurat Details" | translate }}</h4>
+                  <p>{{ "Name" | translate }}:- <a [routerLink]="restaurantUrl">{{orderDetail.r_name}} </a></p>
+                  <p>{{ "Email" | translate }}:- <span>{{orderDetail.r_email}} </span></p>
+                  <p>{{ "Contact" | translate }}:- <span>{{orderDetail.r_contact}} </span></p>
+                  <p>{{ "City" | translate }}:- <span>{{orderDetail.r_city}} </span></p>
+                </div>
+                <div class="col-sm-4">
+                  <h4>{{ "Payment Status" | translate }}</h4>
+                  <div class="row" #paymentStatusDiv>
+                    <div class="col-sm-12">
+                      <p class="text-success" *ngIf="orderDetail?.payment_status == 1 else payment_incomplete">{{ "User has successfully paid" | translate }}
+                        {{orderDetail?.total | currency}} {{ "for this order" | translate }}.
+                      </p>
+                      <ng-template #payment_incomplete>
+                        <p class="text-danger">{{ "Payment is remaining for this order" | translate }}</p>
+                      </ng-template>
+                      <div class="custom-control custom-checkbox mb-3" *ngIf="orderDetail?.payment_status != 1">
+                        <input type="checkbox" class="custom-control-input" id="customCheck" name="example1"
+                          (change)="payment_complete()" [(ngModel)]="payment_checkbox">
+                        <label class="custom-control-label" for="customCheck">{{ "Got Payment" | translate }}</label>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <h4>{{ "Payment mode" | translate }}</h4>
+                  <div class="row" *ngIf="orderDetail.payment_mode != 2">
+                    <div class="col-sm-12" *ngIf="cardLast4 != '' else payFail">
+                      <!-- <p class="text-success">U</p> -->
+                      <span>{{ "Card" | translate }}</span>
+                      <p *ngIf="orderDetail.payment_mode == 1"> {{ "Payment method" | translate }} :- Stripe</p>
+                      <p *ngIf="orderDetail.payment_mode == 3"> {{ "Payment method" | translate }} :- Authorize Net</p>
+                      <p> {{cardLast4}}</p>
+                      <p><b>{{ "Transaction Id" | translate }}: </b>{{trans_id}}</p>
+                    </div>
+                    <ng-template #payFail>
+                      <div class="col-sm-12">
+                        <p>{{ "Payment Failed" | translate }}</p>
+                        <p class="text-danger">{{paymentError}}</p>
+                      </div>
+                    </ng-template>
+                  </div>
+
+                  <div class="row" *ngIf="orderDetail.payment_mode == 2">
+                    <div class="col-sm-12">
+                      <p> {{ "Pay on delivery" | translate }} </p>
+                    </div>
+                  </div>
+
+                  <h4>{{ "Delivery mode" | translate }}</h4>
+                  <div class="row">
+                    <div class="col-sm-12">
+
+                      <p *ngIf="orderDetail.delivery_mode == 1"> {{ "Home delivery" | translate }} </p>
+                      <p *ngIf="orderDetail.delivery_mode == 2"> {{ "Pick up" | translate }} </p>
+
+                    </div>
+
+                  </div>
+
+                  <!-- <h4>Food Prepare Time</h4>
+                  <div class="row" *ngIf="!isAdmin">
+                    <div class="col-sm-6">
+                      <div class="input-group mb-3">
+                        <input type="number" class="form-control" [(ngModel)]="cookingTime">
+                        <div class="input-group-append">
+                          <span class="input-group-text" id="basic-addon2">min</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6 pl-0">
+                      <button class="btn btn-decondary" (click)="subCookingTime()">Submit</button>
+                    </div>
+                  </div>
+                  <p *ngIf="isAdmin">{{cookingTime}} min</p> -->
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="order-right-bottom  ">
+          <div class="card">
+            <div class="card-header"> {{ "Order Items" | translate }}</div>
+            <div class="card-body">
+              <table class="table  w-100">
+                <thead>
+
+                  <th width="100px">{{ "Sr. NO." | translate }}</th>
+                  <!-- <th>UPC NO.</th> -->
+                  <th>{{ "Name" | translate }}</th>
+                  <th>{{ "Quantity" | translate }}</th>
+                  <th>{{ "Price" | translate }}</th>
+
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of Orderitems;  let i = index">
+                    <td>{{i+1}}</td>
+                    <!-- <td>{{item.upc_no}}</td> -->
+                    <td class="cus-tr">
+                      {{item.itemName}}
+                      <!-- <tr *ngFor=" let c of item.customization">
+                    <td>{{c.option_name}}</td>
+                    <td>{{c.option_price | currency}}</td>
+                  </tr> -->
+                      <h5 *ngIf="item.customization && item.customization.length > 0 ">
+                        {{ item.customization | getCus}}
+                      </h5>
+                      <b class="item-note" *ngIf="item.note && item.note != ''">{{ "Note" | translate }} :- {{item.note}}</b>
+
+                    </td>
+                    <td> {{ "Qty" | translate }}: {{item.quantity}} </td>
+                    <td> {{(item.itemPrice*item.quantity).toFixed(2) | currency}} </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="card-footer d-flex justify-content-between"><span>{{ "Food Tax" | translate }}:</span><span>{{orderDetail.food_tax | currency}}</span></div>
+            <div class="card-footer d-flex justify-content-between"><span>{{ "Drink Tax" | translate }}:</span><span>{{orderDetail.drink_tax | currency}}</span></div>
+            <div class="card-footer d-flex justify-content-between"><span>{{ "Convenience Fee" | translate }}:</span><span>{{orderDetail.convenience_fee | currency}}</span></div>
+            <div class="card-footer d-flex justify-content-between">
+              <span>{{ "Subtotal" | translate }}:</span><span>{{orderDetail.subtotal | currency}}</span></div>
+            <div class="card-footer d-flex justify-content-between"><span>{{ "City Tax" | translate }}:</span><span>{{orderDetail.tax | currency}}</span></div>
+            <div class="card-footer d-flex justify-content-between"><span>{{ "Total Amount" | translate }}:</span><span>{{orderDetail.without_discount | currency}}</span></div>
+            <div class="card-footer d-flex justify-content-between" *ngIf="orderDetail.discount != 0">
+              <span>{{ "Discount" | translate }}:</span><span>- {{orderDetail.discount | currency}}</span></div>
+            <div class="card-footer d-flex justify-content-between"><span>{{ "Delivery charges" | translate }}:</span><span>{{orderDetail.delivery_charge | currency}}</span></div>
+            <div class="card-footer d-flex justify-content-between" *ngIf="orderDetail.discount != 0"><span>{{ "Total Amount" | translate }}:</span><span>{{orderDetail.total | currency}}</span></div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+
+
+  </div>
+  <div class="col-lg-3">
+    <div class="row" *ngIf="orderDetail.delivery_mode == 1 && orderDetail?.delivered_by == 'driver'">
+
+      <div class="col col-xs-12">
+        <div class="card mb-3">
+          <div class="card-header">
+            <h3>{{ "Driver" | translate }}</h3>
+          </div>
+          <div class="card-body" style="overflow-x: scroll;">
+            <div *ngIf="!driverAssigned" style="text-align: center;">
+              <img src="assets/images/searching.gif" alt="">
+              <button class="btn btn-danger pull-left" (click)="stopSearching()">{{ "Stop searching" | translate }}</button>
+            </div>
+            <div *ngIf="driverAssigned">
+              <img src="{{fileUrl}}{{driverDetail?.profileimage}}" alt="" width="100px" class="mb-4">
+              <table class="table driverTable">
+                <tr>
+                  <td>{{ "Name" | translate }}</td>
+                  <td>{{driverDetail?.name}}</td>
+                </tr>
+                <tr>
+                  <td>{{ "Email" | translate }}</td>
+                  <td style="word-break: break-all;">{{driverDetail?.email}}</td>
+                </tr>
+                <tr>
+                  <td>{{ "Phone" | translate }}</td>
+                  <td>{{driverDetail?.phone}}</td>
+                </tr>
+                <tr *ngIf="driverDetail?.tip">
+                  <td>{{ "Driver Tip" | translate }}</td>
+                  <td>{{ driverDetail?.tip | currency}}</td>
+                </tr>
+                <tr *ngIf="driverDetail?.rating">
+                  <td>{{ "Driver Rating" | translate }}</td>
+                  <td>{{ driverDetail?.rating }} / 5</td>
+                </tr>
+              </table>
+
+              <!-- <div *ngIf="driverDetail?.code_verify == 0 ">
+                <h4 class="text-success">Confirm Code</h4>
+                <div class="form-group">
+                  <input type="number" class="form-control" id="code" placeholder="Enter Code" [(ngModel)]="Code">
+                </div>
+                <button type="submit" class="btn btn-success mb-2" (click)="confirmCode()">Confirm</button>
+              </div> -->
+
+              <div *ngIf="driverDetail?.code_verify ==1 && driverDetail?.order_delivered == 0">
+                <p class="text-success" style="font-size: 16px; font-weight: 600;">{{ "Code is matched and order is in process" | translate }}</p>
+              </div>
+              <div *ngIf="driverDetail?.order_delivered == 1">
+                <p class="text-success" style="font-size: 16px; font-weight: 600;">{{ "Order is delivered" | translate }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="col col-xs-12">
+        <div class="card mb-3">
+          <div class="card-header">
+
+          </div>
+          <div class="card-body ">
+            <!-- <div *ngIf="orderDetail.delivery_mode == 2 || orderDetail?.delivered_by != 'driver'">
+              <div *ngIf="!user_code_verified  else verified">
+                <label>User Verification Code (Verify order for right user )</label>
+                <div class="input-group mb-3">
+                  <input type="number" class="form-control" placeholder="Verification Code" #input>
+                  <div class="input-group-append" style="cursor: pointer;">
+                    <span class="input-group-text" id="basic-addon2"
+                      (click)="verify_userCode(input.value)">Verify</span>
+                  </div>
+                </div>
+              </div>
+              <ng-template #verified>
+                <h4 class="text-success">User is verified</h4>
+              </ng-template>
+            </div> -->
+            <div class="form-group">
+              <label>{{ "Status" | translate }}:</label>
+              <select class="form-control" [(ngModel)]="orderStatus">
+                <option value="received" *ngIf="AllOrderStatus.includes('received')"> {{ "Received" | translate }}</option>
+                <option value="preparing" *ngIf="AllOrderStatus.includes('preparing')">{{ "Preparing" | translate }}</option>
+                <option value="ready" *ngIf="AllOrderStatus.includes('ready')">{{ "Ready" | translate }}</option>
+                <option value="pickup" *ngIf="AllOrderStatus.includes('pickup') && orderDetail.delivery_mode == 1 ">
+                  {{ "Pickup" | translate }}</option>
+                <!-- && orderDetail?.delivered_by == 'driver' -->
+                <option value="delivered" *ngIf="AllOrderStatus.includes('delivered')">{{ "Delivered" | translate }}</option>
+                <option value="cancelled" *ngIf="AllOrderStatus.includes('cancelled')">{{ "Cancelled" | translate }}</option>
+              </select>
+            </div>
+
+
+            <div class="form-group" *ngIf="orderStatus == 'cancelled' || orderStatus == 'delivered'">
+              <label *ngIf="orderStatus == 'cancelled'">{{ "Cancel Reason" | translate }}</label>
+              <label *ngIf="orderStatus == 'delivered'">{{ "Order Issue (If have any)" | translate }}</label>
+              <textarea rows="5" class="form-control" [(ngModel)]="orderissue"></textarea>
+            </div>
+
+            <div *ngIf="orderStatus == 'preparing'">
+              <h4>{{ "Food Prepare Time" | translate }}</h4>
+              <div class="row" *ngIf="!isAdmin">
+                <div class="col-sm-12">
+                  <div class="input-group mb-3">
+                    <input type="number" class="form-control" [(ngModel)]="cookingTime">
+                    <div class="input-group-append">
+                      <span class="input-group-text" id="basic-addon2">{{ "min" | translate }}</span>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div class="col-sm-6 pl-0">
+                  <button class="btn btn-decondary" (click)="subCookingTime()">Submit</button>
+                </div> -->
+              </div>
+              <p *ngIf="isAdmin">{{cookingTime}} {{ "min" | translate }}</p>
+            </div>
+
+            <div class="form-group">
+              <button class="btn   btn-primary" (click)="changeStatus()" style="width: 100%;">{{ "Change" | translate }}</button>
+            </div>
+            <div class="form-group">
+              <app-invoice [(orderDetail)]="orderDetail" *ngIf="orderDetail.id" invoiceby="owner"></app-invoice>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+@import '~ngx-owl-carousel-o/lib/styles/scss/owl.carousel';
+@import '~ngx-owl-carousel-o/lib/styles/scss/owl.theme.default';
+
+.owl-carousel .owl-dots.disabled, .owl-carousel .owl-nav.disabled {display: block !important;}
+.res-title a{ color: #222222;}
+
+.rating
+{
+display: -ms-flexbox!important;
+    display: flex!important;
+}
+
+.start-rating{
+    margin-left: 10px;
+}
+
+
+.order-ammount li{
+    display: inline; 
+    font-size: 14px;
+    margin-right: 10px;
+    }
+    
+    
+

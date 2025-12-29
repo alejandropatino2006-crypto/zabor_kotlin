@@ -1,0 +1,55 @@
+<div *ngIf="restaurants.length < 1;">
+  <h3>{{'No Restaurant Found' | translate}}</h3>
+</div>
+<div class="row" infinite-scroll [infiniteScrollDistance]="scrollDistance" [infiniteScrollUpDistance]="scrollUpDistance"
+  [infiniteScrollThrottle]="throttle" (scrolled)="onScrollDown()" (scrolledUp)="onUp()" *ngIf="restaurants.length > 0;">
+  <div class="col-sm-6 result-box" *ngFor="let item of restaurants">
+    <div class="result-box-inner"
+      [ngClass]="{ResUnavailablea: item.status == 0 || !restaurantService.checkifResAvailable(item)}">
+      <div class=" row">
+        <div class="col-sm-12 col-lg-5 result-box-img">
+
+          <a [routerLink]="['/restaurant',item.id]"> <span class="zobor-overlay-logo" *ngIf="item.claimed == 1"><img
+                src="assets/images/claim-logo.png"></span><img src={{fileUrl+item.restaurantpic}}></a>
+        </div>
+        <div class="col-sm-12 col-lg-7">
+          <div class="result-box-content">
+            <h5><a [routerLink]="['/restaurant',item.id]"> {{item.name}}</a></h5>
+            <div class="rating">
+              <star-rating [value]="item.avgrating" [totalstars]="5" checkedcolor="#F1C40F" uncheckedcolor="#d4d3d3"
+                size="20px" [readonly]="true">
+              </star-rating>
+            </div>
+            <ul class="result-information">
+              <li>
+                <p> <img src="assets/images/phone-result.svg"><b>{{ 'Call'|translate }}:</b><a
+                    href=tel:{{item?.contact}}>{{item?.contact}}</a></p>
+              </li>
+              <li>
+                <p><img src="assets/images/money-bag.svg"><b>{{ 'Average Cost'|translate }}:</b>
+                  {{item?.avg_cost | avgcost}}
+                </p>
+              </li>
+              <li>
+                <p><img src="assets/images/burger.svg"><b class="d-block w-100">{{ 'Food Category'|translate }}:</b> <a
+                    [routerLink]="['/catres',item.cat_id]">{{item?.cat_name}}</a></p>
+              </li>
+              <li>
+                <p><b>{{ 'Distance'|translate }}:</b> {{item?.distance.toFixed(2)}}KM</p>
+              </li>
+              <li>
+                <p
+                  [ngClass]="(item.status == 0 || !restaurantService.checkifResAvailable(item)) ? 'text-danger' : 'text-success'">
+                  <img src="assets/images/clock.svg"><b>{{ 'Open In'|translate }}:</b><span
+                    *ngIf="item.status != 0 else notavail">{{item | getOpenHours}}</span>
+                  <ng-template #notavail><span>{{'Closed'|translate}}</span></ng-template>
+
+                </p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>

@@ -1,0 +1,31 @@
+.hide { display: none;}
+
+.anet-form label{     margin-bottom: 0px;}
+.form-group {margin-bottom: 0px; }
+
+.has-success .input-group-text {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #3c763d;
+}
+
+.has-warning .input-group-addon {
+    color: #8a6d3b;
+    background-color: #fcf8e3;
+    border-color: #8a6d3b;
+}
+
+.has-error .input-group-text {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ff000075;
+}
+
+.has-error .form-control { border: 1px solid #ff000075 !important;}
+.has-success .form-control { border: 1px solid #3c763d !important;}
+
+span.scheme{ position: absolute; right: 5px; z-index: 10000;}
+.has-error span.scheme{color: #a94442;}
+.has-success span.scheme{color: #3c763d;}
+
+div.hide{ display: none;}

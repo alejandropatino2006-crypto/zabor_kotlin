@@ -1,0 +1,9 @@
+<button class="file-upload-button">
+	<input type="file"
+    #fileInput
+    (change)="onFileChange($event)"
+    [accept]="acceptFiles" />
+    {{ browseText }}
+</button>
+
+<span class="file-info">{{ fileInfo }}</span>

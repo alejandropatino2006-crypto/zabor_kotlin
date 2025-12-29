@@ -1,0 +1,195 @@
+<div class="card">
+  <div class="card-header">
+    <h4>{{ "View Customer" | translate }} </h4>
+    <button class="btn btn-secondary btn-padding-1 pull-right"
+      [routerLink]="['/owner/restaurants/customer', restaurantId]">
+      {{ "Back to List" | translate }}
+    </button>
+  </div>
+
+  <div class="card-body">
+    <div class="login-page">
+      <div class="row justify-content-md-center">
+        <div class="col-md-12">
+
+          <div class="row form-content">
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label>{{ "Full Name" | translate }}</label>
+                <div class="text-bold">{{ currentCustomer?.name }}</div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label>{{ "Email" | translate }}</label>
+                <div class="text-bold">{{ currentCustomer?.email }}</div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label>{{ "Phone" | translate }}</label>
+                <div class="text-bold">{{ currentCustomer?.phone }}</div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label>{{ "Status" | translate }}</label>
+                <div class="text-bold">
+                  {{ currentCustomer?.status == "1" ? "Active" : "Inactive" }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row form-content">
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label>{{ "Address" | translate }}</label>
+                <div class="text-bold">{{ currentCustomer?.address }}</div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label>{{ "City" | translate }}</label>
+                <div class="text-bold">{{ currentCustomer?.city }}</div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label>{{ "Postal Code" | translate }}</label>
+                <div class="text-bold">{{ currentCustomer?.postal_code }}</div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label>{{ "Date of Birth" | translate }}</label>
+                <div class="text-bold">{{ currentCustomer?.dob | date:'MM/dd/yyyy' }}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row form-content">
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label>{{ "Preferred Language" | translate }}</label>
+                <div class="text-bold">{{ currentCustomer?.pref_lang }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="row form-content">
+            <div class="col-sm-3" *ngIf="currentAddress?.physical_address">
+              <div class="form-group">
+                <label>{{ "Physical Address" | translate }}</label>
+                <div class="text-bold">{{ currentAddress?.physical_address }}</div>
+              </div>
+            </div>
+            <div class="col-sm-3" *ngIf="currentAddress?.beginning_points != null">
+              <div class="form-group">
+                <label>{{ "Beginning Points" | translate }}</label>
+                <div class="text-bold">{{ currentAddress?.beginning_points }}</div>
+              </div>
+            </div>
+            <div class="col-sm-3" *ngIf="currentAddress?.point_balance != null">
+              <div class="form-group">
+                <label>{{ "Point Balance" | translate }}</label>
+                <div class="text-bold">{{ currentAddress?.point_balance }}</div>
+              </div>
+            </div>
+            <div class="col-sm-3" *ngIf="currentAddress?.price_level != null">
+              <div class="form-group">
+                <label>{{ "Price Level" | translate }}</label>
+                <div class="text-bold">{{ currentAddress?.price_level }}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row form-content">
+            <div class="col-sm-3" *ngIf="currentAddress?.discount_percent != null">
+              <div class="form-group">
+                <label>{{ "Discount %" | translate }}</label>
+                <div class="text-bold">{{ currentAddress?.discount_percent }}%</div>
+              </div>
+            </div>
+            <div class="col-sm-3" *ngIf="currentAddress?.houseno">
+              <div class="form-group">
+                <label>{{ "House No" | translate }}</label>
+                <div class="text-bold">{{ currentAddress?.houseno }}</div>
+              </div>
+            </div>
+            <div class="col-sm-3" *ngIf="currentAddress?.pincode">
+              <div class="form-group">
+                <label>{{ "Postal Code" | translate }}</label>
+                <div class="text-bold">{{ currentAddress?.pincode }}</div>
+              </div>
+            </div>
+            <div class="col-sm-3" *ngIf="currentAddress?.state">
+              <div class="form-group">
+                <label>{{ "State" | translate }}</label>
+                <div class="text-bold">{{ currentAddress?.state }}</div>
+              </div>
+            </div>
+            <div class="col-sm-3" *ngIf="currentAddress?.country">
+              <div class="form-group">
+                <label>{{ "Country" | translate }}</label>
+                <div class="text-bold">{{ currentAddress?.country }}</div>
+              </div>
+            </div>
+            <div class="col-sm-3" *ngIf="currentAddress?.lat">
+              <div class="form-group">
+                <label>{{ "Latitude" | translate }}</label>
+                <div class="text-bold">{{ currentAddress?.lat }}</div>
+              </div>
+            </div>
+            <div class="col-sm-3" *ngIf="currentAddress?.lng">
+              <div class="form-group">
+                <label>{{ "Longitude" | translate }}</label>
+                <div class="text-bold">{{ currentAddress?.lng }}</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="card mt-4">
+  <div class="card-header">
+    <h5>{{ "Customer Orders" | translate }}</h5>
+  </div>
+  <div class="card-body p-0">
+    <table class="table table-striped table-hover table-bordered mb-0">
+      <thead class="thead-dark">
+        <tr>
+          <th>#</th>
+          <th>{{ "Order Code" | translate }}</th>
+          <th>{{ "Total" | translate }}</th>
+          <th>{{ "Discount" | translate }}</th>
+          <th>{{ "Status" | translate }}</th>
+          <th>{{ "Payment" | translate }}</th>
+          <th>{{ "Invoice" | translate }}</th>
+          <th>{{ "Date" | translate }}</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="customerOrders.length > 0; else noOrders">
+        <tr *ngFor="let order of customerOrders; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ order.order_code }}</td>
+          <td>{{ order.total | currency }}</td>
+          <td>{{ order.discount }}</td>
+          <td>{{ order.status }}</td>
+          <td>{{ order.payment_status == 1 ? ('Paid' | translate) : ('Unpaid' | translate) }}</td>
+          <td>{{ order.invoice_number || ('N/A' | translate) }}</td>
+          <td>{{ order.created_date | date: 'short' }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ng-template #noOrders>
+      <div class="text-center p-3">
+        {{ "No orders found for this customer." | translate }}
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+  </div>
+</div>

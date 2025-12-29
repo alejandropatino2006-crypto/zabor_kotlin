@@ -1,0 +1,18 @@
+<div class="form-steps-container" [class.hidden-imp]="type !== 'register'">
+    <ng-container *ngFor="let step of stepsRegister | async; let i = index;">
+        <!--<div (click)="onStepClick(step)"-->
+        <div
+                [ngClass]="{ 'step-complete': step.isComplete, 'step-incomplete': !step.isComplete, 'step-current': (currentStep | async)?.stepIndex === step.stepIndex }"
+                class="step-bubble">{{ step.stepIndex }}</div>
+        <div *ngIf="i < (stepsRegister | async)?.length - 1" class="step-divider"></div>
+    </ng-container>
+</div>
+<div class="form-steps-container" [class.hidden-imp]="type !== 'login'">
+    <ng-container *ngFor="let step of stepsLogin | async; let i = index;">
+        <!--<div (click)="onStepClick(step)"-->
+        <div
+                [ngClass]="{ 'step-complete': step.isComplete, 'step-incomplete': !step.isComplete, 'step-current': (currentStep | async)?.stepIndex === step.stepIndex }"
+                class="step-bubble">{{ step.stepIndex }}</div>
+        <div *ngIf="i < (stepsLogin | async)?.length - 1" class="step-divider"></div>
+    </ng-container>
+</div>

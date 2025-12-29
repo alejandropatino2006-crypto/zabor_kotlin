@@ -1,0 +1,305 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb mb-0">
+    <li class="breadcrumb-item"><a [routerLink]="['/']">Home</a></li>
+    <li class="breadcrumb-item"><a [routerLink]="['/dashboard/orders']">Orders</a></li>
+  </ol>
+</nav>
+
+<section class="sec" *ngIf="orderDetail.cart_id">
+  <div class="container">
+    <div class="row">
+      <div class="col col-xs-12">
+        <div class="card mb-3">
+          <div class="alert d-flex justify-content-between align-items-center"
+            [ngClass]="{'alert-danger':orderDetail?.status==='cancelled' ,'alert-success':orderDetail?.status==='received' ,'alert-warning':orderDetail?.status==='preparing','alert-info':orderDetail?.status==='ready','alert-dark':orderDetail?.status==='pickup','alert-primary':orderDetail?.status==='delivered'}"
+            role="alert">
+            <div>
+              {{'Order Status'| translate}}:
+              <a href="#" class="alert-link">{{orderDetail?.status | titlecase}}</a>
+            </div>
+            <button *ngIf="backLink != null" [routerLink]="backLink" class="btn btn-secondary btn-padding-1" type="button">{{'Back' |
+              translate}}</button>
+          </div>
+          <div class="card-body pt-0">
+            <app-order-progress-bar [order_id]="orderDetail?.order_id" [delivery_mode]="orderDetail?.delivery_mode"
+              *ngIf="orderDetail?.status != 'cancelled'">
+            </app-order-progress-bar>
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-sm-6">
+                  <h3 style="text-decoration: underline; font-weight: bold; font-size: 20px; margin-bottom: 8px;">Orders
+                    #{{orderDetail.order_id}}
+                  </h3>
+                  <p>{{formatedCreatedDate}}</p>
+                </div>
+                <div class="col-sm-6 alert alert-danger" *ngIf="orderDetail?.orderissue">
+                  <h4>{{'Order Issue' | translate}}</h4>
+                  <p>{{orderDetail?.orderissue}}</p>
+                </div>
+              </div>
+
+
+              <div class="row">
+                <div class="col-md-6">
+                  <h4>{{'Restaurant'| translate}}</h4>
+                  <span>{{orderDetail?.r_name}}</span>
+                  <span *ngIf="orderDetail?.r_email"><b>
+                      {{'Email'| translate}} :- </b>{{orderDetail?.r_email}}</span>
+                  <span>{{orderDetail?.r_address}}</span>
+                  <span> {{orderDetail?.r_city}} </span>
+                  <span><b>{{'Phone Number'|translate}} </b>- {{orderDetail?.r_contact}}</span>
+                </div>
+                <div class="col-md-6" *ngIf="billingData != null && billingData.firstname != null && billingData.firstname.length > 0">
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <h4>{{'Billing Address'| translate}}</h4>
+                      <span>{{billingData.firstname}} &nbsp; {{billingData.lastname}}</span>
+                      <span *ngIf="billingData.email"><b>
+                          {{'Email'| translate}} :- </b>{{billingData.email}}</span>
+                      <span>{{billingData.houseno}} , {{billingData.address}}</span>
+                      <span>{{billingData.city}} </span>
+                      <span><b>{{'Phone Number'| translate}}: </b> {{billingData.phone}}</span>
+
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-5">
+                <div class="col-sm-6">
+                  <h4>{{'Payment Status'| translate}}</h4>
+                  <div class="row" *ngIf="orderDetail?.payment_mode != 2">
+                    <div class="col-sm-12" *ngIf="cardLast4 != '' else payFail">
+                      <span>{{'Card'| translate}}</span>
+                      <p> {{cardLast4}}</p>
+                    </div>
+                    <ng-template #payFail>
+                      <div class="col-sm-12">
+                        <p>{{'Payment Failed'| translate}}</p>
+                        <p class="text-danger">{{paymentError}}</p>
+                      </div>
+                    </ng-template>
+                  </div>
+
+                  <div class="row" *ngIf="orderDetail?.payment_mode == 2">
+                    <div class="col-sm-12">
+                      <p> {{'Pay on delivery'| translate}} </p>
+                    </div>
+                  </div>
+
+                  <h4>{{'Delivery mode'| translate}}</h4>
+                  <div class="row">
+                    <div class="col-sm-12">
+
+                      <p *ngIf="orderDetail?.delivery_mode == 1"> {{'Home delivery'| translate}} </p>
+                      <p *ngIf="orderDetail?.delivery_mode == 2">{{'Pick up'| translate}} </p>
+                    </div>
+
+                  </div>
+                </div>
+                <div class="col-sm-6 ">
+                  <!-------------------- Section for driver tip and rating ------------------>
+
+                  <div class="driver-div" *ngIf="driverDetail.name">
+                    <img src="{{filepath+driverDetail.profileimage}}" alt="" width="50px">
+                    <h4> {{'Name' | translate}}:- {{driverDetail.name}}</h4>
+                    <h4> ID:- {{driverDetail.driver_id}}</h4>
+                  </div>
+
+                  <ng-container *ngIf="driverDetail.name && orderDetail?.status == 'delivered'">
+                    <div *ngIf="driverDetail?.tip == null else driverTip">
+                      <a href="javascript:void(0)" class="text-warning" (click)=" showDriverTip()">+
+                        {{'Add Driver Tip' | translate}}</a>
+                      <div class="col-sm-12" [ngStyle]="{'display': !show_driver_tip ? 'none' : 'block'}">
+                        <div class="col-sm-6 p-0 form-group">
+                          <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="basic-addon1">$</span>
+                            </div>
+                            <input type="number" class="form-control" id="min_order_value" placeholder="Driver Tip"
+                              min=0 style="padding: 5px;" [(ngModel)]="driver_tip">
+                          </div>
+                        </div>
+
+                        <div class="stripe-sec">
+                          <label class="radio-container">{{'Stripe'| translate}} {{payment_method}}
+                            <input type="radio" value="1" [(ngModel)]="payment_method"
+                              (change)="payment_modeChange($event.target)" name="payment_method" checked>
+                            <span class="checkmark"></span>
+                          </label>
+                          <form [ngClass]="{'hide': payment_method != '1'}">
+                            <div #cardElement>
+                              <!-- A Stripe Element will be inserted here. -->
+                            </div>
+                            <!-- Used to display Element errors. -->
+                            <p class="text-danger">{{ cardErrors }}</p>
+
+                          </form>
+                        </div>
+
+                        <div>
+                          <label class="radio-container">{{'Authorize Net'| translate}}
+                            <input type="radio" value="2" [(ngModel)]="payment_method"
+                              (change)="payment_modeChange($event.target)" name="payment_method">
+                            <span class="checkmark"></span>
+                          </label>
+                          <div [ngClass]="{'hide': payment_method != '2'}">
+                            <form [formGroup]="Anetform" class="anet-form">
+
+                              <div class="row">
+                                <div class="form-group col-sm-12"
+                                  [ngClass]="(Anetform.controls['creditCard'].valid) ? 'has-success':'has-error'">
+                                  <label>{{'CARD NUMBER'| translate}}</label>
+                                  <div class="input-group input-group-sm mb-3">
+                                    <div class="input-group-prepend">
+                                      <span class="input-group-text" id="basic-addon1"><i
+                                          class="fa fa-credit-card"></i></span>
+                                    </div>
+                                    <input id="cc-number" formControlName="creditCard" type="tel"
+                                      autocomplete="cc-number" ccNumber class="form-control pt-0 pb-0"
+                                      #ccNumber="ccNumber">
+                                    <span class="scheme" [ngSwitch]="(ccNumber.resolvedScheme$ | async)">
+                                      <i class="form-control-feedback fa fa-cc-visa" *ngSwitchCase="'visa'"></i>
+                                      <i class="form-control-feedback fa fa-cc-mastercard"
+                                        *ngSwitchCase="'mastercard'"></i>
+                                      <i class="form-control-feedback fa fa-cc-amex" *ngSwitchCase="'amex'"></i>
+                                      <i class="form-control-feedback fa fa-cc-diners-club"
+                                        *ngSwitchCase="'dinersclub'"></i>
+                                      <i class="form-control-feedback fa fa-cc-discover" *ngSwitchCase="'discover'"></i>
+                                      <i class="form-control-feedback fa fa-cc-jcb" *ngSwitchCase="'jcb'"></i>
+                                      <!-- <i class="form-control-feedback fa fa-credit-card" *ngSwitchDefault></i> -->
+                                    </span>
+                                    <!-- <span class=""><i class="form-control-feedback fa fa-cc-mastercard"></i></span> -->
+                                  </div>
+                                </div>
+
+                                <div class="form-group col-sm-6"
+                                  [ngClass]="(Anetform.controls['expirationDate'].valid) ? 'has-success':'has-error'">
+                                  <label>{{'EXP MONTH'| translate}}</label>
+                                  <div class="input-group input-group-sm mb-3">
+                                    <div class="input-group-prepend">
+                                      <span class="input-group-text" id="basic-addon1"><i
+                                          class="fa fa-calendar"></i></span>
+                                    </div>
+                                    <input id="cc-exp-date" formControlName="expirationDate" type="tel"
+                                      autocomplete="cc-exp" ccExp class="form-control pt-0 pb-0">
+                                  </div>
+                                </div>
+
+                                <div class="form-group col-sm-6"
+                                  [ngClass]="(Anetform.controls['cvc'].valid) ? 'has-success':'has-error'">
+                                  <label>{{'CARD CVC'| translate}}</label>
+                                  <div class="input-group input-group-sm mb-3">
+                                    <div class="input-group-prepend">
+                                      <span class="input-group-text" id="basic-addon1"><i class="fa fa-lock"></i></span>
+                                    </div>
+                                    <input id="cc-cvc" formControlName="cvc" type="tel" autocomplete="off" ccCvc
+                                      class="form-control pt-0 pb-0">
+                                  </div>
+                                </div>
+                              </div>
+
+                            </form>
+                          </div>
+                        </div>
+
+                        <button class="btn btn-warning btn-sm" (click)="tip($event)">Submit</button>
+                      </div>
+                    </div>
+
+                    <ng-template #driverTip>
+                      <label for="">{{'Driver Tip' | translate }}: <b>{{driverDetail.tip | currency }}</b></label>
+                    </ng-template>
+
+                    <div>
+                      <label>{{'Please Give Driver Rating' | translate}}</label>
+                      <star-rating [value]="driverDetail?.rating" [totalstars]="5" checkedcolor="#F1C40F"
+                        uncheckedcolor="#d4d4d4" size="24px" [readonly]="false" (rate)="givedriverRating($event)">
+                      </star-rating>
+                    </div>
+                  </ng-container>
+                  <!-------------------- Section for driver tip and rating ------------------>
+                  <!-- <h4 class="verify_code"
+                    *ngIf="orderDetail?.status != 'delivered' && orderDetail?.status != 'cancelled'"> {{'Order Verification
+                    code'| translate}} &nbsp;
+                    <p> {{orderDetail.order_code}}</p>
+                  </h4> -->
+
+
+                </div>
+              </div>
+              <div class="row" *ngIf="orderDetail.status=='received'">
+                <div class="col-12">
+                  <button class="btn btn-danger mt-2 pull-right"
+                    (click)="cancelOrder()">{{ 'Cancel Order'| translate }}</button>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="order-right-bottom ">
+                    <div class="card">
+                      <div class="card-header"> {{'Order Items'| translate}}</div>
+                      <div class="card-body">
+                        <table class="table  w-100">
+                          <tbody>
+
+                            <tr *ngFor="let item of Orderitems;  let i = index">
+                              <td>{{i+1}}</td>
+                              <td class="items-name cus-tr">
+                                {{item.itemName}}
+                                <!-- <tr *ngFor=" let c of item.customization">
+                              <td>{{c.option_name}}</td>
+                              <td>{{c.option_price | currency}}</td>
+                            </tr> -->
+                                <h5 *ngIf="item.customization && item.customization.length > 0 ">
+                                  {{ item.customization | getCus}}
+                                </h5>
+                                <b class="item-note" *ngIf="item.note && item.note != ''">Note :- {{item.note}}</b>
+                              </td>
+                              <td>{{'Qty'| translate}} : {{item.quantity}} </td>
+                              <td> {{item.itemPrice*item.quantity | currency}} </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="card-footer d-flex justify-content-between">
+                        <span>{{'Food Tax'| translate}}:</span><span>{{orderDetail.food_tax | currency}}</span></div>
+                      <div class="card-footer d-flex justify-content-between">
+                        <span>{{'Drink Tax'| translate}}:</span><span>{{orderDetail.drink_tax | currency}}</span></div>
+                      <!-- <div class="card-footer d-flex justify-content-between">
+                        <span>{{'Convenience Fee'| translate}}:</span><span>{{orderDetail.convenience_fee | currency}}</span></div> -->
+                      <div class="card-footer d-flex justify-content-between">
+                        <span>{{'Subtotal'| translate}}:</span><span>{{orderDetail.subtotal | currency}}</span></div>
+                      <div class="card-footer d-flex justify-content-between">
+                        <span>{{'City Tax'| translate}}:</span><span>{{orderDetail.tax | currency}}</span></div>
+                      <div class="card-footer d-flex justify-content-between">
+                        <span>{{'Total'| translate}}:</span><span>{{orderDetail.without_discount | currency}}</span>
+                      </div>
+                      <div class="card-footer d-flex justify-content-between" *ngIf="orderDetail.discount > 0">
+                        <span>{{'Discount'| translate}}:</span><span>-{{orderDetail.discount | currency}}</span></div>
+                      <div class="card-footer d-flex justify-content-between">
+                        <span>{{'Delivery charges'| translate}}:</span><span>{{orderDetail.delivery_charge | currency}}</span>
+                      </div>
+                      <div class="card-footer d-flex justify-content-between">
+                        <span>{{'Total Amount'| translate}}:</span><span>{{orderDetail.total | currency}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-2 pull-right" *ngIf="orderDetail?.status==='delivered'">
+
+                <app-invoice [orderDetail]="orderDetail" *ngIf="orderDetail.id" invoiceby="user"></app-invoice>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
+    </div>
+  </div>
+
+</section>

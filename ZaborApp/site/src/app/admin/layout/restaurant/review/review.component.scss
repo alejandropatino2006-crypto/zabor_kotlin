@@ -1,0 +1,30 @@
+@media screen and (min-width: 1200px) {
+.extrarating{
+    padding:0px 20px;
+}
+.userdiv img{
+    width: 100%
+} 
+}
+@media screen and (max-width: 1199px) {
+    .extrarating{
+        padding: 0px 10px;
+    }
+}
+.card{
+    margin-bottom: 15px
+}
+.delete-review {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+}
+.avgrating-sec span{
+    font-size: 20px;
+}
+.userdiv p {
+    font-weight: bold;
+    padding: 5px;
+font-size: 15px;
+}
+

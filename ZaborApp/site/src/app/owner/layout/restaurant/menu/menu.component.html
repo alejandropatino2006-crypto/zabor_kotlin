@@ -1,0 +1,1559 @@
+<ng-container *ngIf="UserhasRestaurant">
+  <div class="row">
+    <div class="col-4 mid-sidebar" [ngClass]="{sidebarPushRight: isActive, collapsed: collapsed}">
+      <div class="row p-0 m-0">
+        <div class="col-12 mb-2 minh90px notbtn">
+          <div class="w-100 mb-2" style="display: flex" *ngIf="useOtherResmenu">
+            <app-tr-label labelText="{{ 'Use Restaurant menu' | translate }}"></app-tr-label>&nbsp;
+            <!-- <form class="form-inline"> -->
+            <div class="form-group col-sm-5 pl-0">
+              <select class="custom-select" [(ngModel)]="selectedRes">
+                <option value="-1">{{ "please select" | translate }}</option>
+                <option value="{{ item.id }}" *ngFor="let item of RestaurantList">
+                  {{ item.name }}
+                </option>
+              </select>
+            </div>
+            <div>
+              <button
+                type="submit"
+                class="btn btn-primary mb-2"
+                (click)="copymenu()"
+              >
+                {{ "Copy" | translate }}
+              </button>
+            </div>
+            <!-- </form> -->
+          </div>
+          <div class="w-100" *ngIf="!useOtherResmenu">
+            <button class="btn btn-success mb-2" (click)="usemenu()">
+              {{ "Use Similar menu Restaurant" | translate }}
+            </button>
+          </div>
+        </div>
+        <div class="col-12 mb-2 notbtn" *ngIf="UserhasRestaurant">
+          <div class="w-100" [style.margin-bottom]="'10px'">
+            <div class="card">
+              <div
+                class="card-header d-flex flex-row justify-content-between align-items-center"
+              >
+                <b>{{ "Group Names" | translate }}</b>
+                <div
+                  class="d-flex flex-sm-row flex-md-column flex-lg-row justify-content-end align-items-center gap-1"
+                >
+                  <button
+                    class="btn btn-danger"
+                    style="padding: 4px 8px; font-size: 0.875rem; line-height: 1.5"
+                    (click)="deleteallmenu()"
+                    *ngIf="groupID > 0 || groupList.length > 0"
+                  >
+                    <i class="fa fa-trash" aria-hidden="true"></i>&nbsp;
+                    <span>{{ "Delete All" | translate }}</span>
+                  </button>
+                  <button
+                    class="btn btn-success btn-sm"
+                    (click)="addgroup()"
+                    *ngIf="groupID != -1"
+                  >
+                    + {{ "Add" | translate }}
+                  </button>
+                </div>
+              </div>
+              <ul
+                class="list-group list-group-flush"
+                *ngFor="let gl of groupList; index as i"
+              >
+                <li
+                  [class.activeGroup]="gl.id === groupID"
+                  class="list-group-item d-flex flex-row justify-content-between align-items-center"
+                >
+                  <span class="mr-auto">{{ gl.group_name }}</span>
+                  <div class="max-content">
+                    <a
+                      href="javascript:void(0)"
+                      title="Delete"
+                      (click)="deleteGroupbymenu(gl.id)"
+                      class="text-danger pull-right"
+                    ><i class="fa fa-trash" aria-hidden="true"></i>
+                    </a>
+                    <a
+                      href="javascript:void(0)"
+                      style="margin-right: 10px"
+                      title="edit"
+                      class="pull-right"
+                      (click)="editGroup(gl.id)"
+                    ><span><i class="fa fa-pencil"></i></span
+                    ></a>
+                    <a
+                      href="javascript:void(0)"
+                      class="pull-right text-warning"
+                      style="margin-right: 10px"
+                      title="View"
+                      (click)="detailGroup(gl.id)"
+                    ><span><i class="fa fa-eye"></i></span
+                    ></a>
+                    <a
+                      href="javascript:void(0)"
+                      class="pull-right text-success"
+                      style="margin-right: 10px"
+                      title="customization"
+                      (click)="customize(gl.id)"
+                    ><span><i class="fa fa-plus"></i></span
+                    ></a>
+                    <!--<a *ngIf="gl.group_image == null || gl.group_image.length === 0" href="javascript:void(0)" class="pull-right"
+                       style="margin-right:10px" (click)="editGroup(gl.id)" title="Upload Group Image"><span><i
+                            class="fa fa-image"></i></span></a>-->
+                  </div>
+                  &nbsp;
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="toggle-button" [ngClass]="{collapsed: collapsed}" (click)="toggleCollapsed()">
+          <i class="fa fa-fw fa-angle-double-{{collapsed?'right':'left'}}" [ngClass]="{'fa-2x': collapsed}"></i>&nbsp;
+          <span>{{ "Collapse Groups List" | translate }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-8 non-sidebar pt-2 pb-1" [ngClass]="{'when-sidebar-collapsed': collapsed}">
+      <!--<div class="row">
+        <div class="col-sm-5">
+          <div class="mb-2 neo3">
+            <app-tr-label labelText="{{ 'Upload menu Excel' | translate }}" style="font-size: 18px; font-weight: bold;"></app-tr-label>&nbsp;
+            &lt;!&ndash; <button class="cus-btn"><i class="fa fa-upload" aria-hidden="true"></i> &nbsp; Import Excel</button> &ndash;&gt;
+            <div class="custom-file" style="overflow: hidden;">
+              <input
+                type="file"
+                class="custom-file-input"
+                style="cursor: pointer;"
+                (change)="UploadExcel($event)"
+                accept=".xlsx"
+                #excelInput
+              />
+              <label class="custom-file-label" for="groupImage">
+                {{ "Choose file" | translate }}
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-5" *ngIf="groupList.length > 0">
+          <div class="mb-2 neo3">
+            <app-tr-label labelText="{{ 'Update Quantity Excel' | translate }}" style="font-size: 18px; font-weight: bold"></app-tr-label>&nbsp;
+            &lt;!&ndash; <button class="cus-btn"><i class="fa fa-upload" aria-hidden="true"></i> &nbsp; Import Excel</button> &ndash;&gt;
+            <div class="custom-file" style="overflow: hidden;">
+              <input
+                type="file"
+                class="custom-file-input"
+                style="cursor: pointer;"
+                (change)="uploadInvQuan($event)"
+                accept=".xlsx"
+                #quaexcelInput
+              />
+              <label class="custom-file-label" for="groupImage">
+                {{ "Choose file" | translate }}
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-2" style="display: none;">
+          <button class="btn btn-danger mr-2 mb-2 " style="padding: 4px 8px;" (click)="deleteallmenu()"><i
+              class="fa fa-trash" aria-hidden="true"></i>&nbsp;
+            Delete All Groups</button>
+        </div>
+        <div class="col-sm-2">
+          <div
+            class="d-flex flex-column justify-content-start align-items-end gap-3"
+          >
+            <button
+              (click)="handleBackClicked($event)"
+              class="btn btn-secondary btn-padding-1"
+              type="button"
+            >
+              {{ "Back" | translate }}
+            </button>
+            <div>
+              <span>{{ "Store ID" | translate }}:&nbsp;</span>
+              <span>{{ restaurantId }}</span>
+            </div>
+          </div>
+        </div>
+      </div>-->
+      <div class="row justify-content-end">
+        <div class="col-sm-4 mb-1">
+          <div
+            class="d-flex flex-row justify-content-start align-items-end gap-3"
+          >
+            <button
+              (click)="handleBackClicked($event)"
+              class="btn btn-secondary btn-padding-1"
+              type="button"
+            >
+              {{ "Back" | translate }}
+            </button>
+            <div>
+              <span>{{ "Store ID" | translate }}:&nbsp;</span>
+              <span>{{ restaurantId }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-container *ngIf="showaddedit">
+        <div class="w-100">
+          <div class="card">
+            <div class="card-header">
+              <div *ngIf="groupID == -1">
+                <b style="font-weight: 900">{{ "Add Group" | translate }}</b
+                >&nbsp;<span
+                style="
+                border: 1px solid red;
+                background-color: #fff7d8;
+                color: royalblue;
+                font-size: 12px;
+                font-style: italic;
+                padding: 4px;
+                border-radius: 4px;
+              "
+              >
+            {{ "(Create a group with at least 1 menu item)" | translate }}
+          </span
+          >
+              </div>
+              <b *ngIf="groupID != -1">{{ "Edit Group" | translate }}</b>
+              <a
+                *ngIf="groupID != -1"
+                href="javascript:void(0)"
+                (click)="deleteGroup(groupID)"
+                class="text-danger pull-right"
+              ><i class="fa fa-trash" aria-hidden="true"></i>
+              </a>
+            </div>
+            <form
+              role="form"
+              [formGroup]="groupForm"
+              (ngSubmit)="onSubmit()"
+              enctype="multipart/form-data"
+            >
+              <div class="row" style="align-items: center">
+                <div class="col-sm-6">
+                  <div class="form-group pl-2">
+                    <app-tr-label labelText="{{ 'Group Full Name' | translate }}" for="name" [required]="true"></app-tr-label>
+                    <input
+                      type="text"
+                      class="form-control input-underline input-lg"
+                      id="name"
+                      formControlName="groupname"
+                      placeholder="{{ 'Group Full Name' | translate }}"
+                      maxlength="25"
+                    />
+                    <span class="text-danger"
+                          *ngIf="!groupForm.controls['groupname'].valid && groupForm.controls['groupname'].touched && groupForm.controls['groupname'].hasError('required')"
+                    >{{ "Name is required" | translate }}.</span
+                    >
+                  </div>
+                </div>
+
+                <div class="col-sm-3">
+                  <!--[disabled]="this.groupID < 1"-->
+                  <button
+                    [disabled]="groupForm.invalid"
+                    type="button"
+                    (click)="availableTime()"
+                    class="btn btn-primary btn-sm"
+                    title="Edit availability time for all items/articles in this group"
+                    style="margin-top: 20px"
+                  >
+                    + {{ "Edit available time" | translate }}
+                  </button>
+                </div>
+              </div>
+
+              <div class="row" style="align-items: center">
+                <div class="col-sm-6">
+                  <div class="row">
+                    <div class="form-group pl-4">
+                      <app-tr-label labelText="{{ 'Choose Group Image' | translate }}"></app-tr-label>
+                      <input #grpImg type="hidden" formControlName="groupImage" />
+                      <div class="custom-file">
+                        <!--<input type="file" name="groupPic" class="custom-file-input" id="groupPic"
+                             (change)="fileChangeEventCustom($event,'groupImage')" accept="image/*">-->
+                        <input
+                          type="file"
+                          id="groupImage"
+                          class="custom-file-input"
+                          style="cursor: pointer;"
+                          (change)="fileChangeEventCustom($event, 'groupImage')"
+                          accept="image/*"
+                          multiple
+                        />
+                        <label class="custom-file-label" for="groupImage">
+                          {{ "Choose file" | translate }}
+                        </label>
+                      </div>
+                      <!--<div *ngIf="showImagecropper" class="col-sm-12 ">
+                      <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
+                                     [aspectRatio]="4 / 3" [resizeToWidth]="600" format="png" (imageCropped)="imageCropped($event)">
+                        &lt;!&ndash;(imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()">&ndash;&gt;
+                      </image-cropper>
+
+                      <img [src]="croppedImage" width="100" />
+                    </div>-->
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <img
+                    id="groupPic"
+                    *ngIf="imageChangedEvent != null"
+                    [src]="base64GroupPic"
+                    style="width: 100px; height: 100px"
+                  />
+                  <img
+                    *ngIf="imageChangedEvent == null && grpImg.value.length > 0"
+                    [src]="itemImagePath + grpImg.value"
+                    width="100"
+                  />
+                  <div
+                    *ngIf="imageChangedEvent == null && grpImg.value.length === 0"
+                    class="alert alert-danger text-center mt-4 mb-0"
+                    role="alert"
+                    style="height: 38px; line-height: 24px"
+                  >
+                    {{ "Upload Group Image" | translate }}
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="row"
+                style="align-items: center; margin: 0.5rem 0 0.25rem"
+              >
+                <div class="col-sm-12">
+                  <div class="pl-2 text-center">
+                <span style="font-size: 18px; font-weight: 600">
+                  {{ "Menu items of this group" | translate }}
+                </span>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                id="items-container"
+                data-scroll-top="0"
+                class="px-1"
+                formArrayName="items"
+                style="
+              height: calc(100vh - 17.85rem);
+              overflow-y: scroll;
+              padding: 10px 0 0 0;
+            "
+              >
+                <div
+                  [id]="'item-sno-' + (i + 1)"
+                  class="position-relative border rounded custom-shadow-2 mx-2 mb-3"
+                  *ngFor="let item of Items.controls; let i = index"
+                  [formGroupName]="i"
+                >
+                  <h3 class="position-absolute -top-2px -left-2px text-rect-vert">
+                    <span class="d-inline-block">{{ i + 1 }}</span>
+                  </h3>
+                  <input type="hidden" formControlName="item_id" />
+                  <div class="col-md-12 menus pl-23px">
+                <span class="menu-items menu-row-del">
+                  <a
+                    href="javascript:void(0)"
+                    (click)="deleteItem(i)"
+                    [attr.data-item-is-new]="Items.controls[i].get('is_new')?.value"
+                    style="display: inline-block; cursor: pointer"
+                    class="text-danger"
+                  ><i class="fa fa-times-circle" aria-hidden="true"></i> </a
+                  ></span>
+                    <div class="row menu-row">
+                      <div class="col-md-6 pl-2">
+                        <div class="form-group">
+                          <app-tr-label labelText="{{ 'Item Name' | translate }}" [required]="true"></app-tr-label>
+                          <input
+                            type="text"
+                            class="form-control input-underline input-lg"
+                            formControlName="name"
+                            placeholder="{{ 'Item Name' | translate }}"
+                            maxlength="80"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <app-tr-label labelText="{{ 'Price' | translate }}" [required]="true"></app-tr-label>
+                          <input
+                            type="number"
+                            class="form-control input-underline input-lg"
+                            formControlName="price"
+                            placeholder="{{ 'Price' | translate }}"
+                            maxlength="25"
+                            min="0"
+                            step="0.01"
+                            max="9999"
+                          />
+                          <!--<span class="text-danger" *ngIf="!Items.controls[i].get('price').valid">Invalid value</span>-->
+                          <!--<span class="text-danger">{{Items.controls[i].get('price').errors | json}}</span>-->
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <app-tr-label labelText="{{ 'Vendor Cost' | translate }}"></app-tr-label>
+                          <input
+                            type="number"
+                            class="form-control input-underline input-lg"
+                            formControlName="vendor_cost"
+                            placeholder="{{ 'Vendor Cost' | translate }}"
+                            maxlength="25"
+                            min="0"
+                            step="0.01"
+                            max="9999"
+                          />
+                          <!--<span class="text-danger" *ngIf="!Items.controls[i].get('price').valid">Invalid value</span>-->
+                          <!--<span class="text-danger">{{Items.controls[i].get('price').errors | json}}</span>-->
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row menu-row">
+                      <div class="col-md-10 pl-2">
+                        <div class="form-group">
+                          <app-tr-label labelText="{{ 'Item Description' | translate }}"></app-tr-label>
+                          <input
+                            type="text"
+                            class="form-control input-underline input-lg"
+                            formControlName="item_des"
+                            placeholder="{{ 'Item Description' | translate }}"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row menu-row">
+                      <div
+                        class="col-md-3 pl-2"
+                        *ngIf="groupCustomizationOption?.length > 0"
+                      >
+                        <div class="form-group">
+                          <app-tr-label labelText="{{ 'Customization' | translate }}" for="cus"></app-tr-label>
+                          <angular2-multiselect
+                            [data]="groupCustomizationOption"
+                            [(ngModel)]="selectedItemCus[i]"
+                            [settings]="dropdownSettings"
+                            formControlName="cus" id="cus"
+                          >
+                          </angular2-multiselect>
+                        </div>
+                      </div>
+
+                      <!--<div class="col-md-3">
+                        <div class="form-group">
+                          <app-tr-label labelText="Tax Type"></app-tr-label>
+                          <select (change)="handleTaxTypeChange($event)" class="form-control" formControlName="taxtype">
+                            <option value="food">Food Tax</option>
+                            <option value="drink">Drink Tax</option>
+                          </select>
+                        </div>
+                      </div>-->
+                      <input type="hidden" id="taxtype" formControlName="taxtype" />
+
+                      <div class="col-md-3"
+                           [class.pl-2]="groupCustomizationOption == null || groupCustomizationOption.length === 0"
+                      >
+                        <div class="form-group">
+                          <app-tr-label labelText="{{ 'Quantity' | translate }}" [required]="true"></app-tr-label>
+                          <input
+                            #quantityInput
+                            type="number"
+                            class="form-control input-underline input-lg"
+                            formControlName="quantity"
+                            placeholder="{{ 'Quantity' | translate }}"
+                            maxlength="25"
+                            min="0"
+                            max="9999"
+                          />
+                          <!--<span class="text-danger">{{Items.controls[i].get('quantity').errors | json}}</span>-->
+                        </div>
+                      </div>
+
+                      <div class="col-md-3"
+                           [class.pl-2]="groupCustomizationOption == null || groupCustomizationOption.length === 0"
+                      >
+                        <div class="form-group">
+                          <app-tr-label labelText="{{ 'Min Quantity' | translate }}"></app-tr-label>
+                          <input
+                            #quantityInput
+                            type="number"
+                            class="form-control input-underline input-lg"
+                            formControlName="min_qty"
+                            placeholder="{{ 'Minimum Quantity' | translate }}"
+                            maxlength="25"
+                            min="0"
+                            max="9999"
+                          />
+                          <!--<span class="text-danger">{{Items.controls[i].get('quantity').errors | json}}</span>-->
+                        </div>
+                      </div>
+
+                      <div class="col-md-3"
+                           [class.pl-2]="groupCustomizationOption == null || groupCustomizationOption.length === 0"
+                      >
+                        <div class="form-group">
+                          <app-tr-label labelText="{{ 'Max Quantity' | translate }}"></app-tr-label>
+                          <input
+                            #quantityInput
+                            type="number"
+                            class="form-control input-underline input-lg"
+                            formControlName="max_qty"
+                            placeholder="{{ 'Maximum Quantity' | translate }}"
+                            maxlength="25"
+                            min="0"
+                            max="9999"
+                          />
+                          <!--<span class="text-danger">{{Items.controls[i].get('quantity').errors | json}}</span>-->
+                        </div>
+                      </div>
+
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <app-tr-label labelText="{{ 'UPC No.' | translate }}" [required]="true"></app-tr-label>
+                          <input
+                            type="text"
+                            class="form-control input-underline input-lg"
+                            formControlName="upc_no"
+                            placeholder="{{ 'UPC No' | translate }}"
+                            maxlength="25"
+                            minlength="4"
+                          />
+                          <!--(keydown.enter)="onUpcNoKeyDown($event.target)"
+                          (blur)="onUpcNoBlur($event.target)"-->
+                          <span *ngIf="Items.controls[i].get('upc_no').hasError('uniqueUpc')"
+                                class="text-danger form-field-error-msg" style="font-size: 12px">
+                        {{ "UPC code already exists" | translate }}
+                            <!-- {{Items.controls[i].get('upc_no').errors | json}} -->
+                      </span>
+                          <span *ngIf="Items.controls[i].get('upc_no').hasError('upcLength')"
+                                class="text-danger form-field-error-msg" style="font-size: 12px">
+                        {{ "UPC code must be longer than 4 characters" | translate }}
+                            <!-- {{Items.controls[i].get('upc_no').errors | json}} -->
+                      </span>
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <div class="row menu-row justify-content-between gap-2 mb-3">
+                      <div class="col-6-type-1 neo1 pl-2">
+                        <div class="row">
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <app-tr-label labelText="Points"></app-tr-label>
+                              <input type="number" class="form-control input-underline input-lg" formControlName="points"
+                                     placeholder="{{ 'Points'  }}" maxlength="5" />
+                            </div>
+                          </div>
+                          <div *ngFor="let item of createRange(4); let i = index" class="col-md-4">
+                            <div class="form-group">
+                              <app-tr-label labelText="Price" [serialNumber]="i+2"></app-tr-label>
+                              <input type="number" class="form-control input-underline input-lg" formControlName="price_{{i+2}}"
+                                     placeholder="{{ 'Price ' + (i+2)  }}" maxlength="25" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-6-type-1 neo1 pl-2">
+                        <div class="row">
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <app-tr-label labelText="{{ 'Food Tax' | translate }}"></app-tr-label>
+                              <br />
+                              <input #foodTaxCheckbox type="checkbox" formControlName="is_food" />
+                            </div>
+                          </div>
+
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <app-tr-label labelText="{{ 'Bar Item' | translate }}"></app-tr-label>
+                              <br />
+                              <input #foodTaxCheckbox type="checkbox" formControlName="is_bar" />
+                            </div>
+                          </div>
+
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <app-tr-label labelText="{{ 'State Tax' | translate }}"></app-tr-label>
+                              <br />
+                              <input type="checkbox" formControlName="is_state" />
+                            </div>
+                          </div>
+
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <app-tr-label labelText="{{ 'City Tax' | translate }}"></app-tr-label>
+                              <br />
+                              <input type="checkbox" formControlName="is_city" />
+                            </div>
+                          </div>
+
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <app-tr-label labelText="{{ 'Show' | translate }}"></app-tr-label>
+                              <br />
+                              <input type="checkbox" formControlName="is_show" />
+                            </div>
+                          </div>
+
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <app-tr-label labelText="{{ 'Reduced Tax' | translate }}"></app-tr-label>
+                              <br />
+                              <input #foodTaxCheckbox type="checkbox" formControlName="is_reduced" />
+                            </div>
+                          </div>
+
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <app-tr-label labelText="{{ 'Local Tax' | translate }}"></app-tr-label>
+                              <br />
+                              <input type="checkbox" formControlName="is_local" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row menu-row">
+                      <div class="col-md-2 pl-2">
+                        <div
+                          style="
+                        border: 0.5px solid #ced4da;
+                        width: 80px;
+                        aspect-ratio: 1 / 1;
+                      "
+                        >
+                          <img
+                            src="{{ showItempic[i] }}"
+                            width="100px"
+                            [style.padding]="'10px'"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="col-md-7">
+                        <div class="form-group">
+                          <app-tr-label labelText="{{ 'Image' | translate }}" [required]="true" for="pic"></app-tr-label>
+                          <div class="custom-file">
+                            <input type="hidden" formControlName="itempic" />
+                            <input type="file" id="pic" formControlName="pic"
+                                   class="custom-file-input" style="cursor: pointer;"
+                                   (change)="fileChangeEvent($event, i)"
+                                   accept="image/*" multiple
+                            />
+                            <label class="custom-file-label" for="pic">{{
+                                "Choose file" | translate
+                              }}</label>
+                          </div>
+
+                          <!-- <input type="text" class="form-control input-underline input-lg" formControlName="quantity"
+                                placeholder="{{ 'Quantity'  }}" maxlength="25" /> -->
+                        </div>
+                      </div>
+
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <app-tr-label labelText="{{ 'Note' | translate }}"></app-tr-label>
+                          <br />
+                          <input type="checkbox" formControlName="is_note" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row menu-row justify-content-between gap-2 mb-3">
+                      <div class="col-6-type-1 neo1 pl-2">
+                        <div class="row">
+                          <div *ngFor="let item of createRange(6); let i = index" class="col-md-4">
+                            <div class="form-group d-flex flex-column justify-content-start align-items-start gap-2">
+                              <app-tr-label [doubleLine]="true" [serialNumber]="i+2" labelText="{{ 'Printer' | translate }}" style="max-height: 36px; overflow: hidden;">
+                                <span style="position: relative; top: -18px; font-size: 12px;">{{ "(" + getPrinterPurpose(i) + ")" | translate }}</span>
+                              </app-tr-label>
+                              <!--<label class="double-line"
+                                >{{ "Printer" | translate }} #{{i+2}}
+                                <span>{{ "(Cashier)" | translate }}</span>
+                              </label>
+                              <br />-->
+                              <input type="checkbox" formControlName="printer_{{i+2}}" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-6-type-1 pl-2">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <app-tr-label labelText="{{ 'Discount Type' | translate }}"></app-tr-label>
+                              <br />
+                              <select
+                                class="form-control"
+                                formControlName="discount_type"
+                              >
+                                <option value="PERCENTAGE" selected>Percent</option>
+                                <option value="FIXED">Fixed</option>
+                              </select>
+                            </div>
+                          </div>
+
+                          <div class="col-md-8">
+                            <div class="form-group">
+                              <app-tr-label labelText="{{ 'Discount Amount' | translate }}"></app-tr-label>
+                              <input
+                                type="text"
+                                class="form-control input-underline input-lg"
+                                formControlName="discount_amount"
+                                placeholder="{{ 'Discount Amount' | translate }}"
+                              />
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row menu-row">
+                      <div class="col-md-2">&nbsp;</div>
+
+                      <div class="col-md-8">
+                        <div class="form-group">
+                          <app-tr-label labelText="{{ 'Discount Period' | translate }}"></app-tr-label>
+                          <input
+                            type="text"
+                            opens="top"
+                            placeholder='{{ "Discount Period" | translate }}'
+                            ngxDaterangepickerMd
+                            [timePicker]="true"
+                            [timePickerIncrement]="15"
+                            [timePicker24Hour]="true"
+                            [timePickerSeconds]="false"
+                            [locale]="{ format: 'DD/MM/YYYY HH:mm', firstDay: 1 }"
+                            class="form-control"
+                            [maxDate]="maxDate"
+                            [showDropdowns]="true"
+                            formControlName="discount_period"
+                          />
+                          <!-- <input type="text" class="form-control input-underline input-lg" formControlName="discount_period"
+                                 placeholder='{{ "Discount Period" | translate }}' /> -->
+                        </div>
+                      </div>
+
+                      <div class="col-md-12" *ngIf="Items.controls[i].get('item_id')?.value != null">
+                        <div class="form-group">
+                          <button
+                            type="button"
+                            (click)="showIngredientsModal(Items.controls[i].get('item_id')?.value,Items.controls[i].get('name')?.value)"
+                            class="btn btn-primary btn-sm"
+                            title="Edit availability time for all items/articles in this group"
+                            style="margin-top: 20px"
+                          >
+                            {{ "Manage Ingredients" | translate }}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="position-absolute top-4px right-4px"
+                    style="
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: flex-start;
+                  align-items: flex-end;
+                  row-gap: 0.25rem;
+                "
+                  >
+                    <h3
+                      *ngIf="Items.controls[i].get('is_new')?.value"
+                      class="text-new-rect"
+                    >
+                      <span class="d-inline-block">{{ "New Item" | translate }}</span>
+                    </h3>
+                    <!--<h3 class="text-rect"><span class="d-inline-block">Quantity Error {{quantityInput.value}}</span></h3>-->
+                    <h3
+                      *ngIf="Items.controls[i].get('quantity')?.value === 0"
+                      class="text-error-rect"
+                    >
+                  <span class="d-inline-block"
+                  >{{ "Error - Quantity =" | translate }}
+                    {{ Items.controls[i].get("quantity")?.value }}</span
+                  >
+                    </h3>
+                    <h3 class="text-warn-rect"
+                        *ngIf="Items.controls[i].get('quantity')?.value > 0 && Items.controls[i].get('quantity')?.value < 30"
+                    >
+                  <span class="d-inline-block"
+                  >{{ "Warning - Quantity =" | translate }}
+                    {{ Items.controls[i].get("quantity")?.value }}</span
+                  >
+                    </h3>
+                  </div>
+                </div>
+                <div style="position: absolute; top: 311px; left: -28px">
+                  <div style="position: relative">
+                    <button
+                      #buttonMenu
+                      (click)="onBreadCrumbClicked($event)"
+                      style="
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+                    padding: 2px;
+                    border: 0.5px solid #ced4da;
+                  "
+                    >
+                      <svg
+                        width="18px"
+                        height="18px"
+                        viewBox="0 0 52 52"
+                        data-name="Layer 1"
+                        id="Layer_1"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path d="M43.57,4H2A2,2,0,0,1,2,0H43.57a2,2,0,0,1,0,4Z" />
+                        <path d="M43.57,16H2a2,2,0,0,1,0-4H43.57a2,2,0,0,1,0,4Z" />
+                        <path d="M43.57,28H2a2,2,0,0,1,0-4H43.57a2,2,0,0,1,0,4Z" />
+                        <path d="M39.29,40h-33a2,2,0,1,1,0-4h33a2,2,0,0,1,0,4Z" />
+                        <path d="M35,52H10.57a2,2,0,0,1,0-4H35a2,2,0,0,1,0,4Z" />
+                        <path
+                          d="M50,52a2,2,0,0,1-2-2V2a2,2,0,0,1,4,0V50A2,2,0,0,1,50,52Z"
+                        />
+                      </svg>
+                    </button>
+                    <div
+                      #breadcrumbMenu
+                      class="hidden"
+                      style="
+                    background-color: white;
+                    border: 0.5px solid gray;
+                    border-radius: 4px;
+                    position: relative;
+                    left: -75px;
+                    top: 2px;
+                    padding: 2px 0;
+                  "
+                    >
+                      <div style="padding: 2px 0.25rem">
+                        <button
+                          type="button"
+                          (click)="addItems()"
+                          class="btn btn-primary btn-sm"
+                          [disabled]="!allowAdd"
+                        >
+                          + {{ "Add More" | translate }}
+                        </button>
+                      </div>
+                      <div
+                        style="
+                      width: 99px;
+                      display: flex;
+                      flex-direction: row;
+                      justify-content: center;
+                      align-items: center;
+                    "
+                      >
+                        <div
+                          style="
+                        width: 63px;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                      "
+                        >
+                          <div style="padding: 2px 0.25rem">
+                            <button
+                              #saveBtn1
+                              class="btn btn-success"
+                              type="submit"
+                              [disabled]="!groupForm.valid"
+                              data-balloon-length="medium"
+                              data-balloon-pos="left"
+                            >
+                              {{ "Save" | translate }}
+                            </button>
+                          </div>
+                          <div style="padding: 2px 0.25rem">
+                            <button
+                              (click)="handleBackClicked($event)"
+                              class="btn btn-secondary btn-padding-2"
+                              type="button"
+                            >
+                              {{ "Back" | translate }}
+                            </button>
+                          </div>
+                        </div>
+                        <div
+                          style="
+                        width: 26px;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                        row-gap: 0.5rem;
+                      "
+                        >
+                          <div
+                            style="
+                          width: 100%;
+                          height: 34px;
+                          padding: 2px 0;
+                          position: relative;
+                        "
+                          >
+                            <button
+                              (click)="handleItemsScrollClicked($event, 'up')"
+                              type="button"
+                              class="up-down-btn"
+                              style="position: absolute"
+                            >
+                              <svg
+                                version="1.1"
+                                id="Capa_1"
+                                xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink"
+                                x="0px"
+                                y="0px"
+                                viewBox="0 0 51.983 51.983"
+                                style="width: 20px"
+                                xml:space="preserve"
+                              >
+                            <path
+                              d="M45.257,22.339l-18.5-22c-0.381-0.452-1.15-0.452-1.531,0l-18.5,22c-0.25,0.297-0.305,0.713-0.141,1.066
+                              c0.164,0.352,0.518,0.578,0.906,0.578h8.486l4.199,25.196c0.262,1.572,1.716,2.804,3.312,2.804h5.005
+                              c1.595,0,3.05-1.231,3.313-2.804l4.198-25.196h8.487c0.389,0,0.742-0.226,0.906-0.578C45.562,23.052,45.507,22.636,45.257,22.339z
+                               M35.157,21.983c-0.489,0-0.906,0.354-0.986,0.835l-4.338,26.031c-0.101,0.604-0.727,1.133-1.34,1.133h-5.005
+                              c-0.613,0-1.238-0.529-1.339-1.133l-4.339-26.032c-0.08-0.482-0.497-0.835-0.986-0.835H9.639L25.991,2.536l16.353,19.446H35.157z"
+                            />
+                          </svg>
+                            </button>
+                          </div>
+                          <button
+                            (click)="handleItemsScrollClicked($event, 'down')"
+                            type="button"
+                            class="up-down-btn"
+                          >
+                            <svg
+                              version="1.1"
+                              id="Capa_1"
+                              xmlns="http://www.w3.org/2000/svg"
+                              xmlns:xlink="http://www.w3.org/1999/xlink"
+                              x="0px"
+                              y="0px"
+                              viewBox="0 0 51.983 51.983"
+                              style="width: 20px"
+                              xml:space="preserve"
+                            >
+                          <g id="g43" transform="matrix(1,0,0,-1,0,51.983)">
+                            <path
+                              d="m 45.257,22.339 -18.5,-22 c -0.381,-0.452 -1.15,-0.452 -1.531,0 l -18.5,22 c -0.25,0.297 -0.305,0.713 -0.141,1.066 0.164,0.352 0.518,0.578 0.906,0.578 h 8.486 l 4.199,25.196 c 0.262,1.572 1.716,2.804 3.312,2.804 h 5.005 c 1.595,0 3.05,-1.231 3.313,-2.804 l 4.198,-25.196 h 8.487 c 0.389,0 0.742,-0.226 0.906,-0.578 0.165,-0.353 0.11,-0.769 -0.14,-1.066 z m -10.1,-0.356 c -0.489,0 -0.906,0.354 -0.986,0.835 l -4.338,26.031 c -0.101,0.604 -0.727,1.133 -1.34,1.133 h -5.005 c -0.613,0 -1.238,-0.529 -1.339,-1.133 L 17.81,22.817 C 17.73,22.335 17.313,21.982 16.824,21.982 H 9.639 L 25.991,2.536 42.344,21.982 h -7.187 z"
+                              id="path41"
+                            />
+                          </g>
+                        </svg>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="btn-div">
+                  <button
+                    type="button"
+                    (click)="addItems()"
+                    class="btn btn-primary btn-sm"
+                    [disabled]="!allowAdd"
+                  >
+                    + {{ "Add More" | translate }}
+                  </button>
+                </div>
+                <div
+                  class="btn-div d-flex flex-row justify-content-start align-items-center gap-1"
+                >
+                  <button
+                    class="btn btn-success"
+                    type="submit"
+                    [disabled]="!groupForm.valid"
+                  >
+                    {{ "Save" | translate }}
+                  </button>
+                  <button
+                    (click)="handleBackClicked($event)"
+                    class="btn btn-secondary btn-padding-2"
+                    type="button"
+                  >
+                    {{ "Back" | translate }}
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <!--<span id="addMoreBtnContainer">&nbsp;</span>-->
+        </div>
+      </ng-container>
+      <ng-container *ngIf="ShowDetail">
+        <div class="w-100">
+          <div class="card detailcard">
+            <div class="card-header">
+              <b>{{ detailGroupName | titlecase }}</b>
+            </div>
+            <div class="col-md-12">
+              <div class="col-md-12 menus">
+                <div class="row">
+                  <div class="col-md-3">
+                    <b> {{ "Image" | translate }} </b>
+                  </div>
+                  <div class="col-md-2">
+                    <b>{{ "Name" | translate }}</b>
+                  </div>
+                  <div class="col-md-2">
+                    <b>{{ "Price" | translate }}</b>
+                  </div>
+                  <div class="col-md-2">
+                    <b>{{ "Quantity" | translate }}</b>
+                  </div>
+                  <div class="col-md-2">
+                    <b>{{ "Tax Type" | translate }}</b>
+                  </div>
+                </div>
+              </div>
+              <ng-container *ngFor="let item of detailGroupMenuitems">
+                <div class="col-md-12 menus">
+                  <div
+                    class="row"
+                    [ngClass]="{ errorMenuItem: item.item_quantity < 31 }"
+                  >
+                    <div class="col-md-3">
+                      <img
+                        src="{{ itemImagePath }}{{ item.item_pic }}"
+                        width="100px"
+                        [style.padding]="'10px'"
+                        *ngIf="item.item_pic != null && item.item_pic != 'null'"
+                      />
+                    </div>
+                    <div class="col-md-2">
+                      <p>{{ item.item_name }}</p>
+                    </div>
+                    <div class="col-md-2">
+                      <p>{{ item.item_price | currency }}</p>
+                    </div>
+                    <div class="col-md-2">
+                      <p *ngIf="item.item_quantity > 30">
+                        {{ item.item_quantity }}
+                      </p>
+                      <p
+                        *ngIf="item.item_quantity > 0 && item.item_quantity < 31"
+                        title="Low quantity warning!"
+                        class="low-quantity"
+                      >
+                        {{ item.item_quantity }}
+                      </p>
+                      <p
+                        *ngIf="item.item_quantity <= 0"
+                        title="Invalid quantity! Needs correction..."
+                        class="zero-quantity"
+                      >
+                        {{ "ZERO" | translate }}
+                      </p>
+                    </div>
+                    <div class="col-md-2">
+                      <p>{{ item.taxtype }}</p>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="showcoustmization">
+        <div class="w-100">
+          <div class="card detailcard">
+            <div class="card-header">
+              <b>{{ detailGroupName | titlecase }}</b>
+            </div>
+            <div class="">
+              <div class="row" style="margin: 15px 0px">
+                <div class="col-sm-4" style="padding-right: 0px">
+                  <div class="card">
+                    <div class="card-header">
+                      {{ "Customizations" | translate }}
+                      <button class="btn btn-success pull-right" (click)="addCus()">
+                        {{ "Add" | translate }} +
+                      </button>
+                    </div>
+                    <div class="card-body">
+                      <ul
+                        class="list-group list-group-flush"
+                        *ngFor="let cs of customizationslist; index as i"
+                      >
+                        <li class="list-group-item">
+                          {{ cs.name }}
+                          <a
+                            href="javascript:void(0)"
+                            (click)="deleteCustomization(cs.id)"
+                            class="text-danger pull-right"
+                          ><i class="fa fa-trash" aria-hidden="true"></i>
+                          </a>
+                          <a
+                            href="javascript:void(0)"
+                            style="margin-right: 10px"
+                            title="edit"
+                            class="pull-right"
+                            (click)="editCustomization(cs.id)"
+                          ><span><i class="fa fa-pencil"></i></span>
+                          </a>
+                          &nbsp;
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-8">
+                  <div class="card">
+                    <div class="card-header">
+                      {{ "Add Customization" | translate }}
+                    </div>
+                    <div class="card-body">
+                      <form
+                        (keydown.enter)="$event.preventDefault()"
+                        role="form"
+                        [formGroup]="customizationGroup"
+                        (ngSubmit)="onSubmitCustomization()"
+                        enctype="multipart/form-data"
+                      >
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <div class="form-group">
+                              <app-tr-label labelText="{{ 'Customization Name' | translate }}" for="name" [required]="true"></app-tr-label>
+                              <input
+                                type="text"
+                                class="form-control input-underline input-lg"
+                                formControlName="name"
+                                placeholder="{{ 'Customization Name' | translate }}"
+                                maxlength="25"
+                              />
+                              <span
+                                class="text-danger"
+                                *ngIf="
+                              !customizationGroup.controls['name'].valid &&
+                              customizationGroup.controls['name'].touched &&
+                              customizationGroup.controls['name'].hasError(
+                                'required'
+                              )
+                            "
+                              >{{ "Name is required" | translate }}.</span
+                              >
+                            </div>
+                          </div>
+                          <div class="col-sm-6">
+                            <div class="form-group">
+                              <app-tr-label labelText="{{ 'Max select' | translate }}" for="max1"></app-tr-label>
+                              <input
+                                id="max1"
+                                type="number"
+                                class="form-control input-underline input-lg"
+                                formControlName="max"
+                                min="1"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div formArrayName="options">
+                          <div
+                            *ngFor="let item of Options.controls; let i = index"
+                            [formGroupName]="i"
+                          >
+                            <input type="hidden" formControlName="itemid" />
+                            <div class="col-md-12 menus">
+                              <div class="row">
+                            <span class="menu-items">
+                              <a
+                                href="javascript:void(0)"
+                                (click)="deleteCustomizeOption(i)"
+                                class="text-danger"
+                              ><i
+                                class="fa fa-times-circle"
+                                aria-hidden="true"
+                              ></i> </a
+                              ></span>
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <app-tr-label labelText="{{ 'Option Name' | translate }}" [required]="true"></app-tr-label>
+                                    <input
+                                      type="text"
+                                      class="form-control input-underline input-lg"
+                                      formControlName="option_name"
+                                      placeholder="{{ 'Option Name' | translate }}"
+                                      maxlength="80"
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-md-5">
+                                  <div class="form-group">
+                                    <app-tr-label labelText="{{ 'Option Price' | translate }}" [required]="true"></app-tr-label>
+                                    <input
+                                      type="number"
+                                      class="form-control input-underline input-lg"
+                                      formControlName="option_price"
+                                      placeholder="{{ 'Option Price' | translate }}"
+                                      maxlength="25"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="btn-div">
+                            <button
+                              type="button"
+                              (click)="addOptions()"
+                              class="btn btn-primary btn-sm"
+                              [disabled]="!allowAdd"
+                            >
+                              + {{ "Add More" | translate }}
+                            </button>
+                          </div>
+                        </div>
+                        <div class="btn-div">
+                          <button
+                            class="btn btn-success"
+                            type="submit"
+                            [disabled]="!customizationGroup.valid"
+                          >
+                            {{ "Save" | translate }}
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</ng-container>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="openTimeModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <!-- 16:9 aspect ratio -->
+        <form
+          class=""
+          id="openTimeForm"
+          [formGroup]="openTimeForm"
+          (ngSubmit)="submitTimeform()"
+        >
+          <div class="row">
+            <div class="col-sm-12">
+              <h6>
+                <strong>{{
+                  "Fill Available and Unavailable time" | translate
+                }}</strong>
+              </h6>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-2">
+              {{ "Monday" | translate }}
+            </div>
+            <div class="col-3">
+              <input
+                atp-time-picker
+                changeToMinutes="true"
+                animation="rotate"
+                formControlName="monopen_time"
+                class="form-control readonly-allow-pointer-events"
+                readonly
+              />
+            </div>
+            <div class="col-3">
+              <input
+                atp-time-picker
+                changeToMinutes="true"
+                animation="rotate"
+                formControlName="monclose_time"
+                class="form-control readonly-allow-pointer-events"
+                readonly
+              />
+            </div>
+            <div class="col-3">
+              <span class="btn btn-primary badge" (click)="copyTiming()">{{
+                "Same all day" | translate
+              }}</span
+              ><br /><span
+                class="btn btn-danger badge"
+                (click)="clearTimining('mon')"
+                >{{ "clear/closed" | translate }}</span
+              >
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-2">
+              {{ "Tuesday" | translate }}
+            </div>
+            <div class="col-3">
+              <input
+                atp-time-picker
+                changeToMinutes="true"
+                animation="rotate"
+                formControlName="tueopen_time"
+                class="form-control readonly-allow-pointer-events"
+                readonly
+              />
+            </div>
+            <div class="col-3">
+              <input
+                atp-time-picker
+                changeToMinutes="true"
+                animation="rotate"
+                formControlName="tueclose_time"
+                class="form-control readonly-allow-pointer-events"
+                readonly
+              />
+            </div>
+            <div class="col-3">
+              <span
+                class="btn btn-danger badge"
+                (click)="clearTimining('tue')"
+                >{{ "clear/closed" | translate }}</span
+              >
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-2">
+              {{ "Wednesday" | translate }}
+            </div>
+            <div class="col-3">
+              <input
+                atp-time-picker
+                changeToMinutes="true"
+                animation="rotate"
+                formControlName="wedopen_time"
+                class="form-control readonly-allow-pointer-events"
+                readonly
+              />
+            </div>
+            <div class="col-3">
+              <input
+                atp-time-picker
+                changeToMinutes="true"
+                animation="rotate"
+                formControlName="wedclose_time"
+                class="form-control readonly-allow-pointer-events"
+                readonly
+              />
+            </div>
+            <div class="col-3">
+              <span
+                class="btn btn-danger badge"
+                (click)="clearTimining('wed')"
+                >{{ "clear/closed" | translate }}</span
+              >
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-2">
+              {{ "Thursday" | translate }}
+            </div>
+            <div class="col-3">
+              <input
+                atp-time-picker
+                changeToMinutes="true"
+                animation="rotate"
+                formControlName="thuopen_time"
+                class="form-control readonly-allow-pointer-events"
+                readonly
+              />
+            </div>
+            <div class="col-3">
+              <input
+                atp-time-picker
+                changeToMinutes="true"
+                animation="rotate"
+                formControlName="thuclose_time"
+                class="form-control readonly-allow-pointer-events"
+                readonly
+              />
+            </div>
+            <div class="col-3">
+              <span
+                class="btn btn-danger badge"
+                (click)="clearTimining('thu')"
+                >{{ "clear/closed" | translate }}</span
+              >
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-2">
+              {{ "Friday" | translate }}
+            </div>
+            <div class="col-3">
+              <input
+                atp-time-picker
+                changeToMinutes="true"
+                animation="rotate"
+                formControlName="friopen_time"
+                class="form-control readonly-allow-pointer-events"
+                readonly
+              />
+            </div>
+            <div class="col-3">
+              <input
+                atp-time-picker
+                changeToMinutes="true"
+                animation="rotate"
+                formControlName="friclose_time"
+                class="form-control readonly-allow-pointer-events"
+                readonly
+              />
+            </div>
+            <div class="col-3">
+              <span
+                class="btn btn-danger badge"
+                (click)="clearTimining('fri')"
+                >{{ "clear/closed" | translate }}</span
+              >
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-2">
+              {{ "Saturday" | translate }}
+            </div>
+            <div class="col-3">
+              <input
+                atp-time-picker
+                changeToMinutes="true"
+                animation="rotate"
+                formControlName="satopen_time"
+                class="form-control readonly-allow-pointer-events"
+                readonly
+              />
+            </div>
+            <div class="col-3">
+              <input
+                atp-time-picker
+                changeToMinutes="true"
+                animation="rotate"
+                formControlName="satclose_time"
+                class="form-control readonly-allow-pointer-events"
+                readonly
+              />
+            </div>
+            <div class="col-3">
+              <span
+                class="btn btn-danger badge"
+                (click)="clearTimining('sat')"
+                >{{ "clear/closed" | translate }}</span
+              >
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-2">
+              {{ "Sunday" | translate }}
+            </div>
+            <div class="col-3">
+              <input
+                atp-time-picker
+                changeToMinutes="true"
+                animation="rotate"
+                formControlName="sunopen_time"
+                class="form-control readonly-allow-pointer-events"
+                readonly
+              />
+            </div>
+            <div class="col-3">
+              <input
+                atp-time-picker
+                changeToMinutes="true"
+                animation="rotate"
+                formControlName="sunclose_time"
+                class="form-control readonly-allow-pointer-events"
+                readonly
+              />
+            </div>
+            <div class="col-3">
+              <span
+                class="btn btn-danger badge"
+                (click)="clearTimining('sun')"
+                >{{ "clear/closed" | translate }}</span
+              >
+            </div>
+          </div>
+
+          <div class="col-sm-12">
+            <button
+              [disabled]="!openTimeForm.valid"
+              type="submit"
+              class="btn btn-success"
+            >
+              {{ "Ok" | translate }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="inventoryModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:10px">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <app-menu-inventory [item_id]="currentItemId" [item_name]="currentItemName" [restid]="restaurantId"></app-menu-inventory>
+      </div>
+    </div>
+  </div>
+</div>

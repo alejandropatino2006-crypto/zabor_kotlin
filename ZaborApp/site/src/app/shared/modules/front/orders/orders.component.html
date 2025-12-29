@@ -1,0 +1,156 @@
+<div class="mb-3 d-flex flex-row justify-content-end align-items-center" style="text-align: right;">
+  <div class="d-flex flex-row justify-content-start align-items-center gap-3">
+    <button (click)="handleBackClicked($event)" class="btn btn-secondary btn-padding-1" type="button">{{'Back' | translate}}</button>
+    <div><span>{{ "Store ID" | translate }}: </span>&nbsp;<span>{{resId}}</span></div>
+  </div>
+</div>
+<div class="row">
+  <div class="col col-xs-12">
+    <div class="card mb-3">
+      <div class="card-header">
+        <h4>{{ "Orders" | translate }}</h4>
+      </div>
+      <div class="card-body table-responsive">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="date-range">{{ "Select date Range" | translate }} *</label>
+              <div class="input-group mb-3">
+                <input id="date-range" type="text" opens="right" placeholder='{{ "Select date Range" | translate }}' ngxDaterangepickerMd
+                  [locale]="{applyLabel: 'ok', format: 'DD-MM-YYYY'}" class="form-control" [maxDate]="maxDate" [disabled]="disableUi"
+                  [(ngModel)]="selected" [showDropdowns]="true" />
+                <div class="input-group-append">
+                  <span class="input-group-text" id="basic-addon1"><i class="fa fa-calendar"
+                      aria-hidden="true"></i></span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="order_status">{{ "Status" | translate }}*</label>
+              <!-- <angular2-multiselect [data]="statusdata" [(ngModel)]="selectedstatuslist" [settings]="dropdownSettings">
+              </angular2-multiselect> -->
+              <select id="order_status" class="form-control" [disabled]="disableUi" [(ngModel)]="orderStatus" (change)="handleStatusChange($event.target)">
+                <option value="-1">{{ "Select" | translate }}</option>
+                <option value="received">{{ "Order Received" | translate }}</option>
+                <option value="preparing">{{ "Preparing" | translate }}</option>
+                <option value="ready">{{ "Ready" | translate }}</option>
+                <option value="pickup">{{ "Pickup" | translate }}</option>
+                <option value="delivered">{{ "Delivered" | translate }}</option>
+                <option value="cancelled">{{ "Cancelled" | translate }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="restaurantId">{{ "Restaurant" | translate }}*</label>
+              <!-- <angular2-multiselect [data]="statusdata" [(ngModel)]="selectedstatuslist" [settings]="dropdownSettings">
+              </angular2-multiselect> -->
+              <select id="restaurantId" class="form-control" [disabled]="disableUi" [(ngModel)]="resId" (change)="handleRestaurantChange($event.target)">
+                <option value="-1">{{ "Select a Restaurant" | translate }}</option>
+                <option value={{item.id}} *ngFor="let item of restaurantList">{{item.name}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <button class="btn btn-primary mr-2" [disabled]="disableUi" (click)="rerender($event.target)">{{ "Filter" | translate }}</button>
+              <button class="btn btn-danger mr-2" [disabled]="disableUi" (click)="resetFilters($event.target)">{{ "Reset" | translate }}</button>
+              <button class="btn btn-info" [disabled]="disableUi" (click)="report($event.target)">{{ "Full Report" | translate }}</button>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3">
+            <div class="alert alert-primary" role="alert">
+              {{ "Order Received" | translate }} {{TypesFilters?.received}}
+            </div>
+          </div>
+          <div class="col-sm-3 ">
+            <div class="alert alert-warning" role="alert">
+              {{ "Order Preparing" | translate }} {{TypesFilters?.preparing}}</div>
+          </div>
+          <div class="col-sm-3">
+            <div class=" alert alert-info" role="alert">
+              {{ "Order Ready" | translate }} {{TypesFilters?.ready}}
+            </div>
+          </div>
+          <div class="col-sm-3 ">
+            <div class="alert alert-dark" role="alert">
+              {{ "Order Pickup" | translate }} {{TypesFilters?.pickup}}
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="alert alert-success">
+              {{ "Order Delivered" | translate }} {{TypesFilters?.delivered}}
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="alert alert-danger dark-danger" role="alert">
+              {{ "Order Cancelled" | translate }} {{TypesFilters?.cancelled}}
+            </div>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <h3 class="pull-right total-price">{{ "Total" | translate }} : <span>{{getOrdersTotal | currency}}</span></h3>
+          </div>
+        </div>
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table compact hover table-hover table-bordered stripe" style="width:100%">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>{{ "Order ID" | translate }}</th>
+              <th>{{ "User Name" | translate }}</th>
+              <th>{{ "Restaurant" | translate }}</th>
+              <th>{{ "Created Date" | translate }}</th>
+              <th>{{ "Status" | translate }}</th>
+              <th>{{ "Delivery Mode" | translate }}</th>
+              <th>{{ "Total" | translate }}</th>
+              <th></th>
+            </tr>
+          </thead>
+
+          <!--<tbody *ngIf="ordersList.length > 0">-->
+          <tbody>
+
+            <!--<tr *ngFor="let order of ordersList; index as i;">
+              <td scope="row">{{ i+1 }}</td>
+              <td>{{order.orderid}}</td>
+              <td>{{order.username}}</td>
+              <td><a routerLink="/owner/restaurants/edit/{{ order.res_id }}"> {{ order.res_name}} </a>
+              </td>
+              <td>{{ order.created_at}}</td>
+              <td>
+
+                <span class="status-td"
+                  [ngClass]="{'dark-danger':order.status==='cancelled','danger':order.status==='paymentfailed','primary':order.status==='received' ,'warning':order.status==='preparing','info':order.status==='ready','dark':order.status==='pickup','success':order.status==='delivered'}">{{order.status | titlecase}}</span>
+
+              </td>
+              <td>{{order.delivery_mode == 1 ? 'Home Delivery' : 'Pickup'}}</td>
+              <td>{{order.order_total|currency}}</td>
+              <td *ngIf="!isAdmin"><a routerLink="/owner/orders/edit/{{ order.orderid}}"
+                  class="btn badge btn-primary btn-sm"><i class="fa fa-pencil"></i> Edit</a></td>
+
+              <td *ngIf="isAdmin"><a routerLink="/admin/orders/detail/{{ order.orderid}}"
+                  class="btn badge btn-primary btn-sm"><i class="fa fa-pencil"></i> Edit</a></td>
+            </tr>-->
+
+          </tbody>
+          <!--<tbody *ngIf="ordersList.length == 0">
+            <tr>
+              <td class="no-data-available" colspan="8">No data found</td>
+            </tr>
+          </tbody>-->
+        </table>
+
+
+      </div>
+    </div>
+  </div>
+</div>

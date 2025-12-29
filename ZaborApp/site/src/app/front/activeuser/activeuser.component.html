@@ -1,0 +1,26 @@
+<div class="login-sec">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6 login-bg">
+        <div class="login-image"><img src="assets/images/login-bg.jpg" alt="" /></div>
+        <a [routerLink]="['/']" class="login-logo"><img src="assets/images/logo.png" alt="" /></a>
+      </div>
+      <div class="col-md-6 login-form">
+        <div class="login-box">
+          <div class="alert">
+            <div class="alert alert-success" role="alert" *ngIf="successfullyactive else error">
+              {{msg}}
+            </div>
+            <ng-template #error>
+              <div class="alert alert-danger" role="alert">
+                {{msg}}
+              </div>
+            </ng-template>
+          </div>
+          <p class="form-text">{{ "Login here" | translate }}
+            <a [routerLink]="['/login']"> {{ 'Login' | translate }}</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

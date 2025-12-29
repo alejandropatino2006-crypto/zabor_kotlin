@@ -1,0 +1,53 @@
+<div class="row">
+  <div class="col col-xs-12">
+    <div class="card mb-3">
+      <div class="card-header">
+         <h4>{{ "Customer List" | translate }}<button class="btn btn-primary btn-sm pull-right"
+            routerLink="/owner/restaurants/customer/create/{{ restaurantId }}"> + {{ "Add" | translate }}
+            {{ "Customer" | translate }}</button></h4>
+        <button routerLink="/owner/restaurants/list" class="btn btn-secondary btn-padding-1" type="button">{{'Back' |
+          translate}}</button>
+      </div>
+
+    </div>
+    <div class="card-body table-responsive">
+      <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table-hover table table-bordered">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>{{"Name" | translate}}</th>
+            <th>{{"Email" | translate}}</th>
+            <th>{{"Phone" | translate}}</th>
+            <th>{{"Status" | translate}}</th>
+            <th>{{"Actions" | translate}}</th>
+          </tr>
+        </thead>
+
+        <tbody *ngIf="customerList.length > 0">
+
+          <tr *ngFor="let customer of customerList; index as i;">
+            <!-- <td scope="row">{{ i+1 }}</td>               -->
+            <td>{{ customer.id}}</td>
+            <td>{{ customer.name}}</td>
+            <td>{{ customer.email}}</td>
+            <td>{{ customer.phone}}</td>
+            <td>{{ customer.status == 1 ? "Active" : "Not Active"}}</td>
+            <td>
+              <a routerLink="/owner/restaurants/customer/view/{{ customer.id}}/{{ restaurantId }}"
+                class="btn badge btn-primary btn-sm"><i class="fa fa-eye"></i>{{"View" | translate}} </a>&nbsp;
+              <a routerLink="/owner/restaurants/customer/edit/{{ customer.id}}/{{ restaurantId }}"
+                class="btn badge btn-info btn-sm"><i class="fa fa-edit"></i>{{"Edit" | translate}} </a>&nbsp;
+
+            </td>
+          </tr>
+
+        </tbody>
+        <tbody *ngIf="customerList.length == 0">
+          <tr>
+            <td class="no-data-available" colspan="8">{{ "No matching records found" | translate }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

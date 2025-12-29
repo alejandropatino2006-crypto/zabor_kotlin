@@ -1,0 +1,120 @@
+<div class="row">
+  <div class="col col-xs-12">
+    <div class="card mb-3">
+      <div class="card-header">
+        <h4>{{ "Employee List" | translate }}<button class="btn btn-primary btn-sm pull-right"
+            routerLink="/owner/restaurants/employee/create/{{ restaurantId }}"> + {{ "Add" | translate }}
+            {{ "Employee" | translate }}</button></h4>
+        <button routerLink="/owner/restaurants/list" class="btn btn-secondary btn-padding-1" type="button">{{'Back' |
+          translate}}</button>
+      </div>
+
+    </div>
+    <div class="card-body table-responsive">
+      <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table-hover table table-bordered">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>{{"Name" | translate}}</th>
+            <th>{{"Email" | translate}}</th>
+            <th>{{"Phone" | translate}}</th>
+            <th>{{"Status" | translate}}</th>
+            <th>{{"Actions" | translate}}</th>
+          </tr>
+        </thead>
+
+        <tbody *ngIf="employeeList.length > 0">
+
+          <tr *ngFor="let employee of employeeList; index as i;">
+            <!-- <td scope="row">{{ i+1 }}</td>               -->
+            <td>{{ employee.id}}</td>
+            <td>{{ employee.name}}</td>
+            <td>{{ employee.email}}</td>
+            <td>{{ employee.phone}}</td>
+            <td>{{ employee.status == 1 ? "Active" : "Not Active"}}</td>
+            <td>
+              <a routerLink="/owner/restaurants/employee/edit/{{ employee.id}}/{{ restaurantId }}"
+                class="btn badge btn-primary btn-sm"><i class="fa fa-pencil"></i>{{"Edit" | translate}} </a>&nbsp;
+              <a routerLink="/owner/restaurants/employee/view/{{ employee.id}}/{{ restaurantId }}"
+                class="btn badge btn-warning btn-sm"><i class="fa fa-eye"></i>{{"View" | translate}} </a>&nbsp;
+              <a (click)="changePassword($event, employee.id)"
+                 class="btn badge btn-danger btn-sm">{{"Change Password" | translate}} </a>&nbsp;
+            </td>
+          </tr>
+
+        </tbody>
+        <tbody *ngIf="employeeList.length == 0">
+          <tr>
+            <td class="no-data-available" colspan="8">{{ "No matching records found" | translate }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Modal passwordChangeModal -->
+<div class="modal fade" data-backdrop="static" id="passwordChangeModal" tabindex="-1" role="dialog" aria-labelledby="passwordChangeModal"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="right: 0px;">
+          <img src="assets/images/close.svg" alt="">
+        </button>
+        <h4 class="modal-title">{{'Change Password' | translate}}</h4>
+      </div>
+      <div class="modal-body" style="margin: 10px;">
+        <form role="form" (keydown.enter)="$event.preventDefault()" [formGroup]="passwordForm" (ngSubmit)="onSubmit()">
+          <div class="row form-content">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="password">{{ "New Password" | translate }}*</label>
+                <input type="password" class="form-control input-underline input-lg" id="password" formControlName="password"
+                  placeholder='{{ "New Password" | translate }}' maxlength="60" />
+
+                  <ng-container *ngIf="passwordForm.controls['password'].touched && passwordForm.controls['password'].invalid">
+                    <span class="text-danger" *ngIf="passwordForm.controls['password'].errors?.required">{{ "Password is required" | translate }}.</span>
+                    <span class="text-danger" *ngIf="passwordForm.controls['password'].errors?.passwordExists">{{ "Password is already taken by someone in the restaurant." | translate }}.</span>
+                    <span class="text-danger" *ngIf="passwordForm.controls['password'].errors?.whitespace">{{ "Only white space is not allowed" | translate }}.</span>
+                  </ng-container>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="confirmPassword">{{ "Confirm Password" | translate }}*</label>
+                <input type="password" class="form-control input-underline input-lg" id="confirmPassword" formControlName="confirmPassword"
+                  placeholder='{{ "Confirm Password" | translate }}' maxlength="60" />
+
+                  <span class="text-danger" *ngIf="
+                  !passwordForm.controls[
+                      'confirmPassword'
+                  ].hasError('required') &&
+                  !passwordForm.controls['confirmPassword'].valid &&
+                  passwordForm.controls['confirmPassword']
+                      .touched &&
+                      passwordForm.controls['confirmPassword'].hasError(
+                      'mustMatch'
+                  )
+              ">Passwords must match.</span>
+
+                <ng-container *ngIf="!passwordForm.controls['confirmPassword'].valid &&
+                  passwordForm.controls['confirmPassword'].touched">
+                  <span class="text-danger" *ngIf="passwordForm.controls['confirmPassword'].hasError('required') else elsename">{{"Confirm Password is required" | translate}}.</span>
+                  <ng-template #elsename>
+                    <span class="text-danger" *ngIf="passwordForm.controls['confirmPassword'].hasError('whitespace')">{{"only white space is not allowed" | translate}}.</span></ng-template>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+          <div class="row form-content">
+            <div class="col-sm-12">
+              <button [disabled]="!passwordForm.valid" class="btn btn-success" type="submit">
+                {{ "Change" | translate }}</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

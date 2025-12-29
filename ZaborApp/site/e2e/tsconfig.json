@@ -1,0 +1,28 @@
+{
+  "ts-node": {
+    "files": true,
+    "compilerOptions": {
+      "module": "commonjs"
+    }
+  },
+  "compilerOptions": {
+    "rootDirs": [
+      "./e2e"
+    ],
+    "target": "es2018",
+    "lib": ["es2018", "DOM"],
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "strictNullChecks": false,
+    "types": ["codeceptjs", "node"],
+    "declaration": true,
+    "skipLibCheck": true,
+    "moduleDetection": "force",
+    "moduleResolution": "node",
+    "typeRoots": [
+      "/node_modules/@types",
+      "./e2e"
+    ]
+  },
+  "exclude": ["node_modules"]
+}

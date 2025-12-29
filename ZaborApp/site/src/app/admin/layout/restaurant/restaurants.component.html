@@ -1,0 +1,73 @@
+<div class="row">
+  <div class="col col-xs-12">
+    <div class="card mb-3">
+      <div class="card-header">
+        Restaurants
+        <!-- <button class="btn btn-success btn-sm pull-right" routerLink="/restaurants/create"> + Add
+          restaurant</button> -->
+      </div>
+      <div class="card-body table-responsive">
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class=" table-hover table-bordered">
+          <thead>
+            <tr>
+              <th width="5%">#</th>
+              <th width="20%">Restaurent Pic</th>
+              <th width="15%">Restaurant Name</th>
+              <th width="15%">Restaurant User</th>
+              <th width="10%"> Created Date</th>
+              <th width="5%">Status</th>
+              <th width="20%">Menu</th>
+              <th width="10%">Gallery</th>
+
+              <!-- <th>Actions</th> -->
+            </tr>
+          </thead>
+          <tbody *ngIf="restaurantList.length > 0">
+
+            <tr *ngFor="let restaurant of restaurantList; index as i;">
+              <td scope="row">{{ i+1 }}</td>
+              <td><a routerLink="/admin/restaurant/view/{{ restaurant.id}}"><img
+                    src="{{ picUrl + restaurant.restaurantpic}}" width="100"></a></td>
+              <td>{{ restaurant.restaurantName}}<span class="unclaimed-link ml-1" *ngIf="restaurant?.claimed == 0"><i
+                    class="fa fa-question-circle text-secondary"></i></span><span class="unclaimed-link ml-1"
+                  *ngIf="restaurant?.claimed == 1"><i class="fa fa-check-circle text-success"></i></span></td>
+              <td><a routerLink="/admin/user/view/{{restaurant.user_id}}">{{ restaurant.userName}}</a></td>
+              <td>{{ restaurant.created_at}}</td>
+              <td *ngIf="restaurant.status == 1; else elseBlock">
+                <ui-switch [checked]="true" defaultBgColor="red" (change)="changeStatus($event,restaurant.id)"></ui-switch>
+              </td>
+              <ng-template #elseBlock>
+                <td>
+                  <ui-switch defaultBgColor="red" (change)="changeStatus($event,restaurant.id)"></ui-switch>
+                </td>
+              </ng-template>
+              <td><a routerLink="/admin/restaurant/view/{{ restaurant.id}}" class="btn btn-warning btn-sm badge"><i
+                    class="fa fa-eye"></i> View</a> &nbsp;<a routerLink="/admin/restaurant/review/{{ restaurant.id}}"
+                  class="btn btn-info btn-sm badge"><i class="fa fa-star" aria-hidden="true"></i>
+                  Review</a>&nbsp;<a routerLink="/admin/restaurant/menu/{{ restaurant.id}}"
+                  class="btn btn-primary btn-sm badge"><i aria-hidden="true" class="fa fa-th-list"></i>
+                  Menu</a></td>
+              <td><a routerLink="/admin/restaurant/gallery/{{ restaurant.id}}" class="btn btn-success btn-sm badge"><i
+                    class="fa fa-picture-o" aria-hidden="true"></i>&nbsp;Gallery</a>
+                <a routerLink="/admin/restaurant/orders/{{ restaurant.id}}" class="btn badge btn-danger btn-sm"
+                  style="background-color: #ff192f;"><i class="fa fa-shopping-cart" style="font-size:16px;"
+                    aria-hidden="true"></i> Orders</a>
+
+              </td>
+              <!-- <td><a routerLink="/restaurants/edit/{{ restaurant.id}}" class="btn btn-primary btn-sm">Edit</a> &nbsp; <a
+                  routerLink="/restaurants/menu/{{ restaurant.id}}" class="btn btn-warning btn-sm">Menu</a></td> -->
+            </tr>
+
+          </tbody>
+
+          <tbody *ngIf="restaurantList.length == 0">
+            <tr>
+              <td class="no-data-available" colspan="8">No matching records found</td>
+            </tr>
+          </tbody>
+        </table>
+
+
+      </div>
+    </div>
+  </div>

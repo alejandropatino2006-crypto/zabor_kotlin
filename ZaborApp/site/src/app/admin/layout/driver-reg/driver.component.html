@@ -1,0 +1,41 @@
+<div class="row">
+  <div class="col col-xs-12">
+    <div class="card mb-3">
+      <div class="card-header">
+        <h4>Drivers</h4>
+      </div>
+      <div class="card-body table-responsive">
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table-hover table-bordered">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Created Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="userList.length > 0">
+
+            <tr *ngFor="let user of userList; index as i;">
+              <th scope="row">{{ i+1 }}</th>
+              <td>{{ user.firstname | titlecase}} {{ user.lastname | titlecase}}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.created_date}}</td>
+              <td><a routerLink="/admin/driver-reg/view/{{ user.id}}" class="btn btn-warning btn-sm badge"><i
+                    class="fa fa-eye"></i>
+                  View</a></td>
+            </tr>
+
+          </tbody>
+          <tbody *ngIf="userList.length == 0">
+            <tr>
+              <td class="no-data-available" colspan="8">No matching records found</td>
+            </tr>
+          </tbody>
+        </table>
+
+
+      </div>
+    </div>
+  </div>

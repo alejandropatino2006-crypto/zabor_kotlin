@@ -1,0 +1,12 @@
+<div class="login-with">
+  <h5>{{ 'Or log in with' | translate }}</h5>
+  <div class="d-flex justify-content-center">
+    <a href="javascript:void(0)" (click)="signInWithFB()" class="fb-btn social-btn">
+      <span> <i class="fa fa-facebook-official" aria-hidden="true"></i></span>
+      <b>{{ 'Log in with Facebook' | translate }}</b>
+    </a>
+    <a href="javascript:void(0)" (click)="signInWithGoogle()" class="google social-btn">
+      <span> <i class="fa fa-google"></i></span> <b>{{ 'Log in with Google' | translate }}</b>
+    </a>
+  </div>
+</div>

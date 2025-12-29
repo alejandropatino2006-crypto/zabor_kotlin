@@ -1,0 +1,54 @@
+.w-40px {
+  width: 40px;
+}
+.w-60px {
+  width: 60px;
+}
+.w-80px {
+  width: 80px;
+}
+.w-120px {
+  width: 120px;
+}
+.w-140px {
+  width: 140px;
+}
+.w-160px {
+  width: 160px;
+}
+.w-180px {
+  width: 180px;
+}
+.w-200px {
+  width: 200px;
+}
+.w-220px {
+  width: 220px;
+}
+#confirmPaymentModal, .modal-content {
+  padding: 10px;
+}
+#confirmPaymentModal .row{
+  padding: 10px;
+}
+.modal-dialog {
+  max-width: 750px !important;
+}
+.btn-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.blinking-text {
+  animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}

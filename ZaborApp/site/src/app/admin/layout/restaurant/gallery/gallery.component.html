@@ -1,0 +1,20 @@
+<div class="card">
+  <div class="card-header">
+    <h4>Restaurant Gallery</h4>
+  </div>
+  <div class="card-body">
+    <div class="row" *ngIf="galleryImages && galleryImages.length > 0 else noimgefound">
+      <div class="col-sm-2 gallery-div" *ngFor="let item of galleryImages; index as i">
+
+        <img src="{{fileurl}}/{{item.image}}" (click)="open(i)" width="100%">
+      </div>
+    </div>
+    <ng-template #noimgefound>
+      <div class="row">
+        <p>No Image Found</p>
+      </div>
+    </ng-template>
+
+
+  </div>
+</div>

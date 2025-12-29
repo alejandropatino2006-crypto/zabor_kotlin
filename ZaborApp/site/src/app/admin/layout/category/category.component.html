@@ -1,0 +1,107 @@
+<div class="row">
+  <div class="col-sm-4">
+    <div class="card">
+      <div class="card-header">{{ title }}<button class="btn btn-success btn-sm pull-right" *ngIf="editcategoryForm"
+          (click)="addCat()">Add Category</button>
+      </div>
+      <div class="card-body">
+        <div class="login-page">
+          <div class="row justify-content-md-center">
+            <div class="col-md-12">
+              <img *ngIf="catimg != ''" src={{catimg}} width="60">
+              <form role="form" [formGroup]="CategoryForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+
+                <div class="row form-content">
+                  <div class="col-sm-12">
+                    <div class="form-group">
+                      <label for="name">Full Name*</label>
+                      <input type="text" class="form-control input-underline input-lg" id="name" formControlName="name"
+                        placeholder="{{ 'Full Name'  }}" maxlength="30" />
+                      <ng-container *ngIf="!CategoryForm.controls['name'].valid &&
+                        CategoryForm.controls['name'].touched">
+                        <span class="text-danger" *ngIf="CategoryForm.controls['name'].hasError(
+                                                    'required'
+                                                ) else elsename
+                                            ">name is required.</span>
+                        <ng-template #elsename>
+                          <span class="text-danger" *ngIf="CategoryForm.controls['name'].hasError(
+                                                    'whitespace'
+                                                )
+                                            ">only white space is not allowed.</span></ng-template>
+                      </ng-container>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-12">
+                    <div class="form-group">
+                      <label for="description">Description*</label>
+                      <textarea class="form-control input-underline input-lg" id="description"
+                        formControlName="description" placeholder="{{ 'description'  }}" maxlength="200"></textarea>
+
+                      <ng-container *ngIf="!CategoryForm.controls['description'].valid &&
+                      CategoryForm.controls['description'].touched">
+                        <span class="text-danger" *ngIf="CategoryForm.controls['description'].hasError(
+                                                  'required'
+                                              ) else elsedes
+                                          ">description is required.</span>
+                        <ng-template #elsedes>
+                          <span class="text-danger" *ngIf="CategoryForm.controls['description'].hasError(
+                                                  'whitespace'
+                                              )
+                                          ">only white space is not allowed.</span></ng-template>
+                      </ng-container>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-12">
+                    <div class="form-group">
+                      <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="customFile" name="catimg"
+                          (change)="fileChangeEvent($event,'categoryImage')" accept="image/png">
+                        <label class="custom-file-label" for="customFile">{{category_file_name}}</label>
+                      </div>
+
+                    </div>
+                  </div>
+
+                </div>
+                <button [disabled]="!CategoryForm.valid" class="btn btn-success" type="submit">
+                  Save</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-8">
+    <div class="card">
+      <div class="card-header">Category</div>
+      <div class="card-body table-responsive">
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table-hover table-bordered">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Cateory Image</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let category of categories; index as i;">
+              <th scope="row">{{ i+1 }}</th>
+              <td>{{ category.name}}</td>
+              <td>{{ category.description }}</td>
+              <td><img src="{{imgpath+category.catimg}}" width="25"
+                  *ngIf="category.catimg && category.catimg != null && category.catimg != ''"></td>
+              <td><button class="btn btn-primary btn-sm badge" (click)="editCat(category.id)">Edit</button>&nbsp;<button
+                  class="btn btn-danger btn-sm badge" (click)="deleteCat(category.id)">Delete</button></td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,133 @@
+  <div class="card">
+  <div class="card-header">
+    <h4>{{ "View Inventory" | translate }} - {{ currentInventory?.name}} </h4>
+    <button class="btn btn-secondary btn-padding-1 pull-right" routerLink="/owner/restaurants/inventory/{{ restaurantId }}">  {{ "Back to List" | translate }}</button>
+  </div>
+  <div class="card-body">
+    <div class="login-page">
+      <div class="row justify-content-md-center">
+        <div class="col-md-12">          
+            <div class="row form-content">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="name">{{ "Name" | translate }}:</label>
+                  <div class="text-bold">{{ currentInventory?.name }}</div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="pack_size_description">{{ "Pack Size Description" | translate }}*</label>
+                  <div class="text-bold">{{ currentInventory?.pack_size_description }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="row form-content">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="pack_size_barcode">{{ "Pack Size Barcode" | translate }}</label>
+                  <div class="text-bold">{{ (currentInventory?.pack_size_barcode != "")?currentInventory?.pack_size_barcode:"Not Available" }}</div>                
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="each_item_barcode">{{ "Each Item Barcode" | translate }}</label>
+                  <div class="text-bold">{{ (currentInventory?.each_item_barcode != "")?currentInventory?.each_item_barcode:"Not Available" }}</div>                 
+                </div>
+              </div>
+            </div>
+            <div class="row form-content">
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label for="total_items_per_pack_size">{{ "Total Items Per Pack Size" | translate }}*</label>
+                  <div class="text-bold">{{ currentInventory?.total_items_per_pack_size }}</div>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label for="recipe_units_per_pack_size">{{ "Recipe Units Per Pack Size" | translate }}*</label>
+                  <div class="text-bold">{{ currentInventory?.recipe_units_per_pack_size }}</div>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label for="sort_order">{{ "Sort Order" | translate }}*</label>
+                  <div class="text-bold">{{ currentInventory?.sort_order }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="row form-content">              
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label for="pack_size_reorder_point">{{ "Pack Size Reorder Point" | translate }}*</label>
+                  <div class="text-bold">{{ currentInventory?.pack_size_reorder_point }}</div>
+                </div>
+              </div> 
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label for="pack_size_replenish_level">{{ "Pack Size Replenish Level" | translate }}*</label>
+                  <div class="text-bold">{{ currentInventory?.pack_size_replenish_level }}</div>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label for="pack_size_quantity_on_hand">{{ "Pack Size Quantity On Hand" | translate }}*</label>
+                  <div class="text-bold">{{ currentInventory?.pack_size_quantity_on_hand }}</div>
+                </div>
+              </div>                           
+            </div>
+
+            <div class="row form-content">
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label for="inventory_description">{{ "Inventory Description" | translate }}*</label>
+                  <div class="text-bold">{{ currentInventory?.inventory_description }}</div>
+          
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label for="pack_size_cost_per_qty">{{ "Pack Size Cost Per Quantity" | translate }}*</label>
+                  <div class="text-bold">{{ currentInventory?.pack_size_cost_per_qty }}</div>
+                </div>
+              </div> 
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label for="total_pack_size_value">{{ "Total Pack Size Value" | translate }}*</label>
+                  <div class="text-bold">{{ currentInventory?.total_pack_size_value }}</div>
+                </div>
+              </div>              
+            </div>
+
+            <div class="row form-content">              
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label for="inventory_group">{{ "Inventory Group" | translate }}*</label>
+                  <div class="text-bold">{{ groupName }}</div>
+                </div>
+                
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label for="inventory_location">{{ "Inventory Location" | translate }}*</label>
+                  <div class="text-bold">{{ locationName }}</div>
+                
+                </div>                
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label for="inventory_vendor">{{ "Inventory Vendor" | translate }}*</label>
+                  <div class="text-bold">{{ 
+                    vendorName }}</div>
+                
+                </div>
+                
+              </div>
+            </div>
+            
+            
+            
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

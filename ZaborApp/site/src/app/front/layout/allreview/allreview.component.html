@@ -1,0 +1,220 @@
+<main>
+  <section class="inner-banner overlay" style="background-image:url(./assets/images/searh-detail.jpg);">
+
+  </section>
+
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a [routerLink]="['/']">Home</a></li>
+      <li class="breadcrumb-item"><a [routerLink]="['/restaurant',res_id]">{{res_name}}</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Reviews</li>
+    </ol>
+  </nav>
+
+
+  <div class="sec sec-rating-wrap">
+    <div class="container">
+      <div class="row" *ngIf="reviews.length > 0; else noreview">
+        <div class="col-12">
+          <div class="sec-heading">
+            <h2 class="heading-2">{{ 'Recommended Reviews'|translate }}</h2>
+          </div>
+        </div>
+
+        <ng-container>
+          <div class="col-md-8">
+            <div class="sec-rating-left">
+
+              <div class="card card-white">
+
+                <div class="card-body pt-0">
+
+                  <div class="row" infinite-scroll [infiniteScrollDistance]="scrollDistance"
+                    [infiniteScrollUpDistance]="scrollUpDistance" [infiniteScrollThrottle]="throttle"
+                    (scrolled)="onScrollDown()" (scrolledUp)="onUp()">
+
+                    <div class="col-12 mb-4" *ngFor="let item of reviews">
+                      <div class="card card-review-bx" (click)="openratings(item)" title="Click to see detail">
+                        <div class="card-header">
+                          <div class="media align-items-center">
+                            <img src="{{fileUrl+item?.profileimage}}" alt="{{item?.user_name}}"
+                              class="mr-3 rounded-circle" style="width:80px; height: 80px;">
+                            <div class="media-body">
+                              <div class="d-flex align-items-center justify-content-between">
+                                <div class="rating-left">
+                                  <h4 class="m-0">{{item?.user_name}}
+
+                                  </h4>
+                                  <div class="rating">
+                                    {{item.rating}}<small>/5</small>
+                                    <div class="start-rating">
+                                      <star-rating [value]="item.rating" [totalstars]="5" checkedcolor="#F1C40F"
+                                        uncheckedcolor="#d4d3d3" size="20px" [readonly]="true">
+                                      </star-rating>
+                                    </div>
+                                  </div>
+
+                                </div>
+
+                                <div class="date">{{item.created_at |  getDateFormated}}</div>
+
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                        <div class="card-body">
+                          <p>{{item?.comment}}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class=" sec-rating-right">
+              <div class="card card-overall-rating ">
+                <div class="card-body ">
+                  <h3>{{ 'Overall Customer Satisfaction'|translate }}</h3>
+                  <h1>{{ratingStatus?.avgrating}}<small>/5</small></h1>
+                  <small>{{ 'Based on'|translate }}
+                    {{ratingStatus?.fiveratingcount + ratingStatus?.fourratingcount+ratingStatus?.threeratingcount+ratingStatus?.tworatingcount+ratingStatus?.oneratingcount}}
+                    {{ 'reviews'|translate }}</small>
+                </div>
+                <div class="card-footer">
+                  <ul class="rating-list">
+                    <li>
+                      <div class="rating">
+                        <star-rating [value]="5" [totalstars]="5" checkedcolor="#F1C40F" uncheckedcolor="#d4d3d3"
+                          size="20px" [readonly]="true">
+                        </star-rating>
+                        <strong>{{ratingStatus?.fiveratingcount}} {{ 'reviews'|translate }}</strong>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="rating">
+                        <star-rating [value]="4" [totalstars]="5" checkedcolor="#F1C40F" uncheckedcolor="#d4d3d3"
+                          size="20px" [readonly]="true">
+                        </star-rating>
+                        <strong>{{ratingStatus?.fourratingcount}} {{ 'reviews'|translate }}</strong>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="rating">
+                        <star-rating [value]="3" [totalstars]="5" checkedcolor="#F1C40F" uncheckedcolor="#d4d3d3"
+                          size="20px" [readonly]="true">
+                        </star-rating>
+                        <strong>{{ratingStatus?.threeratingcount}} {{ 'reviews'|translate }}</strong>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="rating">
+                        <star-rating [value]="2" [totalstars]="5" checkedcolor="#F1C40F" uncheckedcolor="#d4d3d3"
+                          size="20px" [readonly]="true">
+                        </star-rating>
+                        <strong>{{ratingStatus?.tworatingcount}} {{ 'reviews'|translate }}</strong>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="rating">
+                        <star-rating [value]="1" [totalstars]="5" checkedcolor="#F1C40F" uncheckedcolor="#d4d3d3"
+                          size="20px" [readonly]="true">
+                        </star-rating>
+                        <strong>{{ratingStatus?.oneratingcount}} {{ 'reviews'|translate }}</strong>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <div class="row">
+        <ng-template #noreview>
+          <h3>NO review found</h3>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Modal -->
+<div class="modal fade write-review-pop" id="Write-Review" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <img src="assets/images/close.svg" alt="">
+        </button>
+        <h2 class="text-uppercase">{{reviewDetail?.user_name}}</h2>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="d-flex justify-content-between rating-col-pop">
+              <span>{{ 'Waiting'|translate }}</span>
+              <star-rating [value]="reviewDetail?.waiting" [totalstars]="5" checkedcolor="#F1C40F"
+                uncheckedcolor="#d4d4d4" size="24px"></star-rating>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="d-flex justify-content-between rating-col-pop">
+              <span>{{ 'Food'|translate }}</span>
+              <star-rating [value]="reviewDetail?.food" [totalstars]="5" checkedcolor="#F1C40F" uncheckedcolor="#d4d4d4"
+                size="24px"></star-rating>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="d-flex justify-content-between rating-col-pop">
+              <span>{{ 'Restrooms'|translate }}</span>
+              <star-rating [value]="reviewDetail?.restrooms" [totalstars]="5" checkedcolor="#F1C40F"
+                uncheckedcolor="#d4d4d4" size="24px"></star-rating>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="d-flex justify-content-between rating-col-pop">
+              <span>{{ 'Pricing'|translate }}</span>
+              <star-rating [value]="reviewDetail?.pricing" [totalstars]="5" checkedcolor="#F1C40F"
+                uncheckedcolor="#d4d4d4" size="24px"></star-rating>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="d-flex justify-content-between rating-col-pop">
+              <span>{{ 'Ambience'|translate }}</span>
+              <star-rating [value]="reviewDetail?.ambience" [totalstars]="5" checkedcolor="#F1C40F"
+                uncheckedcolor="#d4d4d4" size="24px"></star-rating>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="d-flex justify-content-between rating-col-pop">
+              <span>{{ 'Management'|translate }}</span>
+              <star-rating [value]="reviewDetail?.management" [totalstars]="5" checkedcolor="#F1C40F"
+                uncheckedcolor="#d4d4d4" size="24px"></star-rating>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="d-flex justify-content-between rating-col-pop">
+              <span>{{ 'Service'|translate }}</span>
+              <star-rating [value]="reviewDetail?.service" [totalstars]="5" checkedcolor="#F1C40F"
+                uncheckedcolor="#d4d4d4" size="24px"></star-rating>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="d-flex justify-content-between rating-col-pop">
+              <span>{{ 'Locality'|translate }}</span>
+              <star-rating [value]="reviewDetail?.locality" [totalstars]="5" checkedcolor="#F1C40F"
+                uncheckedcolor="#d4d4d4" size="24px"></star-rating>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>

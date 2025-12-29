@@ -1,0 +1,154 @@
+<div class="row">
+  <div class="col-md-4" *ngIf="editors.length > 0; else noEmployees">
+    <button class="btn btn-primary btn-sm " (click)="addEditor()" *ngIf="editorId != -1">+ {{ "Add" | translate }}</button>
+    <!-- Widget: user widget style 2 -->
+      <div class="card card-widget widget-user-2 mt-3" *ngFor="let item of editors">
+        <!-- Add the bg color to the header using any of the bg-* classes -->
+        <div class="widget-user-header">
+          <h3 class="widget-user-username">{{item.name | titlecase}} &nbsp;<span class="ml-2 pull-right"
+              (click)="deleteEditor(item.id)"><i class="fa fa-trash text-danger"></i></span>&nbsp;<span class="pull-right"
+              (click)="editEditor(item.id)"><i class="fa fa-pencil"></i></span></h3>
+        </div>
+        <div class="card-footer p-0">
+          <p>{{item.res_name | titlecase}}</p>
+        </div>
+      </div>
+    <!-- /.widget-user -->
+  </div>
+  <ng-template #noEmployees>
+    <div class="col-md-4">
+      <div class="col-md-12 text-center text-danger font-weight-bold mt-5">
+        <span>{{ "No Employees Registered..." | translate }}</span>
+      </div>
+    </div>
+  </ng-template>
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-header" style="font-weight: 600">
+        {{editorId > 0 ? 'Update' : 'Add' | translate}} {{ "Employee" | translate }}
+      </div>
+      <div class="card-body">
+        <form role="form" [formGroup]="editorgroup" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="name">{{ "Full Name" | translate }}*</label>
+                <input type="text" class="form-control input-underline input-lg" id="name" formControlName="name"
+                  placeholder='{{ "Full Name" | translate }}' maxlength="25" />
+                <span class="text-danger" *ngIf="
+                                  !editorgroup.controls['name'].valid &&
+                                  editorgroup.controls['name'].touched &&
+                                  editorgroup.controls['name'].hasError('required')
+                              ">{{ "Name is required" | translate }}.</span>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="name">{{ "Email" | translate }}*</label>
+                <input type="text" class="form-control input-underline input-lg" id="email" formControlName="email"
+                  placeholder='{{ "Email" | translate }}' maxlength="40" />
+                <span class="text-danger" *ngIf="
+                    !editorgroup.controls['email'].valid &&
+                    editorgroup.controls['email'].touched &&
+                    editorgroup.controls['email'].hasError(
+                        'required'
+                    )
+                ">{{ "Email is required" | translate }}.</span>
+                <span class="text-danger" *ngIf="
+                    !editorgroup.controls['email'].hasError(
+                        'required'
+                    ) &&
+                    !editorgroup.controls['email'].valid &&
+                    editorgroup.controls['email'].touched &&
+                    editorgroup.controls['email'].hasError('email')
+                ">{{ "Email is invalid" | translate }}.</span>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="name">{{ "Restaurants" | translate }}*</label>
+                <select formControlName="res_id" id="res_id" class="form-control">
+                  <option value="">{{ "Please select" | translate }}</option>
+                  <option value="{{item.id}}" *ngFor="let item of restaurantLists">{{item.name}}</option>
+                </select>
+
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="name">{{ "Status" | translate }}*</label>
+                <select formControlName="status" id="status" class="form-control">
+                  <option value="1">{{ "Active" | translate }}</option>
+                  <option value="0">{{ "InActive" | translate }}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="name">{{ "Password" | translate }}*</label>
+                <input type="password" class="form-control input-underline input-lg" id="password"
+                  formControlName="password" autocomplete="off" placeholder='{{ "Password" | translate }}' maxlength="30" />
+                <span class="text-danger" *ngIf="
+                    !editorgroup.controls['password'].valid &&
+                    editorgroup.controls['password'].touched &&
+                    editorgroup.controls['password'].hasError(
+                        'required'
+                    )
+                ">{{ "Password is required" | translate }}.</span>
+                <span class="text-danger" *ngIf="
+                    !editorgroup.controls['password'].valid &&
+                    editorgroup.controls['password'].touched &&
+                    editorgroup.controls['password'].hasError(
+                        'minlength'
+                    ) &&
+                    !editorgroup.controls['password'].hasError(
+                        'required'
+                    )
+                ">{{ "Password requires atleast 6 characters" | translate }}.</span>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="name">{{ "Repeat Password" | translate }}*</label>
+                <input type="password" class="form-control input-underline input-lg" id="confirmPassword" autocomplete="off"
+                  formControlName="confirmPassword" placeholder='{{ "Repeat Password" | translate }}' maxlength="30" />
+                <span class="text-danger" *ngIf="
+                    !editorgroup.controls['confirmPassword'].valid &&
+                    editorgroup.controls['confirmPassword']
+                        .touched &&
+                    editorgroup.controls['confirmPassword'].hasError(
+                        'required'
+                    )
+                ">{{ "Password is required" | translate }}.</span>
+                <span class="text-danger" *ngIf="
+                    !editorgroup.controls[
+                        'confirmPassword'
+                    ].hasError('required') &&
+                    !editorgroup.controls['confirmPassword'].valid &&
+                    editorgroup.controls['confirmPassword']
+                        .touched &&
+                    editorgroup.controls['confirmPassword'].hasError(
+                        'mustMatch'
+                    )
+                ">{{ "Passwords must match" | translate }}.</span>
+              </div>
+            </div>
+
+            <div class="col-sm-12">
+              <div class="btn-div">
+                <button class="btn btn-success " type="submit" [disabled]="!editorgroup.valid">
+                  {{(editorId > 0 ? 'Save' : 'Add') | translate }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

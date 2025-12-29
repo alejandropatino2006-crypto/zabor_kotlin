@@ -1,0 +1,81 @@
+// @import '~jquery-nice-select/css/nice-select';
+
+
+body.home .logo-header{
+    display: none;
+}
+.cart-right{
+    max-width: 100%;
+}
+.cart-info{
+    width: calc(100% - 60px);
+}
+.cart-info h6{
+    font-size: .9rem;
+}
+.cart-drop_btn{
+    width: auto;
+    padding: 5px 20px;
+    color:white !important
+}
+.btn-clear{
+    background: #ff1414c9;
+    color: white;
+}
+.search-drop{
+    padding: 8px;
+    cursor: pointer;
+}
+.search-div{
+border: none;
+padding: 0px;
+}
+input[type=text] {
+    width: 130px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: white;
+    padding: 5px 0px 5px 10px;
+  }
+  .search-field{ 
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out; 
+  }
+  @media only screen and (min-width: 759px) {
+  .search-field:focus {
+    width: 200px;
+  }
+}
+//   @media only screen and (max-width: 759px) {
+//     .search-field {
+//         width: 80px !important;
+//     }
+//     .search-field:focus {
+//         width: 150px;
+//       }
+//   }
+ 
+  .input-group:focus {
+    width: 300px;
+  }
+  .dropdown-menu.search-div.show{
+    margin-top: 15px;
+  }
+
+  .search-div {
+    margin-left: 5px;
+  }
+  .search-div .input-group,.search-div .input-group .btn {
+    height: 40px;
+  }
+  .search-dropdown.onexpend{
+      position: absolute;
+      background: white;
+  }
+
+  .portal-link a {
+    padding-right: 5px !important; 
+    padding-left: 5px !important;
+  }

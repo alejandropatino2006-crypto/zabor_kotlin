@@ -1,0 +1,341 @@
+<div class="row">
+
+  <div class="col col-xs-12">
+    <div class="card mb-3">
+      <div class="card-header">
+        <h5>Stripe Accounts</h5>
+        <button class="btn btn-success btn-sm pull-right" routerLink="/admin/terminal/account/create"> + Add
+          account</button>
+      </div>
+      <div class="card-body table-responsive">
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class=" table-hover table-bordered">
+          <thead>
+            <tr>
+              <th width="5%">#</th>
+              <th width="10%">Id</th>
+              <th width="20%">Business Name</th>
+              <th width="10%">Business Support Phone Number</th>
+              <th width="5%">Business City</th>
+              <th width="20%">Email</th>
+              <th width="10%">Country</th>
+              <th width="5%">Default Currency</th>
+              <th width="5%">Business Type</th>
+              <th width="10%">Created</th>
+              <th width="10%">Action</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="accountsList.length > 0">
+
+            <tr *ngFor="let account of accountsList; index as i;">
+              <td scope="row">{{ i+1 }}</td>
+              <td>{{ account.id }}</td>
+              <td>{{ account.business_profile?.name }}</td>
+              <td>{{ account.business_profile?.support_phone }}</td>
+              <td>{{ account.business_profile?.support_address?.city }}</td>
+              <td>{{ account.email }}</td>
+              <td>{{ account.country}}</td>
+              <td>{{ account.default_currency}}</td>
+              <td *ngIf="account.business_type == null; else elseBlock">
+                Business
+              </td>
+              <ng-template #elseBlock>
+                <td>
+                  {{ account.business_type }}
+                </td>
+              </ng-template>
+              <td>{{ (account.created == "Invalid Date")?"No Date":account.created}}</td>
+              <td>
+                
+                <a routerLink="/admin/restaurant/view/{{ account.id}}" class="btn btn-warning btn-sm badge"><i
+                class="fa fa-eye"></i> View</a> &nbsp;
+                
+                <a routerLink="/admin/terminal/location/list/{{ account.id}}"
+              class="btn btn-info btn-sm badge"><i class="fa fa-star" aria-hidden="true"></i>
+              Locations</a>
+            </td>
+            </tr>
+
+          </tbody>
+
+          <tbody *ngIf="accountsList.length == 0">
+            <tr>
+              <td class="no-data-available" colspan="11">No matching records found</td>
+            </tr>
+          </tbody>
+        </table>
+
+
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="col-sm-12 mb-2">
+    <div class="card">
+      <div class="card-header">
+        <h5>Stripe Registered Locations</h5>
+      </div>
+      <div class="card-body">
+        <div class="w-max d-flex flex-column justify-content-start align-items-start gap-1 c-table-wrapper">
+          <div class="w-max d-flex flex-row justify-content-start align-items-center gap-1 c-table-row c-table-header">
+            <span class="w-30px">S#</span>
+            <span class="w-180px">Name</span>
+            <span class="w-180px">ID</span>
+            <span class="w-90px">Country</span>
+            <span class="w-90px">City</span>
+            <span class="w-90px">State</span>
+            <span class="w-80px">Postal Code</span>
+          </div>
+          <div class="w-max d-flex flex-row justify-content-start align-items-center gap-1 c-table-row" *ngFor="let location of locationsList; index as i">
+            <span class="w-30px">{{ i + 1 }} - </span>
+            <span class="w-180px">{{ location.display_name }}</span>
+            <span class="w-180px">{{ location.id }}</span>
+            <span class="w-90px">{{ location.address.country }}</span>
+            <span class="w-90px">{{ location.address.city }}</span>
+            <span class="w-90px">{{ location.address.state }}</span>
+            <span class="w-80px">{{ location.address.postal_code }}</span>
+            <span><button [attr.data-location-index]="i" class="btn btn-iceblue" (click)="handleViewLocationClicked($event)">View Data</button></span>
+            <span><button [attr.data-location-index]="i" class="btn btn-warning" (click)="handleDiscoverForLocationClicked($event)">Discover</button></span>
+            <span><button [attr.data-location-index]="i" class="btn btn-danger" (click)="handleDeleteLocationClicked($event)">Delete</button></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+  <!-- <div id="point1" class="point-placeholder"></div>
+  <ng-container *ngTemplateOutlet="getTopTemplate()"></ng-container>
+
+  <ng-template #locationFormWrapper>
+    <div class="col-sm-12 my-2">
+      <div class="card">
+        <div class="card-header">
+          <h5>{{ locationFormTitle }}</h5>
+        </div>
+        <div class="card-body">
+          <form role="form" [formGroup]="locationForm" (ngSubmit)="onLocationFormSubmit($event)" enctype="multipart/form-data">
+
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label>Location Name*</label>
+                  <input type="text" class="form-control input-underline input-lg" formControlName="display_name"
+                         placeholder="Zabor Head Quarters" maxlength="40" />
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label>Address Line 1*</label>
+                  <textarea placeholder="72ND AVE, NW" formControlName="line1" class="form-control input-underline input-lg"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label>Address Line 2</label>
+                  <textarea placeholder="Provide address (optional)" formControlName="line2" class="form-control input-underline input-lg"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label>City*</label>
+                  <input type="text" class="form-control input-underline input-lg" formControlName="city"
+                         placeholder="Miami" maxlength="40" />
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label>State*</label>
+                  <input type="text" class="form-control input-underline input-lg" formControlName="state"
+                         placeholder="Florida" maxlength="40" />
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label>Country*</label>
+                  <input type="text" class="form-control input-underline input-lg" formControlName="country"
+                         placeholder="US" maxlength="40" />
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label>Postal/Zip code*</label>
+                  <input type="text" class="form-control input-underline input-lg" formControlName="postal_code"
+                         placeholder="Florida" maxlength="40" />
+                </div>
+              </div>
+            </div>
+
+            <div class="w-100 d-flex flex-row justify-content-start align-items-center gap-3">
+              <button [hidden]="!canRegisterLocation" class="btn btn-success" type="submit">Register Location</button>
+              <button [hidden]="!canUpdateLocation" class="btn btn-success" type="submit">Update</button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <div id="point2" class="point-placeholder"></div>
+  <ng-container *ngTemplateOutlet="getBottomTemplate()"></ng-container>
+
+  <ng-template #discoverWrapper>
+    <div class="col-sm-12 my-2">
+      <div class="card">
+        <div class="card-header">
+          <h5>Discovered Terminals/Readers for selected location</h5>
+        </div>
+        <div class="card-body">
+
+          <div class="row" *ngIf="showDiscoveryResults && discoveredReadersList.length > 0">
+            <div class="col-sm-12">
+              <div class="w-100 d-flex flex-row justify-content-start align-items-center gap-3">
+                <span class="w-40px font-weight-bold">S#</span>
+                <span class="w-260px font-weight-bold">Label</span>
+                <span class="w-260px font-weight-bold">Serial</span>
+                <span class="w-160px font-weight-bold">IP</span>
+              </div>
+              <div class="w-100 d-flex flex-row justify-content-start align-items-center gap-3" *ngFor="let reader of discoveredReadersList; index as i">
+                <span class="w-40px">{{ i + 1 }} - </span>
+                <span class="w-260px">{{ reader.label }}</span>
+                <span class="w-260px">{{ reader.serial_number }}</span>
+                <span class="w-160px">{{ reader.ip_address }}</span>
+                <span><button [attr.data-reader-index]="i" class="btn btn-iceblue" (click)="handleConnectReaderClicked($event)">Connect</button></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="showDiscoveryResults && discoveredReadersList.length === 0">
+            <div class="col-sm-12">
+              <div>
+                <span>No terminals/readers could be found...</span>
+                <p>
+                  <button class="btn btn-warning" type="button" (click)="handleRegisterNewLocationClicked($event)">Register a new location</button>
+                  , then discover readers on your account for this location. You can also use the simulator reader by
+                  clicking the <strong>Connect to Simulator</strong> button, if you don't have hardware.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="discovering">
+            <div class="col-sm-12">
+              <div>
+                <p class="blinking-text">Discovering...</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="w-100 d-flex flex-row justify-content-start align-items-center gap-3">
+            <button [disabled]="!canDiscover" class="btn btn-warning" type="button" (click)="handleDiscoverClicked($event)">{{ discovering ? 'Cancel Discovery' : 'Discover Again' }}</button>
+            <button [disabled]="discovering || !discoveredOnce" class="btn btn-warning" type="button" (click)="handleSimulatorConnectClicked($event)">Connect to Simulator</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </ng-template> -->
+
+  <!--<div class="col-sm-12">
+    <div class="card">
+      <div class="card-header">
+        <h5>Register a new reader</h5>
+      </div>
+      <div class="card-body">
+        <form role="form" [formGroup]="terminalForm" (ngSubmit)="onTerminalFormSubmit($event)" enctype="multipart/form-data">
+
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label>Address Line 1*</label>
+                <textarea placeholder="Provide address (required)" formControlName="line1" class="form-control input-underline input-lg"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label>Address Line 2</label>
+                <textarea placeholder="Provide address (optional)" formControlName="line2" class="form-control input-underline input-lg"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label>City*</label>
+                <input type="text" class="form-control input-underline input-lg" formControlName="city"
+                       placeholder="{{ 'City'  }}" maxlength="40" />
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label>State*</label>
+                <input type="text" class="form-control input-underline input-lg" formControlName="state"
+                       placeholder="{{ 'State'  }}" maxlength="40" />
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label>Country*</label>
+                <input type="text" class="form-control input-underline input-lg" formControlName="country"
+                       placeholder="{{ 'Country'  }}" maxlength="40" />
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label>Postal/Zip code*</label>
+                <input type="text" class="form-control input-underline input-lg" formControlName="postal_code"
+                       placeholder="{{ 'Postal/Zip Code'  }}" maxlength="40" />
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label>Terminal Location*</label>
+                <input type="text" class="form-control input-underline input-lg" formControlName="display_name"
+                       placeholder="Terminal distinctive name" maxlength="40" />
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label>Label*</label>
+                <input type="text" class="form-control input-underline input-lg" formControlName="label"
+                       placeholder="Label" maxlength="40" />
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label>Registration Code*</label>
+                <input type="text" class="form-control input-underline input-lg" formControlName="registration_code"
+                       placeholder="Registration Code" maxlength="40" />
+              </div>
+            </div>
+
+          </div>
+
+          <div class="w-100 d-flex flex-row justify-content-start align-items-center gap-3">
+            <button [disabled]="!canRegister" class="btn btn-success" type="submit">Register Terminal</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>-->
+
+</div>

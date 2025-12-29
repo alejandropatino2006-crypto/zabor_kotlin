@@ -1,0 +1,20 @@
+.rating
+{
+display: -ms-flexbox!important;
+    display: flex!important;
+}
+
+.start-rating{
+    margin-left: 10px;
+}
+.fa-external-link-square{
+    position: absolute;
+    font-size: 12px;
+}
+.card-review-bx{
+    cursor: pointer;
+}
+
+.card-review-bx:hover {
+    box-shadow: 0 2px 20px rgba(0, 0, 0,0.1)
+}

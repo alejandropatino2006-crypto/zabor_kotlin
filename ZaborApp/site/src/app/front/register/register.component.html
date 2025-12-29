@@ -1,0 +1,102 @@
+<div class="login-sec">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6 login-bg">
+        <div class="login-image"><img src="assets/images/login-bg.jpg" alt="" /></div>
+        <a [routerLink]="['/']" class="login-logo"><img src="assets/images/logo.png" alt="" /></a>
+      </div>
+      <div class="col-md-6 login-form">
+        <div class="lang-chg-drop">
+          <app-lang-change></app-lang-change>
+        </div>
+        <div class="login-box">
+          <h2>{{'Sign Up' | translate}}</h2>
+          <form role="form" [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+            <div class="form-field ">
+              <input type="text" class="form-control input-underline input-lg" id="name" formControlName="name"
+                placeholder="Full Name" maxlength="30" />
+              <span class="form-icon"><img src="assets/images/user-icon.svg" alt="" /></span>
+            </div>
+            <span class="text-danger" *ngIf="
+                                !signupForm.controls['name'].valid &&
+                                signupForm.controls['name'].touched &&
+                                signupForm.controls['name'].hasError('required')
+                            ">{{'Name is required' | translate}}</span>
+            <div class="form-field">
+              <input type="text" class="form-control input-underline input-lg" id="email" formControlName="email"
+                placeholder="Email" maxlength="40" />
+              <span class="form-icon"><img src="assets/images/email-icon.svg" alt="" /></span>
+            </div>
+            <span class="text-danger" *ngIf="
+            !signupForm.controls['email'].valid &&
+            signupForm.controls['email'].touched &&
+            signupForm.controls['email'].hasError(
+                'required'
+            )
+        ">{{'Email is required' | translate}}</span>
+            <span class="text-danger" *ngIf="
+            !signupForm.controls['email'].hasError(
+                'required'
+            ) &&
+            !signupForm.controls['email'].valid &&
+            signupForm.controls['email'].touched &&
+            signupForm.controls['email'].hasError('email')
+        ">{{'Email is invalid' | translate}}</span>
+            <div class="form-field">
+              <input type="password" class="form-control input-underline input-lg" id="password" autocomplete="off"
+                formControlName="password" placeholder="Password" maxlength="30" />
+              <span class="form-icon"><img src="assets/images/password-icon.svg" alt="" /></span>
+            </div>
+            <span class="text-danger" *ngIf="
+            !signupForm.controls['password'].valid &&
+            signupForm.controls['password'].touched &&
+            signupForm.controls['password'].hasError(
+                'required'
+            )
+        ">{{'Password is required' | translate}}</span>
+            <span class="text-danger" *ngIf="
+            !signupForm.controls['password'].valid &&
+            signupForm.controls['password'].touched &&
+            signupForm.controls['password'].hasError(
+                'minlength'
+            ) &&
+            !signupForm.controls['password'].hasError(
+                'required'
+            )
+        ">{{'Password requires atleast 6 characters' | translate}}.</span>
+            <div class="form-field">
+              <input type="password" class="form-control input-underline input-lg" id="confirmPassword" autocomplete="off"
+                formControlName="confirmPassword" placeholder="Repeat Password" maxlength="30" />
+              <span class="form-icon"><img src="assets/images/password-icon.svg" alt="" /></span>
+            </div>
+            <span class="text-danger" *ngIf="
+            !signupForm.controls['confirmPassword'].valid &&
+            signupForm.controls['confirmPassword']
+                .touched &&
+            signupForm.controls['confirmPassword'].hasError(
+                'required'
+            )
+                   ">{{'Password is required' | translate}}</span>
+            <span class="text-danger" *ngIf="
+            !signupForm.controls[
+                'confirmPassword'
+            ].hasError('required') &&
+            !signupForm.controls['confirmPassword'].valid &&
+            signupForm.controls['confirmPassword']
+                .touched &&
+            signupForm.controls['confirmPassword'].hasError(
+                'mustMatch'
+            )
+              ">{{'Passwords must match' | translate}}</span>
+            <div class="form-field">
+              <input type="submit" class="btn rounded-btn" value="Signup" [disabled]="!signupForm.valid" />
+            </div>
+          </form>
+          <app-sociallogin></app-sociallogin>
+          <p class="form-text">{{'Already have an account' | translate}}?
+            <a [routerLink]="['/login']">{{'Login here' | translate}}.</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

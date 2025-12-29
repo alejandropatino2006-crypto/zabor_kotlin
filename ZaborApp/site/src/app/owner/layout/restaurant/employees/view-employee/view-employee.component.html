@@ -1,0 +1,278 @@
+<div class="card">
+  <div class="card-header">
+    <h4>{{ "View Employee" | translate }} </h4>
+    <button class="btn btn-secondary btn-padding-1 pull-right" routerLink="/owner/restaurants/employee/{{ restaurantId }}">  {{ "Back to List" | translate }}</button>
+  </div>
+  <div class="card-body">
+    <div class="login-page">
+      <div class="row justify-content-md-center">
+        <div class="col-md-12">          
+            <div class="row form-content">
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="name">{{ "Full Name" | translate }}*</label>
+                  <div class="text-bold" style="font-weight: 700">{{ currentUser?.name }}</div>
+                </div>
+              </div>                           
+            </div>
+            <div class="row form-content">
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="job_title">{{ "Job Title" | translate }}*</label>
+                  <div class="text-bold" style="font-weight: 700">{{ currentJobTitle }}</div>
+                </div>
+                
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="status">{{ "Status" | translate }}*</label>
+                  <div class="text-bold" style="font-weight: 700">{{ currentUser?.status == "1"? "Active" : "Not Active" }}</div>
+                </div>
+                
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="phone">{{ "Mobile Number" | translate }}*</label>
+                  <div class="text-bold" style="font-weight: 700">{{ currentUser?.phone }}</div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="tax_account_number">{{ "Tax Account Number" | translate }}*</label>
+                  <div class="text-bold" style="font-weight: 700">{{ currentEmployee?.tax_account_number }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="row form-content">
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="social_security">{{ "Social Security Number" | translate }}*</label>
+                  <div class="text-bold" style="font-weight: 700">{{ currentEmployee?.social_security }}</div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="address">{{ "Address" | translate }}*</label>
+                  <div class="text-bold" style="font-weight: 700">{{ currentUser?.address }}</div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="city">{{ "City" | translate }}*</label>
+                  <div class="text-bold" style="font-weight: 700">{{ currentUser?.city }}</div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="postal_code">{{ "Postal Code" | translate }}*</label>
+                  <div class="text-bold" style="font-weight: 700">{{ currentUser?.postal_code }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="row form-content">              
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="employee_notes">{{ "Employee Notes" | translate }}*</label>
+                  <div class="text-bold" style="font-weight: 700">{{ currentEmployee?.employee_notes }}</div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="hired_date">{{ "Hired Date" | translate  }}*</label>
+                  <div class="text-bold" style="font-weight: 700">{{ currentEmployee?.hired_date | date:'MM/dd/yyyy' }}</div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="dob">{{ "Date of Birth" | translate }}*</label>
+                  <div class="text-bold" style="font-weight: 700">{{ currentUser?.dob | date:'MM/dd/yyyy'  }}</div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="terminated_date">{{ "Terminated Date" | translate }}</label>
+                  <div class="text-bold" style="font-weight: 700">{{ currentEmployee?.terminated_date | date:'MM/dd/yyyy' }}</div>
+                </div>
+              </div>                        
+            </div>
+
+            <div class="row form-content">
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="pay_basis">{{ "Pay Basis" | translate }}*</label>
+                  <div class="text-bold" style="font-weight: 700">{{ currentEmployee?.pay_basis }}</div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="pay_rate">{{ "Pay Rate" | translate }}*</label>
+                  <div class="text-bold" style="font-weight: 700">{{ currentEmployee?.pay_rate }}</div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="tips_received">{{ "Tips Received" | translate }}</label>
+                  <div class="text-bold" style="font-weight: 700">{{ currentEmployee?.tips_received }}</div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="use_hostess_features">{{ "Use Hostess Features" | translate }}</label>
+                  <div class="text-bold" style="font-weight: 700">{{ currentEmployee?.use_hostess_features }}</div>
+                </div>
+              </div>                           
+            </div>
+
+            <div class="row form-content">   
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="schedule_not_enforced">{{ "Schedule Not Enforced" | translate }}</label>
+                  <div class="text-bold" style="font-weight: 700">{{ currentEmployee?.schedule_not_enforced }}</div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="is_a_server">{{ "Is a Server" | translate }}</label>
+                  <div class="text-bold" style="font-weight: 700">{{ currentEmployee?.is_a_server }}</div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="cannot_finalise_cashier_out">{{ "Cannot Finalise Cashier Out" | translate }}</label>
+                  <div class="text-bold" style="font-weight: 700">{{ currentEmployee?.cannot_finalise_cashier_out }}</div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="allow_create_or_reply_emails">{{ "Allow Create or Reply Emails" | translate }}</label>
+                  <div class="text-bold" style="font-weight: 700">{{ currentEmployee?.allow_create_or_reply_emails }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="row form-content">
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="disallow_create_edit_dine_in_orders">{{ "Disallow Create/Edit Dine-In Orders" | translate }}</label>
+                  <div class="text-bold" style="font-weight: 700">{{ currentEmployee?.disallow_create_edit_dine_in_orders }}</div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="disallow_create_edit_bar_tab_orders">{{ "Disallow Create/Edit Bar Tab Orders" | translate }}</label>
+                  <div class="text-bold" style="font-weight: 700">{{ currentEmployee?.disallow_create_edit_bar_tab_orders }}</div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="disallow_create_edit_take_out_orders">{{ "Disallow Create/Edit Take-Out Orders" | translate }}</label>
+                  <div class="text-bold" style="font-weight: 700">{{ currentEmployee?.disallow_create_edit_take_out_orders }}</div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="disallow_create_edit_drive_thru_orders">{{ "Disallow Create/Edit Drive-Thru Orders" | translate }}</label>
+                  <div class="text-bold" style="font-weight: 700">{{ currentEmployee?.disallow_create_edit_drive_thru_orders }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="row form-content">
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="disallow_create_edit_delivery_orders">{{ "Disallow Create/Edit Delivery Orders" | translate }}</label>
+                  <div class="text-bold" style="font-weight: 700">{{ currentEmployee?.disallow_create_edit_delivery_orders }}</div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="driving_license_number">{{ "Driving License Number" | translate }}</label>
+                  <div class="text-bold" style="font-weight: 700">{{ currentEmployee?.driving_license_number }}</div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="driving_license_expires">{{ "Driving License Expires" | translate }}</label>
+                  <div class="text-bold" style="font-weight: 700">{{ currentEmployee?.driving_license_expires | date:'MM/dd/yyyy' }}</div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="car_insurance_career">{{ "Car Insurance Carrier" | translate }}</label>
+                  <div class="text-bold" style="font-weight: 700">{{ currentEmployee?.car_insurance_career }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="row form-content">
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="insurance_policy_number">{{ "Insurance Policy Number" | translate }}</label>
+                  <div class="text-bold" style="font-weight: 700">{{ currentEmployee?.insurance_policy_number }}</div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="insurance_policy_expires">{{ "Insurance Policy Expires" | translate }}</label>
+                  <div class="text-bold" style="font-weight: 700">{{ currentEmployee?.insurance_policy_expires | date:'MM/dd/yyyy' }}</div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="insurance_policy_notes">{{ "Insurance Policy Notes" | translate }}</label>
+                  <div class="text-bold" style="font-weight: 700">{{ currentEmployee?.insurance_policy_notes }}</div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="is_driver">{{ "Is a Driver" | translate }}</label>
+                  <div class="text-bold" style="font-weight: 700">{{ currentEmployee?.is_driver }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="row form-content">
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="pref_lang">{{ "Preferred Language" | translate }}*</label>
+                  <div class="text-bold" style="font-weight: 700">{{ currentUser?.pref_lang }}</div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="order_entry_sec_lang">{{ "Order Entry Secondary Language" | translate }}</label>
+                  <div class="text-bold" style="font-weight: 700">{{ currentEmployee?.order_entry_sec_lang }}</div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="msr_card">{{ "MSR Card" | translate }}</label>
+                  <div class="text-bold" style="font-weight: 700">{{ currentEmployee?.msr_card }}</div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="access_code">{{ "Access Code" | translate }}</label>
+                  <div class="text-bold" style="font-weight: 700">{{ currentEmployee?.access_code }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="row form-content">
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="security_level">{{ "Security Level" | translate }}</label>
+                  <div class="text-bold" style="font-weight: 700">{{ currentEmployee?.security_level }}</div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="holiday_pay_scale">{{ "Holiday Pay Scale" | translate }}</label>
+                  <div class="text-bold" style="font-weight: 700" >{{ currentEmployee?.holiday_pay_scale }}</div>
+                </div>
+              </div>
+            </div>
+            
+            
+            
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

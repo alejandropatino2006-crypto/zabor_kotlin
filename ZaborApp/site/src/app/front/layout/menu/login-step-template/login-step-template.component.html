@@ -1,0 +1,55 @@
+<div class="step-template">
+  <h2>Step {{step.stepIndex}} : {{ step.label }}</h2>
+  <!-- 16:9 aspect ratio -->
+  <div *ngIf="step.stepIndex === 1" class="" id="userDetails">
+    <form class="form-address" [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
+      <div class="col-md-12">
+
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label>{{'Email'| translate}}</label>
+            <input type="email" class="form-control" placeholder="Lorem@abc.com" formControlName="email">
+            <span class="text-danger" *ngIf="
+                    !loginForm.controls['email'].valid &&
+                    loginForm.controls['email'].touched
+                ">{{'Email is invalid'| translate}}</span>
+          </div>
+          <div class="form-group col-md-6">
+            <label>{{'Password'| translate}}</label>
+            <input type="password" class="form-control" placeholder="Password" formControlName="password">
+            <span class="text-danger" *ngIf="
+                    !loginForm.controls['password'].valid &&
+                    loginForm.controls['password'].touched
+                ">{{'Password is invalid'| translate}}</span>
+          </div>
+        </div>
+
+        <div class="row px-3 mt-2 mb-2">
+          <button class="btn btn-ad-card btn-global" type="submit" [disabled]="!loginForm.valid">Login</button>
+          <button class="btn btn-ad-card btn-danger ml-2" type="button" (click)="handleCancelLogin()">Cancel</button>
+          <button class="btn btn-ad-card btn-iceblue ml-2" type="button" (click)="doRegister($event)">Register</button>
+        </div>
+
+      </div>
+    </form>
+  </div>
+
+  <div *ngIf="step.stepIndex === 2" class="" id="userCheckout">
+
+    <div class="form-address">
+      <div class="col-md-12">
+        <div class="row">
+          <span class="col-sm-12">You are now logged in and can proceed to checkout!</span>
+        </div>
+
+        <div class="row px-3 mt-2 mb-2">
+          <button class="btn btn-block btn-global w-122px" (click)="proceedToCheckout()">{{'Checkout' | translate}}</button>
+          <button class="btn btn-ad-card btn-danger ml-2" (click)="handleCancelLogin()">Cancel</button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>

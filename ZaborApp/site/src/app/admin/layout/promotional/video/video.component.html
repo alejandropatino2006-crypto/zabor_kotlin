@@ -1,0 +1,61 @@
+<div class="row">
+  <div class="col col-xs-12">
+    <div class="card mb-3">
+      <div class="card-header">
+        Promotional Video
+        <!-- <button class="btn btn-success btn-sm pull-right" routerLink="/restaurants/create"> + Add
+          restaurant</button> -->
+      </div>
+      <div class="card-body table-responsive">
+        <app-datatables-net-table [rowsCount]="videoList.length" [headingColumnsCount]="headingColumnsCount">
+          <tr *ngFor="let video of videoList; index as i;">
+            <td scope="row">{{ i+1 }}</td>
+            <td><img src="{{ pic_url+video.video_thumb}}" width="100" (click)="openModel(video.video)"></td>
+            <td><a routerLink="/admin/restaurant/view/{{ video.restaurant_id}}">{{ video.restaurant_name}}</a></td>
+            <td><a routerLink="/admin/user/view/{{video.user_id}}">{{ video.userName}}</a></td>
+            <td>{{ video.start_date}}</td>
+            <td>{{ video.end_date}}</td>
+            <td *ngIf="video.status == 1; else elseBlock">
+              <ui-switch [checked]="true" defaultBgColor="red" (change)="changeStatus($event,video.id)"></ui-switch>
+            </td>
+            <ng-template #elseBlock>
+              <td>
+                <ui-switch defaultBgColor="red" (change)="changeStatus($event,video.id)"></ui-switch>
+              </td>
+            </ng-template>
+            <td>{{ video.created_at}}</td>
+            <td>
+              <button class="btn btn-danger btn-sm badge" (click)="deleteVideo($event,video.id)">{{ "Delete" | translate }}</button>
+            </td>
+          </tr>
+        </app-datatables-net-table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+
+
+        <div class="modal-body">
+
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+
+          <!-- 16:9 aspect ratio -->
+          <div class="embed-responsive embed-responsive-16by9">
+            <iframe class="embed-responsive-item" src="" id="video" allowscriptaccess="always"
+              allow="autoplay"></iframe>
+          </div>
+
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,51 @@
+<main>
+  <div class="sec sec-business-account  gray-back small-container">
+    <div class="container" *ngIf="allowClaim">
+      <div class="row" *ngIf="askforclaim">
+        <div class="col-12">
+
+          <div class="card card-busness-account">
+            <div class="card-body text-center">
+              <h2>{{'Is this your Restaurant'|translate}}?</h2>
+              <p>{{'Claim your Restaurant to immediately update Restaurant information'| translate}} <br></p>
+              <div class="text-center">
+                <a href="javascript:void(0)" class="btn btn-secondary"
+                  (click)="claim()">{{'Claim this Restaurant'|translate}}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="!askforclaim">
+        <div class="col-12">
+
+          <div class="card card-busness-account">
+            <div class="card-body">
+
+              <form [formGroup]="claimForm" (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                  <label>{{'Email'|translate}}</label>
+                  <input type="text" class="form-control" formControlName="email">
+                  <span class="text-danger" *ngIf="
+                  !claimForm.controls['email'].valid &&
+                  claimForm.controls['email']
+                      .touched 
+              ">{{'Email is invalid'| translate}}</span>
+                </div>
+                <p>By continuing, you agree you have the authority to claim this Restaurant. You
+                  agree to Zabor’s Terms and Privacy Policy.</p>
+
+                <div class="text-center">
+                  <button class="btn btn-global ml-auto mr-auto"
+                    [disabled]="!this.claimForm.valid">{{'Continue'| translate }}</button>
+                </div>
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>

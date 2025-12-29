@@ -1,0 +1,148 @@
+<div class="card">
+  <div class="card-header">
+    <h4>Edit Profile</h4>
+  </div>
+  <div class="card-body">
+    <div>
+      <img src={{ProfileImage}} *ngIf="ProfileImage != ''" class="profileImage" alt="profilepic" width="150px">
+    </div>
+    <div class="login-page">
+      <div class="row justify-content-md-center">
+        <div class="col-md-12">
+          <form role="form" [formGroup]="ProfileForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+            <input type="hidden" name="role">
+            <input type="hidden" name="id">
+            <div class="row form-content">
+
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="name">Full Name*</label>
+                  <input type="text" class="form-control input-underline input-lg" id="name" formControlName="name"
+                    placeholder="{{ 'Full Name'  }}" maxlength="40" />
+                  <ng-container *ngIf="!ProfileForm.controls['name'].valid &&
+                    ProfileForm.controls['name'].touched">
+                    <span class="text-danger" *ngIf="ProfileForm.controls['name'].hasError(
+                                                'required'
+                                            ) else elsename
+                                        ">name is required.</span>
+                    <ng-template #elsename>
+                      <span class="text-danger" *ngIf="ProfileForm.controls['name'].hasError(
+                                                'whitespace'
+                                            )
+                                        ">only white space is not allowed.</span></ng-template>
+                  </ng-container>
+                </div>
+              </div>
+
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="email">Email*</label>
+                  <input type="text" class="form-control input-underline input-lg" id="email" formControlName="email"
+                    placeholder="{{ 'Email'  }}" maxlength="40" />
+                  <ng-container *ngIf="!ProfileForm.controls['email'].valid &&
+                    ProfileForm.controls['email'].touched">
+                    <span class="text-danger" *ngIf="ProfileForm.controls['email'].hasError(
+                                                'required'
+                                            ) else elseemail
+                                        ">Email is required.</span>
+                    <ng-template #elseemail>
+                      <span class="text-danger" *ngIf="ProfileForm.controls['email'].hasError(
+                                                'email'
+                                            )
+                                        ">Email is not valid.</span></ng-template>
+                  </ng-container>
+                </div>
+              </div>
+
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="city">city*</label>
+                  <input type="text" class="form-control input-underline input-lg" id="city" formControlName="city"
+                    placeholder="{{ 'City'  }}" maxlength="25" />
+                  <ng-container *ngIf="!ProfileForm.controls['city'].valid &&
+                    ProfileForm.controls['city'].touched">
+                    <span class="text-danger" *ngIf="ProfileForm.controls['city'].hasError(
+                                                'required'
+                                            ) else elsecity
+                                        ">City is required.</span>
+                    <ng-template #elsecity>
+                      <span class="text-danger" *ngIf="ProfileForm.controls['city'].hasError(
+                                                'whitespace'
+                                            )
+                                        ">Only whitespace is not allowed.</span></ng-template>
+                  </ng-container>
+                </div>
+              </div>
+
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="phone">Contact No*</label>
+                  <input type="text" id="phone" placeholder="Contact Number" formControlName="phone"
+                    class="form-control" maxlength="15" />
+                  <ng-container *ngIf="!ProfileForm.controls['phone'].valid &&
+                    ProfileForm.controls['phone'].touched">
+                    <span class="text-danger" *ngIf="ProfileForm.controls['phone'].hasError(
+                                                'required'
+                                            ) else elsephone
+                                        ">phone is required.</span>
+                    <ng-template #elsephone>
+                      <span class="text-danger" *ngIf="ProfileForm.controls['phone'].hasError(
+                                                'pattern'
+                                            )
+                                        ">Pattern is not allowed</span></ng-template>
+                  </ng-container>
+                </div>
+              </div>
+
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="address">addess*</label>
+                  <textarea class="form-control input-underline input-lg" id="address" formControlName="address"
+                    placeholder="{{ 'address'  }}" maxlength="200"></textarea>
+
+                  <ng-container *ngIf="!ProfileForm.controls['address'].valid &&
+                    ProfileForm.controls['address'].touched">
+                    <span class="text-danger" *ngIf="ProfileForm.controls['address'].hasError(
+                                                'required'
+                                            ) else elseaddress
+                                        ">address is required.</span>
+                    <ng-template #elseaddress>
+                      <span class="text-danger" *ngIf="ProfileForm.controls['address'].hasError(
+                                                'whitespace'
+                                            )
+                                        ">Only whitespace is not allowed.</span></ng-template>
+                  </ng-container>
+                </div>
+              </div>
+
+              <div class="col-sm-6">
+                <label>Choose Profile Pic</label>
+                <div class="custom-file">
+
+                  <input type="file" name="profilepic" class="custom-file-input" id="profilepic"
+                    (change)="fileChangeEvent($event,'profilepic')" accept="image/*">
+                  <label class="custom-file-label" for="customFile">Choose file</label>
+                </div>
+              </div>
+
+
+
+            </div>
+
+            <div *ngIf="showImagecropper" class="col-sm-12">
+              <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="1"
+                [resizeToWidth]="200" format="png" (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()"
+                (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()"></image-cropper>
+
+              <img [src]="croppedImage" />
+            </div>
+
+
+            <button [disabled]="!ProfileForm.valid" class="btn btn-success" type="submit">
+              {{ "Update"  }}</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

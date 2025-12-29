@@ -1,0 +1,46 @@
+<div class="login-page owner">
+    <div class="row justify-content-md-center">
+        <div class="col-lg-4">
+            <a [routerLink]="['/']"><img src="assets/images/logo.png" width="150px" class="user-avatar" /></a>
+            <h1>{{ "ZABOR SIGN IN" | translate }}</h1>
+            <div>
+                <app-lang-radio></app-lang-radio>
+            </div>
+            <p *ngIf="errorMessage != ''" class="text-danger"> {{errorMessage}} </p>
+
+            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" role="form">
+                <div class="form-content login-form-class">
+                    <div class="form-group">
+                        <input type="text" id="email" formControlName="email"
+                            class="form-control input-underline input-lg" placeholder='{{ "Email" | translate }}' maxlength="40" />
+                        <span class="text-danger"
+                            *ngIf="!loginForm.controls['email'].valid && loginForm.controls['email'].touched && loginForm.controls['email'].hasError('required') ">{{ "Email is required" | translate }}.</span>
+                        <span class="text-danger"
+                            *ngIf="!loginForm.controls['email'].hasError('required') && !loginForm.controls['email'].valid && loginForm.controls['email'].touched && loginForm.controls['email'].hasError('email') ">{{ "Email is invalid" | translate }}.</span>
+                    </div>
+
+                    <div class="form-group position-relative">
+
+                        <input [type]="passwordFieldType" id="password" formControlName="password" autocomplete="off"
+                            class="form-control input-underline input-lg" placeholder='{{ "Password" | translate }}' />
+
+                        <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password" style="color: #777;" [ngClass]="{'fa-eye-slash': passwordFieldType === 'text'}" (click)="handlePasswordToggle($event)"></span>
+
+                        <span class="text-danger"
+                            *ngIf="!loginForm.controls['password'].valid && loginForm.controls['password'].touched && loginForm.controls['password'].hasError('required') ">{{ "Password is required" | translate }}.</span>
+                            
+                        <span class="text-danger"
+                            *ngIf="!loginForm.controls['password'].valid && loginForm.controls['password'].touched && loginForm.controls['password'].hasError('minlength') ">{{ "Password requires atleast 6 characters" | translate }}.</span>
+                    </div>
+                </div>
+                <div>
+                    <button [disabled]="!loginForm.valid" class="btn rounded-btn" type="submit">{{ "Login" | translate }}</button>
+                    &nbsp;
+                    <button class="btn rounded-btn" [routerLink]="['/owner/signup']">{{ "Signup" | translate }}</button></div>
+                <div class="mt-3">
+                    <a class="text-warning forget-password-link" [routerLink]="['/owner/forget-password']">{{ "Forgot Password" | translate }} ?</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

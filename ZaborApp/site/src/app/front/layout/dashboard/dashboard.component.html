@@ -1,0 +1,493 @@
+<main>
+  <section class="sec-user-dashboard">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="user-dashboard-left">
+            <div class="card">
+              <div class="user-top-info">
+                <div class="user-img" *ngIf="profileImg">
+                  <img src="{{imagepath+profileImg}}" alt="">
+                </div>
+                <!-- <div class="text-center">
+                  <a href="#" class="btn btn-edit">Edit</a>
+                </div> -->
+              </div>
+
+              <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist">
+                <a class="nav-link" [ngClass]="{ 'active':menutype==='profile'}" data-toggle="pill"
+                  (click)="changeNav('profile')" role="tab" aria-selected="true">{{'My Details'| translate}}</a>
+                <a class="nav-link" [ngClass]="{ 'active':menutype==='changepassword'}" data-toggle="pill"
+                  (click)="changeNav('changepassword')" role="tab"
+                  aria-selected="false">{{'Change Password'| translate}}</a>
+                <a class="nav-link" [ngClass]="{ 'active':menutype==='orders'}" data-toggle="pill"
+                  (click)="changeNav('orders')" role="tab" aria-selected="false">{{'Order History'| translate}}</a>
+                <!-- <a class="nav-link" [ngClass]="{ 'active':menutype==='cards'}" data-toggle="pill"
+                  (click)="changeNav('cards')" role="tab" aria-selected="false">Saved
+                  Cards</a> -->
+                <a class="nav-link" [ngClass]="{ 'active':menutype==='address'}" data-toggle="pill"
+                  (click)="changeNav('address')" role="tab" aria-selected="false">{{'Address'| translate}}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-9 mt-4 mt-md-0">
+          <div class="user-dashboard-right">
+            <div class="tab-content" id="v-pills-tabContent">
+              <div class="tab-pane fade" [ngClass]="{ 'show active':menutype==='profile'}" id="v-pills-1"
+                role="tabpanel">
+                <div class="card">
+
+                  <form [formGroup]="userform" (ngSubmit)="onSubmitdetail()">
+                    <div class="row">
+                      <div class="col-md-12">
+
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label>{{'Name'| translate}}*</label>
+                              <input type="text" class="form-control" formControlName="name" placeholder="Lorem">
+                              <span class="text-danger" *ngIf="
+                              !userform.controls['name'].valid &&
+                              userform.controls['name']
+                                  .touched
+                          ">{{'Name is invalid'| translate}}</span>
+                            </div>
+
+                            <div class="form-group">
+                              <label>{{'Email'| translate}}*</label>
+                              <input type="text" class="form-control" formControlName="email"
+                                placeholder="Lorem@zabor.com">
+                              <span class="text-danger" *ngIf="
+                              !userform.controls['email'].valid &&
+                              userform.controls['email']
+                                  .touched
+                          ">{{'Email is invalid'| translate}}</span>
+                            </div>
+                            <div class="form-group">
+                              <label>{{'Phone Number'| translate}}*</label>
+                              <input type="text" class="form-control" formControlName="phone"
+                                placeholder="01 011 011 0111">
+                              <span class="text-danger" *ngIf="
+                              !userform.controls['phone'].valid &&
+                              userform.controls['phone']
+                                  .touched
+                          ">{{'Phone is invalid'| translate}}</span>
+                            </div>
+                            <div class="form-group">
+                              <label>{{'City'| translate}}*</label>
+                              <input type="text" class="form-control" formControlName="city" placeholder="city">
+                              <span class="text-danger" *ngIf="
+                              !userform.controls['city'].valid &&
+                              userform.controls['city']
+                                  .touched
+                          ">{{'City is invalid'| translate}}</span>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label>{{'Date of Birth'| translate}}*</label>
+                              <input type="text" class='form-control dob-control' formControlName='dob'
+                                ngxDaterangepickerMd [showDropdowns]="true" [singleDatePicker]="true" [autoApply]="true"
+                                [maxDate]="maxDate" readonly />
+                              <span class="text-danger" *ngIf="
+                                !userform.controls['dob'].valid &&
+                                userform.controls['dob']
+                                    .touched
+                            ">{{'Date of Birth is invalid'| translate}}</span>
+                            </div>
+                            <div class="form-group">
+                              <label>{{'Address'| translate}}*</label>
+                              <textarea class="form-control" formControlName="address"></textarea>
+                              <span class="text-danger" *ngIf="
+                              !userform.controls['address'].valid &&
+                              userform.controls['address']
+                                  .touched
+                          ">{{'Address is invalid'| translate}}</span>
+                            </div>
+                            <div class="form-group">
+                              <label>{{'About'| translate}}*</label>
+                              <textarea class="form-control" formControlName="about"></textarea>
+                              <span class="text-danger" *ngIf="
+                              !userform.controls['about'].valid &&
+                              userform.controls['about']
+                                  .touched
+                          ">{{'About is invalid'| translate}}</span>
+                            </div>
+
+                            <div class="form-group">
+                              <label>{{'Preferred language for emails'| translate}}*</label>
+                              <select formControlName="pref_lang" id="" class="custom-select">
+                                <option value="en">English</option>
+                                <option value="es">Spanish</option>
+                              </select>
+                              <span class="text-danger" *ngIf="
+                              !userform.controls['pref_lang'].valid &&
+                              userform.controls['pref_lang']
+                                  .touched
+                          ">{{'Preferred language is invalid'| translate}}</span>
+                            </div>
+
+                          </div>
+                        </div>
+
+                      </div>
+                      <div class="col-md-12">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <div class="custom-file">
+                                <input type="file" class="custom-file-input" accept="image/*"
+                                  (change)="fileChangeEvent($event,'profilepic')">
+                                <label class="custom-file-label"
+                                  for="customFile">{{'Choose profile file'| translate}}</label>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6" *ngIf="showImagecropper">
+                            <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
+                              [aspectRatio]="1" [resizeToWidth]="200" format="png"
+                              (imageCropped)="imageCropped($event)">
+                            </image-cropper>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="user-top-info">
+                        <button type="submit" class="btn btn-block btn-global"
+                          [disabled]="!userform.valid">{{'Submit'| translate}}</button>
+                      </div>
+
+                    </div>
+                  </form>
+
+                </div>
+              </div>
+              <div class="tab-pane fade" [ngClass]="{ 'show active':menutype==='changepassword'}" id="v-pills-2"
+                role="tabpanel">
+                <div class="card">
+                  <form [formGroup]="changepasswordform" (ngSubmit)="Changepassword()">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>{{'Old Password*'| translate}}</label>
+                          <input type="password" class="form-control" placeholder="************"
+                            formControlName="oldpassword">
+                          <span class="text-danger" *ngIf="
+                            !changepasswordform.controls['oldpassword'].valid &&
+                            changepasswordform.controls['oldpassword']
+                                .touched
+                        ">{{'Old password Required'| translate}}</span>
+                        </div>
+                        <div class="form-group">
+                          <label>{{'New Password'| translate}}*</label>
+                          <input type="password" class="form-control" placeholder="************"
+                            formControlName="newpassword">
+                          <span class="text-danger" *ngIf="
+                                        !changepasswordform.controls['newpassword'].valid &&
+                                        changepasswordform.controls['newpassword']
+                                            .touched
+                                    ">{{'Min 6 Charactor Required'| translate}}</span>
+                        </div>
+                        <div class="form-group">
+                          <label>{{'Confirm Password'| translate}}*</label>
+                          <input type="password" class="form-control" placeholder="************"
+                            formControlName="confirmpassword">
+                          <span class="text-danger" *ngIf="
+                                        !changepasswordform.controls['confirmpassword'].valid &&
+                                        changepasswordform.controls['confirmpassword']
+                                            .touched &&
+                                        changepasswordform.controls['confirmpassword'].hasError(
+                                            'mustMatch'
+                                        )
+                                    ">{{'Passwords must match'| translate}}.</span>
+                        </div>
+                        <div class="user-top-info">
+                          <button type="submit" class="btn btn-edit"
+                            [disabled]="!changepasswordform.valid">{{'Submit'| translate}}</button>
+                        </div>
+
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div class="tab-pane fade" [ngClass]="{ 'show active':menutype==='orders'}" *ngIf="menutype==='orders'"
+                id="v-pills-3" role="tabpanel">
+                <div class="card">
+                  <div class="row mb-3" style="background-color: palegoldenrod;">
+                    <div class="col-12 d-flex justify-content-between">
+                      <span>
+                        Total orders = {{userOrders.length}}
+                      </span>
+                      <span>
+                        Most recent order on top
+                      </span>
+                    </div>
+                  </div>
+                  <!--<div class="row" infinite-scroll [infiniteScrollDistance]="scrollDistance"
+                    [infiniteScrollUpDistance]="scrollUpDistance" [infiniteScrollThrottle]="throttle"
+                    (scrolled)="onScrollDown()" (scrolledUp)="onUp()" *ngIf="userOrders.length > 0;">-->
+                  <div class="row" *ngIf="userOrders.length > 0;">
+                    <div class="col-md-12">
+                      <ul class="order-history-ul">
+
+                        <li class="d-flex  w-100" *ngFor="let item of userOrders; let ie = index">
+
+                          <div class="oder-history-left">
+                            <div class="date">{{item.created_date}}</div>
+                          </div>
+                          <div class="oder-history-right">
+                            <div class="order-right-top w-100">
+
+                              <a data-toggle="collapse" href="#collapseOrder_{{ie}}" role="button">
+                                <div class="order-info-wrap d-flex  justify-content-between align-items-center ">
+                                  <div class="order-img">
+                                    <img src="{{imagepath+item.restaurantpic}}" alt="">
+                                  </div>
+                                  <div class="order-info-content">
+                                    <h3 class="order-name">{{item.res_name}}</h3>
+                                    <p class="order-amount">{{'Total Amount'| translate}}:
+                                      {{item.total | currency}}</p>
+                                    <p class="order-amount">{{'Order Status'| translate}}: <span
+                                        [ngClass]="{'text-danger':item.status==='cancelled','text-primary':item.status==='received' ,'text-warning':item.status==='preparing','text-info':item.status==='ready','text-dark':item.status==='pickup','text-success':item.status==='delivered'}">
+                                        {{item.status | titlecase}} </span> </p>
+                                  </div>
+                                  <div class="re-order-wrap">
+                                    <button class="btn bnt-reorder mb-2"
+                                      [routerLink]="['/order', item.id, item.order_hash]" [queryParams]="{back_link:'/dashboard/orders'}">{{'View Detail'| translate}}</button>
+                                    <button class="btn bnt-reorder"
+                                      [routerLink]="['/menu', item.res_id]">{{'Re-Order'| translate}}</button>
+                                  </div>
+                                </div>
+                              </a>
+
+                            </div>
+
+                            <div class="order-right-bottom w-100  collapse" id="collapseOrder_{{ie}}">
+                              <div class="card">
+                                <div class="card-header">
+                                  {{'Order Id'| translate}}: #{{item.id}}
+                                </div>
+                                <div class="card-body">
+                                  <table class="table  w-100">
+                                    <tbody>
+                                      <tr *ngFor="let ele of item.cart; let i = index">
+                                        <td>{{i+1}}</td>
+                                        <td class="items-name">{{ele.itemName}}</td>
+                                        <td>{{'Qty'| translate}}: {{ele.quantity}}</td>
+                                        <td>{{ele.itemPrice * ele.quantity |currency}}</td>
+                                      </tr>
+
+                                    </tbody>
+                                  </table>
+                                </div>
+                                <div class="card-footer d-flex justify-content-between">
+                                  <span>{{'Food Tax'| translate}}:</span>
+                                  <span>{{item.food_tax |currency}}</span>
+
+                                </div>
+                                <div class="card-footer d-flex justify-content-between">
+                                  <span>{{'Drink Tax'| translate}}:</span>
+                                  <span>{{item.drink_tax |currency}}</span>
+
+                                </div>
+
+                                <div class="card-footer d-flex justify-content-between">
+                                  <span>{{'Subtotal'| translate}}:</span>
+                                  <span>{{item.subtotal |currency}}</span>
+
+                                </div>
+
+                                <div class="card-footer d-flex justify-content-between">
+                                  <span>{{'Tax'| translate}}:</span>
+                                  <span>{{item.tax |currency}}</span>
+                                </div>
+                                <div class="card-footer d-flex justify-content-between">
+                                  <span>{{'Total'| translate}}:</span>
+                                  <span>{{item.without_discount |currency}}</span>
+                                </div>
+                                <div class="card-footer d-flex justify-content-between" *ngIf="item.discount > 0">
+                                  <span>{{'Discount'| translate}}:</span><span>-{{item.discount | currency}}</span>
+                                </div>
+                                <div class="card-footer d-flex justify-content-between">
+                                  <span>{{'Delivery Charges'| translate}}:</span>
+                                  <span>{{item.delivery_charge |currency}}</span>
+                                </div>
+                                <div class="card-footer d-flex justify-content-between" *ngIf="item.discount > 0">
+                                  <span>{{'Total Amount'| translate}}:</span><span>{{item.total  | currency}}</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="tab-pane fade" [ngClass]="{ 'show active':menutype==='address'}" id="v-pills-5"
+                role="tabpanel">
+                <div class="card">
+                  <div class="row">
+                    <ul class="saved-card-list" style="width: 100%;">
+                      <li *ngFor="let item of userAddress">
+                        <div class="address-div">
+                          <h4><span>{{item.firstname}}</span>&nbsp;<span>{{item.lastname}}</span><span *ngIf="userAddress.length > 1"
+                              class="pull-right" (click)="deleteAddress(item.id)"><i
+                                class="fa fa-trash text-danger"></i></span> &nbsp; <span class="pull-right"
+                              (click)="editAddress(item.id)"><i class="fa fa-edit"></i></span></h4>
+                          <h6>{{item.houseno}} , {{item.address}} , {{item.city}}
+                          </h6>
+                          <h6>{{'Contact No'| translate}}. - {{item.phone}}</h6>
+                        </div>
+                      </li>
+
+
+                    </ul>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <h3 class="d-flex justify-content-between">
+                        <button class="btn btn-ad-card" (click)="addNewAddress()">{{'Add New'| translate}}</button>
+                        <button *ngIf="addAddress" class="btn btn-ad-card" (click)="cancelAddressEdit()">{{'Cancel'| translate}}</button>
+                      </h3>
+                    </div>
+                  </div>
+
+                  <div [ngClass]="{ 'show hideAddress':!addAddress}">
+                    <form [formGroup]="addressForm" class="address-form" (ngSubmit)="onSubmitAddress()">
+                      <input type="hidden" formControlName="id">
+                      <div class="col-md-12">
+                        <div class="row">
+                          <div class="form-group col-md-6">
+                            <label>{{'First Name'| translate}}</label>
+                            <input type="text" class="form-control" placeholder="Lorem" formControlName="firstname">
+                            <span class="text-danger" *ngIf="
+                            !addressForm.controls['firstname'].valid &&
+                            addressForm.controls['firstname']
+                                .touched
+                        ">{{'Firstname is invalid'| translate}}</span>
+                          </div>
+                          <div class="form-group col-md-6">
+                            <label>{{'Last Name'| translate}}</label>
+                            <input type="text" class="form-control" placeholder="Lorem" formControlName="lastname">
+                            <span class="text-danger" *ngIf="
+                            !addressForm.controls['lastname'].valid &&
+                            addressForm.controls['lastname']
+                                .touched
+                        ">{{'Lastname is invalid'| translate}}</span>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <!-- <div class="form-group col-md-6">
+                            <label>{{'Country'| translate}}</label>
+                            <input type="text" class="form-control" placeholder="Lorem" formControlName="country">
+                            <span class="text-danger" *ngIf="
+                            !addressForm.controls['country'].valid &&
+                            addressForm.controls['country']
+                                .touched
+                        ">{{'Country is invalid'| translate}}</span>
+                          </div>   -->
+                          <div class="form-group col-md-6">
+                            <label>{{'Email'| translate}}</label>
+                            <input type="email" class="form-control" placeholder="Lorem@abc.com"
+                              formControlName="email">
+                            <span class="text-danger" *ngIf="
+                            !addressForm.controls['email'].valid &&
+                            addressForm.controls['email']
+                                .touched
+                        ">{{'Email is invalid'| translate}}</span>
+                          </div>
+
+                          <div class="form-group col-md-6">
+                            <label>{{'Phone'| translate}}</label>
+                            <input type="text" class="form-control" placeholder="Lorem" formControlName="phone">
+                            <span class="text-danger" *ngIf="
+                            !addressForm.controls['phone'].valid &&
+                            addressForm.controls['phone']
+                                .touched
+                        ">{{'Phone is invalid'| translate}}</span>
+                          </div>
+
+                          <div class="form-group col-md-6">
+                            <label>{{'City'| translate}}</label>
+                            <input type="text" class="form-control" placeholder="City" formControlName="city">
+                            <span class="text-danger" *ngIf="
+                            !addressForm.controls['city'].valid &&
+                            addressForm.controls['city']
+                                .touched
+                        ">{{'City is invalid'| translate}}</span>
+                          </div>
+                          <!-- <div class="form-group col-md-6">
+                          <label>{{'Postcode'| translate}}</label>
+                          <input type="text" class="form-control" placeholder="01 011 011 0111"
+                            formControlName="pincode">
+                          <span class="text-danger" *ngIf="
+                              !addressForm.controls['pincode'].valid &&
+                              addressForm.controls['pincode']
+                                  .touched
+                          ">{{'Pincode is invalid'| translate}}</span>
+                        </div> -->
+                        </div>
+
+                        <div class="row">
+                          <div class="form-group col-md-4">
+                            <label>{{'House No.'| translate}}</label>
+                            <input type="text" class="form-control" placeholder="House No." formControlName="houseno">
+                            <span class="text-danger" *ngIf="
+                            !addressForm.controls['houseno'].valid &&
+                            addressForm.controls['houseno']
+                                .touched
+                        ">{{'House No. is invalid'| translate}}</span>
+                          </div>
+                          <div class="form-group col-md-8">
+                            <label>{{'Address'| translate}}</label>
+                            <input type="text" class="form-control" formControlName="address" placeholder="Address">
+                            <span class="text-danger" *ngIf="
+                            !addressForm.controls['address'].valid &&
+                            addressForm.controls['address']
+                                .touched
+                        ">{{'Address is invalid'| translate}}</span>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-12">
+                            <div class="form-group">
+                              <label>Choose your address on Map*</label>
+                              <input placeholder="search for location" autocorrect="off" autocapitalize="off"
+                                spellcheck="off" type="text" class="form-control auto-location" #search
+                                [formControl]="searchControl">
+                            </div>
+                            <agm-map [latitude]="lat" [longitude]="lng" (mapClick)="chooseLocation($event)"
+                              [zoom]="zoom">
+                              <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+                            </agm-map>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <button class="btn btn-block btn-global" type="submit"
+                              [disabled]="!addressForm.valid">{{'Submit'| translate}}</button>
+                          </div>
+                        </div>
+
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+</main>

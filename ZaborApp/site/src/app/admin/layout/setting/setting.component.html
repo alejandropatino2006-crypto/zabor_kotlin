@@ -1,0 +1,279 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="card">
+      <div class="card-header">
+        General Setting
+      </div>
+      <div class="card-body">
+
+        <form role="form" [formGroup]="settingForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+
+          <div class="row">
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label>Email*</label>
+                <input type="text" class="form-control input-underline input-lg" id="email" formControlName="email"
+                  placeholder="{{ 'Email'  }}" maxlength="40" />
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label>Contact No.*</label>
+                <input type="text" class="form-control input-underline input-lg" id="contact" formControlName="contact"
+                  placeholder="{{ 'Contact No'  }}" maxlength="40" />
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label>City*</label>
+                <input type="text" class="form-control input-underline input-lg" formControlName="city"
+                  placeholder="{{ 'City'  }}" maxlength="40" />
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row">
+            <div class="col-sm-9">
+              <div class="form-group">
+                <label>Address*</label>
+                <textarea formControlName="address" class="form-control input-underline input-lg"></textarea>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-4">
+              <div class="row p-0 neo1" style="margin-right: -7px;">
+                <div class="col-12">
+                  <div class="form-group">
+                    <label>Google Link</label>
+                    <input type="text" class="form-control input-underline input-lg" formControlName="google_link"
+                      placeholder="{{ 'Google Link'  }}" maxlength="40" />
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="form-group">
+                    <label>Facebook Link</label>
+                    <input type="text" class="form-control input-underline input-lg" formControlName="facebook_link"
+                      placeholder="{{ 'Facebook Link'  }}" maxlength="40" />
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="form-group">
+                    <label>Twitter Link</label>
+                    <input type="text" class="form-control input-underline input-lg" formControlName="twitter_link"
+                      placeholder="{{ 'Twitter Link'  }}" maxlength="40" />
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="form-group">
+                    <label>Instagram Link</label>
+                    <input type="text" class="form-control input-underline input-lg" formControlName="instagram_link"
+                      placeholder="{{ 'Instagram Link'  }}" maxlength="40" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-4">
+              <div class="row p-0 neo1" style="margin-right: -7px;">
+                <div class="col-12">
+                  <div class="form-group">
+                    <label>Food Tax*</label>
+                    <input type="number" class="form-control input-underline input-lg" formControlName="food_tax"
+                           placeholder="{{ 'Food Tax'  }}" maxlength="5" />
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="form-group">
+                    <label>State Tax*</label>
+                    <input type="number" class="form-control input-underline input-lg" formControlName="drink_tax"
+                           placeholder="{{ 'State Tax'  }}" maxlength="5" />
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="form-group">
+                    <label>City Tax*</label>
+                    <input type="number" class="form-control input-underline input-lg" formControlName="grand_tax"
+                           placeholder="{{ 'City Tax'  }}" maxlength="5" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-4">
+              <div class="row p-0 neo1">
+                <div class="col-12">
+                  <div class="form-group">
+                    <label> Delivery Distance (Km)</label>
+                    <input type="number" class="form-control input-underline input-lg"
+                           formControlName="base_delivery_distance" placeholder="{{ 'Base Delievery Distance'  }}" />
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="form-group">
+                    <label>Delivery charge </label>
+                    <input type="number" class="form-control input-underline input-lg" formControlName="delivery_charge"
+                           placeholder="{{ 'Delivery charge'  }}" />
+                  </div>
+                </div>
+                <!-- <div class="col-12">
+                  <div class="form-group">
+                    <label> Extra Charge </label>
+                    <input type="number" class="form-control input-underline input-lg"
+                      formControlName="extra_delivery_charge" placeholder="{{ 'Extra Charge'  }}" />
+                  </div>
+                </div> -->
+                <div class="col-12">
+                  <div class="form-group">
+                    <label>Driver Fee</label>
+                    <input type="number" class="form-control input-underline input-lg" formControlName="driver_fee"
+                           placeholder="{{ 'Driver Fee'  }}" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <button [disabled]="!settingForm.valid" class="btn btn-success" type="submit">
+            Update</button>
+
+        </form>
+
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        Website Data
+      </div>
+      <div class="card-body">
+        <div class="col-md-12">
+          <form role="form" [formGroup]="Webdata" (ngSubmit)="onSubmitWebData()" enctype="multipart/form-data">
+
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label>Login Background Image*</label>
+                  <div class="custom-file-append">
+                    <input type="file" class="custom-file-input" id="loginBgFile" (change)="fileChangeEvent($event,'loginPic')">
+                    <label class="custom-file-label" for="loginBgFile">{{ loginBgImageFileName }}</label>
+                    <button class="custom-file-append-button btn btn-outline-secondary" type="button" (click)="handleResetLoginBgClick($event)">Reset</button>
+                  </div>
+                </div>
+                <img [src]="loginBgImageSrc" *ngIf="loginBgImageSrc" style="height: 300px; width:500px; margin-bottom: 1.5rem;">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label>Home deliever heading(en)*</label>
+                  <input type="text" class="form-control" formControlName="f_d_h_en">
+                </div>
+                <div class="form-group">
+                  <label>Home deliever description(en)*</label>
+                  <textarea class="form-control input-underline input-lg" formControlName="f_d_d_en"></textarea>
+
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label>Home deliever heading(es)*</label>
+                  <input type="text" class="form-control" formControlName="f_d_h_es">
+                </div>
+                <div class="form-group">
+                  <label>Home deliever description(es)*</label>
+                  <textarea class="form-control input-underline input-lg" formControlName="f_d_d_es"></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label>Bottom heading(en)*</label>
+                  <input type="text" class="form-control" formControlName="b_h_en">
+                </div>
+                <div class="form-group">
+                  <label>Bottom description(en)*</label>
+                  <ejs-richtexteditor [toolbarSettings]='tools' formControlName="b_c_en"></ejs-richtexteditor>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label>Bottom heading(es)*</label>
+                  <input type="text" class="form-control" formControlName="b_h_es">
+                </div>
+                <div class="form-group">
+                  <label>Bottom description(es)*</label>
+                  <ejs-richtexteditor [toolbarSettings]='tools' formControlName="b_c_es"></ejs-richtexteditor>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="custom-file">
+                  <label>Pic</label>
+                  <input type="file" class="custom-file-input" id="customFile" (change)="fileChangeEvent($event,'pic')">
+                  <label class="custom-file-label" for="customFile">Choose Pic</label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label>Footer Left EN*</label>
+                  <textarea formControlName="f_l_en" class="form-control input-underline input-lg"></textarea>
+                </div>
+              </div>
+
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label>Footer Left ES*</label>
+                  <textarea formControlName="f_l_es" class="form-control input-underline input-lg"></textarea>
+                </div>
+              </div>
+
+            </div>
+            <div class="row">
+
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label>Footer Right EN*</label>
+                  <textarea formControlName="f_r_en" class="form-control input-underline input-lg"></textarea>
+                </div>
+              </div>
+
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label>Footer Right ES*</label>
+                  <textarea formControlName="f_r_es" class="form-control input-underline input-lg"></textarea>
+                </div>
+              </div>
+
+            </div>
+
+            <button [disabled]="!Webdata.valid" class="btn btn-success" type="submit">
+              Update</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        Invoice Ads Setting
+      </div>
+      <div class="card-body">
+
+        <div>
+          <app-upload-file ></app-upload-file>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

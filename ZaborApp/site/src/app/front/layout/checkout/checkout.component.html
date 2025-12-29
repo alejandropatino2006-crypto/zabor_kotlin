@@ -1,0 +1,425 @@
+<script src="https://js.stripe.com/v3/"></script>
+<main>
+  <!-- <section class="inner-banner overlay search-banner">
+  </section> -->
+
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a [routerLink]="['/']">Home</a></li>
+      <li class="breadcrumb-item"><a [routerLink]="['/restaurant',restaurantId]">{{restaurantName}}</a></li>
+      <li class="breadcrumb-item"><a [routerLink]="['/menu',restaurantId]">Menu</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+    </ol>
+  </nav>
+
+  <section class="sec sec-billing-wrap">
+
+    <div class="container">
+      <h4 class="text-danger text-center" *ngIf="!resAvailable">{{'Restaurant is not available' | translate}}</h4>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 text-center mb-5" *ngIf="!isLoggedIn">
+          <p class="mb-1">{{'Returning customer? Click here to' | translate}} <a
+              [routerLink]="['/login']">{{'Login' | translate}}</a></p>
+          <span>{{'Please log in to avail offers' | translate}}</span>
+        </div>
+
+        <div class="col-lg-6">
+
+
+          <div *ngIf="userAddress.length > 0 && selectedAddress != null">
+            <h2 class="sml-hd">{{'Billing Details'| translate}}</h2>
+            <ul class="saved-card-list" style="width: 100%;">
+              <li class="box-shadow">
+                <div class="address-div">
+
+                  <h4><i class="fa fa-check-circle text-success" style="cursor: pointer; pointer-events: none; font-size: 18px;"></i>&nbsp;
+                    <span>{{selectedAddress.firstname}}</span>&nbsp;<span>{{selectedAddress.lastname}}</span>
+                    <!-- <span>( {{selectedAddress.distance}} Km )</span> -->
+                  </h4>
+                  <h6>
+                    <span *ngIf="selectedAddress.housenoDisplay != null">{{selectedAddress.housenoDisplay}}</span>
+                    <span *ngIf="selectedAddress.addressDisplay != null">, {{selectedAddress.addressDisplay}}</span>
+                    <span *ngIf="selectedAddress.cityDisplay != null">, {{selectedAddress.cityDisplay}}</span>
+                    <span *ngIf="selectedAddress.stateDisplay != null">, {{selectedAddress.stateDisplay}}</span>
+                    <span *ngIf="selectedAddress.countryDisplay != null">, {{selectedAddress.countryDisplay}}</span>
+                  </h6>
+                  <h6><u class="w-155px d-inline-block font-weight-medium">{{'Contact No.'| translate}}</u>: {{selectedAddress.phone}}</h6>
+                  <h6><u class="w-155px d-inline-block font-weight-medium">{{'Email'| translate}}</u>: {{selectedAddress.email}}</h6>
+                  <span class="text-danger"
+                    *ngIf="selectedAddress.distance > DelieverydistanceLimit">{{'Delivery is not available at this location ' | translate }}
+                  </span>
+                </div>
+              </li>
+            </ul>
+            <p class="globel-text" *ngIf="userAddress.length > 1" (click)="selectAddress()"> {{'Select Diffrent Address'| translate}} </p>
+            <p class="globel-text" *ngIf="userAddress.length == 1" (click)="AddNewAddress()"> + {{'Add New'|translate}}</p>
+
+          </div>
+
+          <div class="mb-5">
+            <!--<div class="billing-left" *ngIf="!addAddress">
+              <h3>{{'Add New Address'| translate}} </h3>
+              <p class="globel-text" (click)="AddNewAddress()"> + {{'Add New'|translate}}</p>
+            </div>-->
+            <div class="billing-left" *ngIf="showallAddress && userAddress.length > 1">
+              <h3>{{'Select Address'| translate}} </h3>
+              <ul class="saved-card-list" style="width: 100%;">
+
+                <li *ngFor="let item of userAddress" class="box-shadow {{item?.distance}}">
+                  <div class="address-div">
+                    <h3 style="font-size: 16px;">
+                      <span>{{item.firstname}}</span>&nbsp;<span>{{item.lastname}}</span>
+                      <!-- <span>( {{item?.distance}} Km )</span> -->
+                      &nbsp;<p class="globel-text text-success pull-right" (click)="changeAddress(item.id)"
+                        *ngIf="selectedAddress != null && selectedAddress.id != item.id else showSelected">
+                        {{'Select'| translate}} <span>+</span></p>
+                      <ng-template #showSelected>
+                        <p class="globel-text text-success pull-right" style="cursor: pointer; pointer-events: none;"><i class="fa fa-check-circle text-success" style="cursor: pointer; pointer-events: none;"></i></p>
+                      </ng-template>
+                    </h3>
+                    <h6>{{item.houseno}} , {{item.address}} , {{item.city}}
+                    </h6>
+                    <h6>Contact No. - {{item.phone}}</h6>
+
+                    <span class="text-danger"
+                      *ngIf="item?.distance > DelieverydistanceLimit">{{'Delivery is not available at this location' | translate }}
+                    </span>
+                  </div>
+                </li>
+                <p class="globel-text" (click)="AddNewAddress()"> + {{'Add New'|translate}}</p>
+
+              </ul>
+            </div>
+            <!--<div [class.hidden]="addAddress">-->
+            <div *ngIf="addAddress">
+              <h3>{{'Add Billing Address'| translate}}</h3>
+
+              <form class="form-address" [formGroup]="addressForm" (ngSubmit)="onSubmitAddress()">
+                <input type="hidden" formControlName="id">
+                <div class="col-md-12">
+                  <div class="row">
+                    <div class="form-group col-md-6">
+                      <label>{{'First Name'| translate}}</label>
+                      <input type="text" class="form-control" placeholder="Lorem" formControlName="firstname">
+                      <span class="text-danger" *ngIf="
+                    !addressForm.controls['firstname'].valid &&
+                    addressForm.controls['firstname']
+                        .touched
+                ">{{'Firstname is invalid'| translate}}</span>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label>{{'Last Name'| translate}}</label>
+                      <input type="text" class="form-control" placeholder="Lorem" formControlName="lastname">
+                      <span class="text-danger" *ngIf="
+                    !addressForm.controls['lastname'].valid &&
+                    addressForm.controls['lastname']
+                        .touched
+                ">{{'Lastname is invalid'| translate}}</span>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <!-- <div class="form-group col-md-6">
+                    <label>{{'Country'| translate}}</label>
+                    <input type="text" class="form-control" placeholder="Lorem" formControlName="country">
+                    <span class="text-danger" *ngIf="
+                    !addressForm.controls['country'].valid &&
+                    addressForm.controls['country']
+                        .touched
+                ">{{'Country is invalid'| translate}}</span>
+                  </div> -->
+                    <div class="form-group col-md-6">
+                      <label>{{'Email'| translate}}</label>
+                      <input type="email" class="form-control" placeholder="Lorem@abc.com" formControlName="email">
+                      <span class="text-danger" *ngIf="
+                    !addressForm.controls['email'].valid &&
+                    addressForm.controls['email']
+                        .touched
+                ">{{'Email is invalid'| translate}}</span>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label>{{'Phone'| translate}}</label>
+                      <input type="text" class="form-control" placeholder="Lorem" formControlName="phone">
+                      <span class="text-danger" *ngIf="
+                    !addressForm.controls['phone'].valid &&
+                    addressForm.controls['phone']
+                        .touched
+                ">{{'Phone is invalid'| translate}}</span>
+                    </div>
+
+                    <!-- </div>
+
+                <div class="row"> -->
+                    <div class="form-group col-md-6">
+                      <label>{{'City'| translate}}</label>
+                      <input type="text" class="form-control" placeholder="City" formControlName="city">
+                      <span class="text-danger" *ngIf="
+                    !addressForm.controls['city'].valid &&
+                    addressForm.controls['city']
+                        .touched
+                ">{{'City is invalid'| translate}}</span>
+                    </div>
+                    <!-- <div class="form-group col-md-6">
+                    <label>{{'Postcode'| translate}}</label>
+                    <input type="text" class="form-control" placeholder="01 011 011 0111" formControlName="pincode">
+                    <span class="text-danger" *ngIf="
+                      !addressForm.controls['pincode'].valid &&
+                      addressForm.controls['pincode']
+                          .touched
+                  ">{{'Pincode is invalid'| translate}}</span>
+                  </div> -->
+                  </div>
+
+                  <div class="row">
+                    <div class="form-group col-md-4">
+                      <label>{{'House No.'| translate}}</label>
+                      <input type="text" class="form-control" placeholder="House No." formControlName="houseno">
+                      <span class="text-danger" *ngIf="
+                    !addressForm.controls['houseno'].valid &&
+                    addressForm.controls['houseno']
+                        .touched
+                ">{{'House No. is invalid'| translate}}</span>
+                    </div>
+                    <div class="form-group col-md-8">
+                      <label>{{'Address'| translate}}</label>
+                      <input type="text" class="form-control" formControlName="address" placeholder="Address">
+                      <span class="text-danger" *ngIf="
+                    !addressForm.controls['address'].valid &&
+                    addressForm.controls['address']
+                        .touched
+                ">{{'Address is invalid'| translate}}</span>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <label>{{'Choose your address on Map'| translate}}*</label>
+                        <input placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off"
+                          type="text" class="form-control auto-location" #search [formControl]="searchControl">
+                      </div>
+                      <agm-map [latitude]="lat" [longitude]="lng" (mapClick)="chooseLocation($event)" [zoom]="zoom">
+                        <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+                      </agm-map>
+                    </div>
+                  </div>
+                  <div class="row px-3 mt-2 mb-2">
+                    <button class="btn btn-ad-card btn-global" type="submit"
+                      [disabled]="!addressForm.valid">Submit</button>
+                    <button class="btn btn-ad-card btn-danger ml-2" (click)="hideAddAddress()"
+                      *ngIf="isLoggedIn">Cancel</button>
+                  </div>
+
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <app-offers [offers]="Offers" *ngIf="Offers.length > 0 && isLoggedIn" (childEvent)="selectedOffer($event)"
+            [showApply]="1" #offerComp></app-offers>
+
+        </div>
+
+        <div class="col-lg-6">
+          <div class="billing-right">
+            <h3>{{'YOUR ORDER'| translate}}<button class="btn btn-warning pull-right"
+                [routerLink]="['/menu', restaurantId]">{{'Edit Order'| translate}}</button></h3>
+            <div class="order-table">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>{{'Product'| translate}}</th>
+                    <th>{{'Quantity'| translate}}</th>
+                    <th>{{'Total'| translate}}</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+
+                  <tr *ngFor="let item of cart">
+                    <td>
+                      {{item.itemName}}
+                      <h5 *ngIf="item.customization && item.customization.length > 0 ">{{ item.customization | getCus}}
+                      </h5>
+                      <b class="item-note" *ngIf="item.note && item.note != ''">Note :- {{item.note}}</b>
+                    </td>
+                    <td>{{item.quantity}}</td>
+                    <td>{{item.itemPrice * item.quantity | currency}}</td>
+                  </tr>
+
+                  <tr class="less-padding">
+                    <td colspan="2"><b>{{'Food Tax'| translate}}</b></td>
+                    <td><b>{{extras?.food_tax | currency}}</b></td>
+                  </tr>
+                  <tr class="less-padding">
+                    <td colspan="2"><b>{{'Drink Tax'| translate}}</b></td>
+                    <td><b>{{extras?.drink_tax | currency}}</b></td>
+                  </tr>
+                  <tr class="less-padding">
+                    <td colspan="2"><b>{{'City Tax'| translate}}</b></td>
+                    <td><b>{{extras?.tax | currency}}</b></td>
+                  </tr>
+                  <tr class="less-padding" *ngIf="convenienceFee > 0">
+                    <!--<td colspan="2"><b>{{'Convenience Fee'| translate}}</b>&nbsp;&nbsp;<span>({{ convenienceFeeType === 2 ? convenienceFee+'%' : 'Fixed' }})</span></td>-->
+                    <td colspan="2"><b>{{'Cash discount'| translate}}</b>&nbsp;&nbsp;<span>({{ convenienceFeeType === 2 ? convenienceFee+'%' : 'Fixed' }})</span></td>
+                    <td><b>{{convenienceFeeValue | currency}} </b></td>
+                  </tr>
+                  <tr class="less-padding">
+                    <td colspan="2"><b>{{'Subtotal'| translate}}</b></td>
+                    <td><b>{{extras?.subtotal | currency}}</b></td>
+                  </tr>
+                  <tr class="less-padding" *ngIf="extras?.subtotal != amountAfterTax">
+                    <td colspan="2"><b>{{'Total'| translate}}</b></td>
+                    <td><b>{{amountAfterTax | currency}}</b></td>
+                  </tr>
+                </tbody>
+
+                <tfoot>
+
+                  <tr *ngIf="discountAmount != 0">
+                    <td colspan="2">{{'Discount'| translate}}</td>
+                    <td> -{{discountAmount | currency}}<button class="btn btn-danger btn-sm remove-dis"
+                        (click)="RemoveDis()">{{ 'REMOVE' | translate}}</button>
+                    </td>
+                  </tr>
+                  <tr *ngIf="deliveryMode == '1'" class="less-padding">
+                    <td colspan="2"><b>{{'Delivery Charges' | translate}}</b></td>
+                    <td><b>{{deliveryCharges | currency}}</b></td>
+                  </tr>
+                  <tr>
+                    <td colspan="2">{{'Total'| translate}}</td>
+                    <td>{{ (total-discountAmount) | currency}}</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+
+            <div>
+              <h3>{{'Delivery Type' | translate}}</h3>
+              <label class="radio-container">{{'Home Delivery'| translate}} ({{deliveryCharges | currency}})
+                <input type="radio" value="1" [(ngModel)]="deliveryMode"
+                  (change)="delivery_modeChange($event)" name="delivery_mode">
+                <span class="checkmark"></span>
+              </label>
+              <label class="radio-container">{{'Pickup / Takeaway'| translate}}
+                <input type="radio" value="2" [(ngModel)]="deliveryMode"
+                  (change)="delivery_modeChange($event)" name="delivery_mode">
+                <span class="checkmark"></span>
+              </label>
+              <label class="radio-container">Dine
+                <input type="radio" value="3" [(ngModel)]="deliveryMode"
+                  (change)="delivery_modeChange($event)" name="delivery_mode">
+                <span class="checkmark"></span>
+              </label>
+              <div class="dine" *ngIf="deliveryMode == '3'">
+                <label for="tbl_number">Table Number: </label>&nbsp;&nbsp;
+                <input id="tbl_number" type="number" min=1 [(ngModel)]="tableNum">
+              </div>
+            </div>
+
+            <div>
+              <h3>{{'Payment Method' | translate}} </h3>
+              <div>
+                <label class="radio-container">ATH
+                  <input type="radio" value="0" [(ngModel)]="paymentMode"
+                    (change)="payment_modeChange($event)" name="payment_mode">
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+
+              <div style="width: 100%;" [ngClass]="{'space-between-pmt-options': paymentMode == '7'}">
+                <label class="radio-container">{{'MagicPay Credit/Debit Card'| translate}} (Visa/MasterCard)
+                  <input type="radio" value="7" [(ngModel)]="paymentMode"
+                    (change)="payment_modeChange($event)" name="payment_mode">
+                  <span class="checkmark"></span>
+                </label>
+                <!-- <div>Payment Mode : {{paymentMode}}</div> -->
+                <div [ngClass]="{'hide': paymentMode != '7'}">
+                  <input size="30" class="ccforminput" type="text" [(ngModel)]="fname" name="fname" value="{{selectedAddress?.firstname || ''}}" placeholder="Name as per card" />
+                  <input size="30"  class="ccforminput" type="text" [(ngModel)]="lname" name="lname" value="{{selectedAddress?.lastname || ''}}" placeholder="Last Name as per card" />
+                  <div id="credit-card-number"></div>
+                  <div id="credit-card-exp"></div>
+                  <div id="credit-card-cvv"></div>
+                  <div id="applepaybutton"></div>
+                  <div id="googlepaybutton"></div>
+                </div>
+              </div>
+
+              <div *ngIf="allowStripePayment" style="width: 100%;" [ngClass]="{'space-between-pmt-options': paymentMode == '1'}">
+                <label class="radio-container">{{'Stripe Credit Card'| translate}} (Visa/MasterCard)
+                  <input type="radio" value="1" [(ngModel)]="paymentMode"
+                    (change)="payment_modeChange($event)" name="payment_mode">
+                  <span class="checkmark"></span>
+                </label>
+                <div class="stripe-sec" [ngClass]="{'hide': paymentMode != '1'}">
+                  <form style="width: 100%;">
+                    <div #cardElement>
+                       <!--A Stripe Element will be inserted here.-->
+                    </div>
+                     <!--Used to display Element errors.-->
+                    <p *ngIf="cardErrors != null" class="text-danger">{{ cardErrors }}</p>
+
+                  </form>
+                </div>
+              </div>
+
+              <div *ngIf="allowCod == 1">
+                <label class="radio-container">{{'Cash on delivery'| translate}}
+                  <input type="radio" value="2" [(ngModel)]="paymentMode"
+                    (change)="payment_modeChange($event)" name="payment_mode">
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+
+              <div *ngIf="allowGooglePayApplePay">
+                <label class="radio-container">{{'GooglePay / ApplePay'| translate}}
+                  <input type="radio" value="4" [(ngModel)]="paymentMode"
+                    (change)="payment_modeChange($event)" name="payment_mode">
+                  <span class="checkmark"></span>
+                </label>
+                <!--<form class="form-address d-block w-100" [formGroup]="gpayapayForm">-->
+                <form class="form-address d-block w-100">
+                  <!--<div class="row">
+                    <div class="form-group col-md-6">
+                      <label>{{'Email'| translate}}</label>
+                      <input type="email" class="form-control" placeholder="Lorem@abc.com" formControlName="email">
+                      <span class="text-danger" *ngIf="!gpayapayForm.controls['email'].valid && gpayapayForm.controls['email'] .touched">{{'Email is invalid'| translate}}</span>
+                    </div>
+                  </div>-->
+                  <div id="payment-request-button">
+                    <!-- Elements will create form elements here -->
+                  </div>
+                </form>
+              </div>
+
+            </div>
+
+          </div>
+          <div [ngClass]="{'hide': paymentMode == '0'}">
+            <button type="submit" class="btn btn-global text-uppercase d-block place-order-button pull-right mt-5"
+              (click)="buy($event)"
+              [disabled]="btnDisable || !resAvailable || (minOrderValue && amountAfterTax-discountAmount < minOrderValue) || (maxOrderValue && amountAfterTax-discountAmount > maxOrderValue)"
+              *ngIf="resAvailable">{{'PLACE ORDER'| translate}}
+              {{(total-discountAmount).toFixed(2) | currency}}</button>
+          </div>
+          <div *ngIf="athAcc != null && athAcc.length > 0" style="margin: 20px; text-align: center;" [ngClass]="{'hide': paymentMode != '0'}">
+            <div id="ATHMovil_Checkout_Button"></div>
+          </div>
+          <div>
+            <b class="text-danger "
+              *ngIf="minOrderValue && amountAfterTax-discountAmount < minOrderValue">{{'Min Order Amount'| translate}}
+              {{minOrderValue | currency}}
+              {{'required' | translate}}</b>
+            <b class="text-danger "
+              *ngIf="maxOrderValue &&  amountAfterTax-discountAmount > maxOrderValue">{{'Max Order Amount'| translate}}
+              {{maxOrderValue | currency}}
+              {{'required' | translate}}</b>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+</main>

@@ -1,0 +1,42 @@
+<main>
+  <section class="inner-banner overlay search-banner">
+    <app-searchbanner></app-searchbanner>
+  </section>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a [routerLink]="['/']">Home</a></li>
+    </ol>
+  </nav>
+  <section class="sec sec-result">
+    <div class="container">
+      <div class="search-filter">
+        <div class="fillter-toogle">
+          <div class="dropdown-toggle d-flex align-items-center" (click)="openMenu()"><span
+              class="selected-fillter">{{ 'Filter'|translate }}</span>
+          </div>
+          <div class="fillter-dropdown-menu" style="display:none;">
+            <a class="dropdown-item" [ngClass]="{'selected-fillter-active':selectedFilter==1}" href="javascript:void(0)"
+              (click)="selectFilter(1)">{{ 'Location (nearest first)'|translate }}</a>
+            <a class="dropdown-item" [ngClass]="{'selected-fillter-active':selectedFilter==2}" href="javascript:void(0)"
+              (click)="selectFilter(2)">{{ 'Price Low to high'|translate }}</a>
+            <a class="dropdown-item" [ngClass]="{'selected-fillter-active':selectedFilter==6}" href="javascript:void(0)"
+              (click)="selectFilter(6)">{{ 'Price High to Low'|translate }}</a>
+            <a class="dropdown-item" [ngClass]="{'selected-fillter-active':selectedFilter==3}" href="javascript:void(0)"
+              (click)="selectFilter(3)">{{ 'Reviews'|translate }}</a>
+            <a class="dropdown-item" [ngClass]="{'selected-fillter-active':selectedFilter==4}" href="javascript:void(0)"
+              (click)="selectFilter(4)">{{ 'Newest'|translate }}</a>
+            <a class="dropdown-item" [ngClass]="{'selected-fillter-active':selectedFilter==5}" href="javascript:void(0)"
+              (click)="selectFilter(5)">{{ 'Popular'|translate }}</a>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="result-section">
+        <app-restaurantlist (childEvent)="newRestaurant($event)" [restaurants]="restaurants" #Child>
+        </app-restaurantlist>
+
+      </div>
+    </div>
+  </section>
+</main>

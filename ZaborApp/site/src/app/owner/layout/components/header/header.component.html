@@ -1,0 +1,114 @@
+<nav class="navbar navbar-expand-lg fixed-top">
+    <a class="navbar-brand" routerLink="/"><img src="assets/images/zaborplus.png" width="112px"
+            class="navbar-logo" /></a>
+    <!-- <div class="lang-chg-drop-new">
+        <app-lang-change></app-lang-change>
+    </div> -->
+    <button class="navbar-toggler" type="button" (click)="toggleSidebar()">
+        <!-- <span class="navbar-toggler-icon"></span> -->
+        <i class="fa fa-bars text-muted" aria-hidden="true"></i>
+    </button>
+
+    
+
+    <div [ngClass]="{'collapse': true, 'navbar-collapse': true,'nav-profile': extraclass}">
+        <!-- <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search">
+        </form> -->
+        <ul class="navbar-nav ml-auto">
+
+            <li class="nav-item dropdown" ngbDropdown>
+                <a href="javascript:void(0)" class="nav-link" ngbDropdownToggle>
+
+                    <img *ngIf="userservice.currentUser.profilepic && userservice.currentUser.profilepic != '' && userservice.currentUser.profilepic != null  else showUserIcon"
+                        src="{{fileurl}}/{{userservice.currentUser.profilepic}}" class="header-profile-pic">
+                    <ng-template #showUserIcon>
+                        <i class="fa fa-fw fa-user"></i>
+                    </ng-template>
+                    &nbsp;
+                    <span>{{ userservice.currentUser.name | titlecase}}
+                    </span>
+                    <b class="caret"></b>
+                </a>
+                <div class="dropdown-menu-right" ngbDropdownMenu>
+                    <a class="dropdown-item" routerLink="/owner/profile">
+                        <i class="fa fa-fw fa-user"></i> {{ 'Profile' | translate }}
+                    </a>
+                    <a class="dropdown-item" href=" javascript:void(0)" (click)="changepassword()">
+                        <i class="fa fa-key" aria-hidden="true"></i> {{ 'Change Password' | translate }}
+                    </a>
+                    <!-- <a class="dropdown-item" href="javascript:void(0)">
+                        <i class="fa fa-fw fa-gear"></i> Settings
+                    </a> -->
+                    <a class="dropdown-item" href="javascript:void(0);" (click)="onLoggedout()">
+                        <i class="fa fa-fw fa-power-off"></i> {{ 'Log Out' | translate }} 
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+
+            <div class="modal-body">
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <!-- 16:9 aspect ratio -->
+                <div class="forget-password">
+                    <form role="form" [formGroup]="changepasswordform" (ngSubmit)="submitPassword()">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>Old Password</label>
+                                    <input type="password" class="form-control" formControlName="oldpassword"
+                                        maxlength="25" />
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>new Password</label>
+                                    <input type="password" class="form-control" formControlName="newpassword"
+                                        minlength="6" maxlength="25" />
+                                    <span class="text-danger" *ngIf="
+                                        !changepasswordform.controls['newpassword'].valid &&
+                                        changepasswordform.controls['newpassword']
+                                            .touched 
+                                    ">Min 6 Charactor Required</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>confirm Password</label>
+                                    <input type="password" class="form-control" formControlName="confirmpassword"
+                                        minlength="6" maxlength="25" />
+                                    <span class="text-danger" *ngIf="
+                                        !changepasswordform.controls['confirmpassword'].valid &&
+                                        changepasswordform.controls['confirmpassword']
+                                            .touched &&
+                                        changepasswordform.controls['confirmpassword'].hasError(
+                                            'mustMatch'
+                                        )
+                                    ">Passwords must match.</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <button [disabled]="!changepasswordform.valid" class="btn btn-success mt-2"
+                                    type="submit">Change</button>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>

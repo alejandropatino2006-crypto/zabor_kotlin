@@ -1,0 +1,99 @@
+<div class="row">
+  <div class="col col-xs-12">
+    <div class="card mb-3">
+      <div class="card-header">
+        <h4>Driver Orders</h4>
+      </div>
+      <div class="card-body table-responsive">
+
+
+        <div class="row">
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>Select date Range *</label>
+              <div class="input-group mb-3">
+                <input type="text" opens="right" placeholder="Select Date Range" ngxDaterangepickerMd
+                  [locale]="{applyLabel: 'ok', format: 'DD-MM-YYYY'}" class="form-control" [maxDate]="maxDate"
+                  [(ngModel)]="selected" [showDropdowns]="true" />
+                <div class="input-group-append">
+                  <span class="input-group-text" id="basic-addon1"><i class="fa fa-calendar"
+                      aria-hidden="true"></i></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3" style="text-align: right;">
+            <h2>Total Income</h2>
+            <h3>{{total_earn_payment | currency}}</h3>
+            <span>Rating: </span>
+            <span>{{av_rating}}</span>
+          </div>
+
+          <div class="col-md-3" style="text-align: right;">
+            <h2>Total paid</h2>
+            <h3>{{total_Paid | currency}}</h3>
+          </div>
+
+          <div class="col-md-3" style="text-align: right;">
+            <h2>Total Pending</h2>
+            <h3>{{total_pending_pay | currency}}</h3>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-3">
+            <div class="form-group">
+              <button class="btn btn-primary mr-2" (click)="rerender()">Filter</button>
+              <button class="btn btn-danger mr-2" (click)="resetFilters()">Reset</button>
+              <button class="btn btn-info" (click)="report()">Report</button>
+            </div>
+          </div>
+        </div>
+
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table-hover table-bordered">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Order id</th>
+              <th>Restauarnt Name</th>
+              <th>Created Date</th>
+              <th>Earn Payment</th>
+              <th>Tip</th>
+              <th>Rating</th>
+              <th>Driver Paid</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="userList.length > 0">
+
+            <tr *ngFor="let user of userList; index as i;">
+              <th scope="row">{{ i+1 }}</th>
+              <td><a routerLink="/admin/orders/detail/{{user.order_id}}">{{user.order_id}}</a>
+              </td>
+              <td><a routerLink="/admin/restaurant/view/{{user.res_id}}">{{user.res_name}}</a></td>
+              <td>{{user.created_date}}</td>
+              <td>{{user.earn_payment | currency}}</td>
+              <td>{{user.tip | currency}}</td>
+              <td>{{user.rating }}</td>
+              <td>{{user.driver_paid}}</td>
+              <td><a href="javascript:void(0)" class="btn btn-success btn-sm badge"
+                  *ngIf="user.driver_paid == 'pending'" (click)="paydriver(user.id)">
+                  Pay</a>
+                <a href="javascript:void(0)" class="btn btn-warning btn-sm badge" *ngIf="user.driver_paid == 'paid'">
+                  Paid</a>
+              </td>
+            </tr>
+
+          </tbody>
+          <tbody *ngIf="userList.length == 0">
+            <tr>
+              <td class="no-data-available" colspan="8">No matching records found</td>
+            </tr>
+          </tbody>
+        </table>
+
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+<div style="width: 100%; min-width: 100%; height: min-content;">
+  <div *ngIf="rowsCount === 0" style="text-align: center; width: 100%;">{{ "No data available" | translate }}</div>
+  <!--<table #datatablesNetTable datatable [dtOptions]="_dtOptions" [dtTrigger]="_dtTrigger" class="w-100 table table-hover table-bordered table-responsive hidden">-->
+  <table #datatablesNetTable datatable [dtOptions]="_dtOptions" [dtTrigger]="_dtTrigger" class="w-100 table table-hover table-bordered hidden">
+    <!--<thead class="w-100 d-inline-block">-->
+    <thead>
+    <tr>
+      <th *ngFor="let heading of _headings">{{ heading }}</th>
+    </tr>
+    </thead>
+    <!--<tbody class="w-100 d-inline-block">-->
+    <tbody>
+    <ng-content></ng-content>
+    </tbody>
+  </table>
+</div>

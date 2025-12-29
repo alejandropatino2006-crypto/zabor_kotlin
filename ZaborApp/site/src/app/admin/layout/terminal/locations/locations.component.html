@@ -1,0 +1,52 @@
+<div class="row">
+  <div class="col col-xs-12">
+    <div class="card mb-3">
+      <div class="card-header">
+        <h5>Stripe Locations - {{this.accountId}}</h5>
+        <button routerLink="/admin/terminal" class="btn btn-secondary btn-padding-1 pull-right" type="button">Back</button>
+        <button class="btn btn-success btn-sm pull-right" routerLink="/admin/terminal/location/create/{{this.accountId}}"> + Add Location</button>
+      </div>
+      <div class="card-body table-responsive">
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class=" table-hover table-bordered">
+          <thead>
+            <tr>
+              <th width="5%">#</th>
+              <th width="10%">Id</th>
+              <th width="20%">Name</th>
+              <th width="10%">Country</th>
+              <th width="5%">City</th>
+              <th width="20%">State</th>
+              <th width="10%">Postal Code</th>
+              <th width="5%">LiveMode</th>
+              <th width="10%">Action</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="locationsList.length > 0">
+            <tr *ngFor="let location of locationsList; index as i;">
+              <td scope="row">{{ i+1 }}</td>
+              <td>{{ location.id }}</td>
+              <td>{{ location.display_name }}</td>
+              <td>{{ location?.address?.country }}</td>
+              <td>{{ location?.address?.city }}</td>
+              <td>{{ location?.address?.state }}</td>
+              <td>{{location?.address?.postal_code}}</td>
+              <td>{{location?.livemode}}</td>
+              <td><a routerLink="/admin/restaurant/menu/{{location.id}}"
+              class="btn btn-danger btn-sm badge"><i aria-hidden="true" class="fa fa-trash"></i>
+              Delete</a>&nbsp;<a routerLink="/admin/terminal/reader/list/{{accountId}}/{{location.id}}"
+              class="btn btn-warning btn-sm badge"><i aria-hidden="true" class="fa fa-trash"></i>
+              Discover Terminals/Readers</a></td>
+            </tr>
+          </tbody>
+
+          <tbody *ngIf="locationsList.length == 0">
+            <tr>
+              <td class="no-data-available" colspan="9">No matching records found</td>
+            </tr>
+          </tbody>
+
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

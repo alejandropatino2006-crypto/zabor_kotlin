@@ -1,0 +1,27 @@
+<main>
+  <!-- <section class="inner-banner overlay search-banner">
+
+  </section>
+ -->
+
+  <section class="sec sec-privacy-wrap">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="sec-heading">
+            <h2 class="heading-2 text-uppercase">
+              {{translation.lang =='en' ? data?.page : data?.page_es}}</h2>
+          </div>
+        </div>
+        <div class="col-md-12" [innerHTML]="translation.lang =='en' ? data?.content : data?.content_es | safe: 'html'">
+        </div>
+
+
+      </div>
+    </div>
+  </section>
+
+
+
+
+</main>

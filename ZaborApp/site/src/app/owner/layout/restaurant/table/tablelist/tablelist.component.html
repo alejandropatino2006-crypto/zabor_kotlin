@@ -1,0 +1,237 @@
+<div class="row">
+  <div class="col col-xs-12">
+    <div class="card mb-3">
+      <div class="card-header">
+        <h4>
+          {{ "Restaurant Tables For" | translate }} {{restaurantName}}
+          <button class="btn btn-primary btn-sm pull-right" (click)="openModel(-1)">
+            + {{ "Add Table" | translate }}
+          </button>
+          <button class="btn btn-primary btn-sm pull-right mr-3" (click)="openAreaModel()">
+            + {{ "Add Area" | translate }}
+          </button>
+          <button (click)="handleBackClicked($event)" class="btn btn-secondary btn-padding-1 pull-right" type="button" style="margin-right:18px">
+            {{'Back' | translate}}
+          </button>
+        </h4>
+      </div>
+      <div class="card-body table-responsive">
+        <table
+          datatable
+          [dtOptions]="dtOptions"
+          [dtTrigger]="dtTrigger"
+          class="w-100 table-hover table table-bordered"
+        >
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>{{ "Name of Table" | translate }}</th>
+              <th>{{ "Number of Tables" | translate }}</th>
+              <th>{{ "Area" | translate }}</th>
+              <th>{{ "Capacity" | translate }}</th>
+              <th>{{ "Created" | translate }}</th>
+              <th>{{ "Actions" | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="restaurantTableList.length == 0">
+              <td class="no-data-available" colspan="7">
+                {{ "No matching records found" | translate }}
+              </td>
+            </tr>
+            <ng-container *ngIf="restaurantTableList.length > 0">
+              <tr *ngFor="let restauranttable of restaurantTableList; index as i">
+                <td scope="row">{{ i + 1 }}</td>
+                <td>{{ restauranttable.section_name }}</td>
+                <td>{{ restauranttable.no_of_table }}</td>
+                <td>{{ restauranttable.area_name }}</td>
+                <td>{{ restauranttable.guest_capacity }}</td>
+                <td>{{ restauranttable.created_at }}</td>
+                <td>
+                  <a
+                    class="btn badge btn-primary btn-sm white"
+                    (click)="openModel(restauranttable)" style="color: white;"
+                  ><i class="fa fa-pencil"></i> {{ "Edit" | translate }}</a
+                  >&nbsp;&nbsp;
+                  <a
+                    class="btn badge btn-danger btn-sm white"
+                    (click)="deleteTableRow(restauranttable)" style="color: white;"
+                  ><i class="fa fa-trash"></i> {{ "Delete" | translate }}</a
+                  >
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tables Modal -->
+<div class="modal fade" id="addTableModal" tabindex="-1" role="dialog" aria-labelledby="tablesModalLabel" aria-hidden="true" data-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="right: 0;">
+          <img src="assets/images/close.svg" alt="">
+        </button>
+        <h4 class="modal-title">{{'Add Table' | translate}}</h4>
+      </div>
+      <div class="modal-body p-3">
+        <!-- <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button> -->
+
+        <!-- 16:9 aspect ratio -->
+        <form
+          class="d-flex flex-column justify-content-center align-items-center gap-3 py-3 px-5"
+          id="addTableForm"
+          [formGroup]="addTableForm"
+          (ngSubmit)="submitTableform()"
+          (keydown.enter)="$event.preventDefault()"
+        >
+          <input type="hidden" name="section_id" id="section_id" formControlName="section_id">
+          <input type="hidden" name="form_type" id="form_type" formControlName="form_type">
+
+          <div class="row w-100">
+            <div class="col-sm-6 text-left">
+              {{ "Table Name" | translate }}
+            </div>
+            <div class="col-sm-6">
+              <input type="text" class="form-control input-underline input-lg w-100" id="section_name" formControlName="section_name" placeholder='{{ "Table Name" | translate }}' maxlength="60" />
+              <span class="text-danger" *ngIf="
+                                  !addTableForm.controls['section_name'].valid &&
+                                  addTableForm.controls['section_name'].touched &&
+                                  addTableForm.controls['section_name'].hasError('required')
+                              ">{{ 'Table Name' | translate }}&nbsp;{{ 'is required' | translate }}</span>
+            </div>
+          </div>
+          <div class="row w-100">
+            <div class="col-sm-6 text-left">
+              {{ "Number of Tables" | translate }}
+            </div>
+            <div class="col-sm-6">
+              <input type="number" class="form-control input-underline input-lg" id="no_of_table" formControlName="no_of_table" placeholder='{{ "Number of Tables" | translate  }}' maxlength="60" />
+              <span class="text-danger" *ngIf="
+                                  !addTableForm.controls['no_of_table'].valid &&
+                                  addTableForm.controls['no_of_table'].touched &&
+                                  (addTableForm.controls['no_of_table'].hasError('required') || addTableForm.controls['no_of_table'].hasError('min'))
+                              ">{{ 'Number of tables' | translate }}&nbsp;{{ 'is required' | translate }}</span>
+            </div>
+          </div>
+          <div class="row w-100">
+            <div class="col-sm-6 text-left">
+              {{ "Area" | translate }}
+            </div>
+            <div class="col-sm-6">
+              <!--<input type="number" class="form-control input-underline input-lg" id="area_id" formControlName="area_id" placeholder='{{ "Area" | translate  }}' maxlength="60" />-->
+              <select class="form-control input-underline input-lg" id="area_id" formControlName="area_id">
+                <option value="">{{ "" | translate }}{{ "Select Area" | translate }}</option>
+                <ng-container *ngFor="let area of areasList; index as i">
+                  <option [value]="area.id">{{ area.name}}</option>
+                </ng-container>
+              </select>
+              <span class="text-danger" *ngIf="
+                                  !addTableForm.controls['area_id'].valid &&
+                                  addTableForm.controls['area_id'].touched &&
+                                  (addTableForm.controls['area_id'].hasError('required') || addTableForm.controls['area_id'].hasError('min'))
+                              ">{{ 'Area' | translate }}&nbsp;{{ 'is required' | translate }}</span>
+            </div>
+          </div>
+          <div class="row w-100">
+            <div class="col-sm-6 text-left">
+              {{ "Capacity" | translate }}
+            </div>
+            <div class="col-sm-6">
+              <input type="number" class="form-control input-underline input-lg" id="guest_capacity" formControlName="guest_capacity" placeholder='{{ "Capacity" | translate  }}' maxlength="60" />
+              <span class="text-danger" *ngIf="
+                                  !addTableForm.controls['guest_capacity'].valid &&
+                                  addTableForm.controls['guest_capacity'].touched &&
+                                  addTableForm.controls['guest_capacity'].hasError('required')
+                              ">{{ 'Capacity' | translate }}&nbsp;{{ 'is required' | translate }}</span>
+              <span class="text-danger" *ngIf="
+                                  !addTableForm.controls['guest_capacity'].valid &&
+                                  addTableForm.controls['guest_capacity'].touched &&
+                                  addTableForm.controls['guest_capacity'].hasError('min')
+                              ">Minimum value for {{ 'Capacity' | translate }}&nbsp;is 1</span>
+              <span class="text-danger" *ngIf="
+                                  !addTableForm.controls['guest_capacity'].valid &&
+                                  addTableForm.controls['guest_capacity'].touched &&
+                                  addTableForm.controls['guest_capacity'].hasError('max')
+                              ">Maximum value for {{ 'Capacity' | translate }}&nbsp;is 10</span>
+            </div>
+          </div>
+          <div class="row w-100">
+            <div class="col-sm-12 text-center">
+              <button
+                type="submit"
+                class="btn btn-success"
+                [disabled]="!addTableForm.valid "
+              >
+                {{ "Save" | translate }}
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Areas Modal -->
+<div class="modal fade" id="addAreaModal" tabindex="-1" role="dialog" aria-labelledby="areasModalLabel" aria-hidden="true" data-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="right: 0;">
+          <img src="assets/images/close.svg" alt="">
+        </button>
+        <h4 class="modal-title">{{'Add Area' | translate}}</h4>
+      </div>
+      <div class="modal-body p-3">
+        <!-- 16:9 aspect ratio -->
+        <form
+          class="d-flex flex-column justify-content-center align-items-center gap-3 py-3 px-5"
+          id="addAreaForm"
+          [formGroup]="addAreaForm"
+          (ngSubmit)="submitAreaForm()"
+          (keydown.enter)="$event.preventDefault()"
+        >
+          <input type="hidden" name="area_pk" id="area_pk" formControlName="area_pk">
+          <input type="hidden" name="area_form_type" id="area_form_type" formControlName="area_form_type">
+
+          <div class="row w-100">
+            <div class="col-sm-6 text-left">
+              {{ "Area Name" | translate }}
+            </div>
+            <div class="col-sm-6">
+              <input type="text" class="form-control input-underline input-lg w-100" id="area_name" formControlName="area_name" placeholder='{{ "Area Name" | translate }}' maxlength="60" />
+              <span class="text-danger" *ngIf="
+                                  !addAreaForm.controls['area_name'].valid &&
+                                  addAreaForm.controls['area_name'].touched &&
+                                  addAreaForm.controls['area_name'].hasError('required')
+                              ">{{ 'Area Name' | translate }}&nbsp;{{ 'is required' | translate }}</span>
+            </div>
+          </div>
+          <div class="row w-100">
+            <div class="col-sm-12 text-center">
+              <button
+                type="submit"
+                class="btn btn-success"
+                [disabled]="!addAreaForm.valid "
+              >
+                {{ "Save" | translate }}
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

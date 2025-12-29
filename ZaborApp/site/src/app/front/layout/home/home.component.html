@@ -1,0 +1,203 @@
+<main>
+  <section class="banner-section overlay home-banner">
+    <app-searchbanner></app-searchbanner>
+  </section>
+  <section class="sec sec-welcome  top-sec">
+    <div class="container">
+      <div class="row" *ngIf="ongoingOrders.id">
+        <div class="alert alert-warning" role="alert" style="width: 100%;">
+          {{'Order'| translate}} #{{ongoingOrders.id}} {{ongoingOrders.status | titlecase}} <a
+            [routerLink]="['/order',ongoingOrders.id,ongoingOrders.order_hash]"
+            class="alert-link">{{'Click to view detail' | translate}}</a>.
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <a href="javascript:void(0)" class="loc-url" (click)="getLocation()"><i class="fa fa-map-marker"
+              aria-hidden="true"></i> {{'Change location' | translate}}</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-sm-6 ">
+          <div class="welcome-right pl-0">
+            <h2 class="heading-2 text-center">
+              {{translation.lang =='en' ? userService.webdata?.f_d_h_en : userService.webdata?.f_d_h_es}}</h2>
+            <p>
+              {{translation.lang =='en' ? userService.webdata?.f_d_d_en : userService.webdata?.f_d_d_es}}
+            </p>
+
+            <a [routerLink]="['/offers']" class="btn btn-lg btn-global btn-filled">{{'Offers near you' | translate}}</a>
+          </div>
+        </div>
+        <div class="col-sm-6 ">
+
+          <div class="container text-center">
+            <div class="driver-reg">
+              <a class="btn btn-lg btn-global btn-filled" [routerLink]="['/res-reg']"
+                routerLinkActive="router-link-active">{{ 'Restaurant Registration'|translate }}</a>
+            </div>
+            <div class="driver-reg">
+              <a class="btn btn-lg btn-global btn-filled" [routerLink]="['/driver-reg']"
+                routerLinkActive="router-link-active">{{ 'Driver Registration'|translate }}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="sec sec-welcome gray-back   ">
+
+    <div class="container">
+      <div class="sec-heading text-center">
+        <h2 class="heading-2">{{ 'Welcome To Our Restaurants'|translate }}</h2>
+      </div>
+      <div class="row">
+        <div *ngFor="let item of ourRes" class="col-md-3 col-sm-6">
+          <app-restaurant-div resaddress="{{item.address}}" [resid]="item.id" respic="{{fileurl+item.restaurantpic}}"
+            resname="{{item.name}}" [claimed]="item.claimed" [distance]="item.distance.toFixed(2)" [isAvail]="item.isAvail"></app-restaurant-div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="gray-back">
+    <div class="container">
+
+
+      <div class="col-12 p-0">
+        <owl-carousel-o [options]="customOptions" *ngIf="advert?.length > 0">
+
+          <ng-template carouselSlide *ngFor="let item of advert">
+
+            <div class="item">
+              <img class="test-class" src={{fileurl}}{{item.pic}} alt="" *ngIf="advertType == 0">
+              <video controls *ngIf="advertType == 1" width="100%">
+                <source src="{{fileurl}}{{item.video}}" type="video/mp4">
+              </video>
+            </div>
+          </ng-template>
+
+        </owl-carousel-o>
+
+      </div>
+
+
+    </div>
+  </section>
+  <section class="sec sec-welcome gray-back">
+    <div class="container">
+      <div class="sec-heading text-center">
+        <h2 class="heading-2">{{ 'New Deals'|translate }} <a class="pull-right viewall-link"
+            [routerLink]="['/allrestaurant/4']">{{ 'View All'|translate }} </a> </h2>
+      </div>
+      <div class="row">
+        <div *ngFor="let item of newRes" class="col-md-3 col-sm-6">
+          <app-restaurant-div resaddress="{{item.address}}" [resid]="item.id" respic="{{fileurl+item.restaurantpic}}"
+            resname="{{item.name}}" [claimed]="item.claimed" [distance]="item.distance.toFixed(2)" [isAvail]="item.isAvail"></app-restaurant-div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="sec mobile-app pb-0">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-sm-6">
+          <div class="left-img">
+            <img src="assets/images/mobile-img.png">
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="welcome-right">
+            <h2 class="heading-2">{{ 'Restaurant Seat Reservation is only Available on Mobile App'|translate }}
+            </h2>
+            <div class="btn-group">
+              <a href="https://play.google.com/store/apps/details?id=com.rafael.zabor" class="store-btn"><img
+                  src="assets/images/play-store.svg"></a>
+              <a href="https://apps.apple.com/in/app/zabor-eats/id1515248650" class="store-btn"><img
+                  src="assets/images/app-store.svg"></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="sec sec-welcome gray-back">
+    <div class="container">
+      <div class="sec-heading text-center">
+        <h2 class="heading-2">{{ 'Popular Restaurants'|translate }} <a class="pull-right viewall-link"
+            [routerLink]="['/allrestaurant/5']">{{ 'View All'|translate }}</a>
+        </h2>
+      </div>
+      <div class="row">
+
+        <div *ngFor="let item of popularRes" class="col-md-3 col-sm-6">
+          <app-restaurant-div resaddress="{{item.address}}" [resid]="item.id" respic="{{fileurl+item.restaurantpic}}"
+            resname="{{item.name}}" [claimed]="item.claimed" [distance]="item.distance.toFixed(2)" [isAvail]="item.isAvail"></app-restaurant-div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <section class="sec sec-welcome  ">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-sm-6  order-1">
+          <div class="left-img h-auto">
+
+            <img src="{{fileurl+userService.webdata?.pic}}" *ngIf="userService.webdata?.pic else defaultImg"
+              width="100%">
+            <!--<img src="assets/images/welcome-2.jpg">-->
+            <ng-template #defaultImg>
+              <img src="assets/images/welcome-2.jpg">
+            </ng-template>
+          </div>
+        </div>
+        <div class="col-sm-6 ">
+          <div class="welcome-right pl-0">
+            <h2 class="heading-2">
+              {{translation.lang =='en' ? userService.webdata?.b_h_en : userService.webdata?.b_h_es}}</h2>
+
+            <div class=""
+              [innerHTML]="translation.lang =='en' ? userService.webdata?.b_c_en : userService.webdata?.b_c_es | safe: 'html'">
+            </div>
+
+            <a [routerLink]="['/allrestaurant/1']" class="btn-global btn-filled">{{ 'View Restaurant'|translate }}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="modal fade menu-popup" id="locationModal" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header border-0 d-block">
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <img src="assets/images/close.svg" alt="">
+        </button> -->
+      </div>
+      <div class="modal-body">
+
+        <div class="form-group">
+          <label>Choose your address on Map*</label>
+          <input placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text"
+            class="form-control auto-location" #search>
+        </div>
+        <agm-map [latitude]="lat" [longitude]="long" (mapClick)="chooseLocation($event)" [zoom]="zoom">
+          <agm-marker [latitude]="lat" [longitude]="long"></agm-marker>
+        </agm-map>
+
+      </div>
+      <div class="modal-footer border-0 text-center">
+        <button type="button" class="btn btn-global text-uppercase ml-auto mr-auto"
+          (click)="setAddressCordinate()">submit</button>
+      </div>
+    </div>
+  </div>
+</div>

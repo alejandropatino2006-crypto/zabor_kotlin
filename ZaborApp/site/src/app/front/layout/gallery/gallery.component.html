@@ -1,0 +1,37 @@
+<main>
+  <section class="inner-banner search-banner">
+
+  </section>
+
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a [routerLink]="['/']">Home</a></li>
+      <li class="breadcrumb-item"><a [routerLink]="['/restaurant',res_id]">{{res_name}}</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Gallery</li>
+    </ol>
+  </nav>
+
+  <div class="sec sec-menu-wrap">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="sec-heading  text-center ">
+            <h2 class="heading-2 mb-0">{{res_name}}</h2>
+            <div class="dilvery-time text-center mt-1 mb-1">
+            </div>
+          </div>
+
+          <div infinite-scroll [infiniteScrollDistance]="scrollDistance" [infiniteScrollUpDistance]="scrollUpDistance"
+            [infiniteScrollThrottle]="throttle" (scrolled)="onScrollDown()" (scrolledUp)="onUp()">
+            <div class="d-flex flex-wrap menu-gallery">
+              <div class="col-md-3 menuimage" *ngFor="let item of images; index as i"><img
+                  src="{{fileUrl}}{{item.image}}" alt="" (click)="open(i)">
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

@@ -1,0 +1,59 @@
+<div class="row">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <h4>Driver Detail</h4>
+      </div>
+      <div class="card-body">
+        <table class="table">
+          <tr>
+            <td>First Name</td>
+            <td>{{driverDetail?.firstname}}</td>
+          </tr>
+          <tr>
+            <td>Last Name</td>
+            <td>{{driverDetail?.lastname}}</td>
+          </tr>
+          <tr>
+            <td>Email</td>
+            <td>{{driverDetail?.email}}</td>
+          </tr>
+          <tr>
+            <td>Phone</td>
+            <td>{{driverDetail?.phone}}</td>
+          </tr>
+          <tr>
+            <td>Job Availability</td>
+            <td>{{driverDetail?.job_avail}}</td>
+          </tr>
+          <tr>
+            <td>Date that can start</td>
+            <td>{{driverDetail?.date_can_start}}</td>
+          </tr>
+          <tr>
+            <td>Vehicle Type</td>
+            <td>{{driverDetail.vahical_type}}</td>
+          </tr>
+          <tr>
+            <td>Driver License</td>
+            <td><a href="{{fileurl}}/{{driverDetail?.license}}" download *ngIf="driverDetail?.license">Download</a></td>
+          </tr>
+          <tr>
+            <td>Criminal Record Certificate</td>
+            <td><a href="{{fileurl}}/{{driverDetail?.criminalRec}}" download
+                *ngIf="driverDetail?.criminalRec">Download</a></td>
+          </tr>
+          <tr>
+            <td>Bank Account Routing Number</td>
+            <td>{{driverDetail?.bank_routing_number}}</td>
+          </tr>
+          <tr>
+            <td>Bank Account Number</td>
+            <td>{{driverDetail?.bank_number}}</td>
+          </tr>
+
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

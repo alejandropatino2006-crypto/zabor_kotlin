@@ -1,0 +1,146 @@
+<div>
+  <h2 class="text-muted">{{ "Sales Reports" | translate }}</h2>
+  <hr />
+  <div class="row">
+    <div class="col-xl-3 col-lg-6 dashboard-cards">
+      <app-stat
+        [bgClass]="'dark'"
+        [icon]="'fa-flag'"
+        [count]="reportsList?.shifts_recordsTotal"
+        [label]="'All Sales By Shift And Date'"
+        [url]="'/owner/reports/all-sales-by-shift-and-date'"
+      ></app-stat>
+    </div>
+    <div class="col-xl-3 col-lg-6 dashboard-cards">
+      <app-stat
+        [bgClass]="'success'"
+        [icon]="'fa-flag'"
+        [count]="reportsList?.employee_recordsTotal"
+        [label]="'Sales By Employees'"
+        [url]="'/owner/reports/sales-by-employees'"
+      >
+      </app-stat>
+    </div>
+    <div class="col-xl-3 col-lg-6 dashboard-cards">
+      <app-stat
+        [bgClass]="'warning'"
+        [icon]="'fa-flag'"
+        [count]="reportsList?.delivery_recordsTotal"
+        [label]="'Sales By Delivery'"
+        [url]="'/owner/reports/sales-by-delivery'"
+      ></app-stat>
+    </div>
+    <div class="col-xl-3 col-lg-6 dashboard-cards">
+      <app-stat
+        [bgClass]="'danger'"
+        [icon]="'fa-flag'"
+        [count]="reportsList?.delivery_recordsTotal"
+        [label]="'Sales By Takeout'"
+        [url]="'/owner/reports/sales-by-takeout'"
+      ></app-stat>
+    </div>
+    <div class="col-xl-3 col-lg-6 dashboard-cards">
+      <app-stat
+        [bgClass]="'primary'"
+        [icon]="'fa-flag'"
+        [count]="reportsList?.delivery_recordsTotal"
+        [label]="'Sales By Dine In'"
+        [url]="'/owner/reports/sales-by-dinein'"
+      ></app-stat>
+    </div>
+    <div class="col-xl-3 col-lg-6 dashboard-cards">
+      <app-stat
+        [bgClass]="'dark'"
+        [icon]="'fa-flag'"
+        [count]="reportsList?.menuitem_recordsTotal"
+        [label]="'Sales By Bar Item'"
+        [url]="'/owner/reports/sales-by-bartag'"
+      ></app-stat>
+    </div>
+    <div class="col-xl-3 col-lg-6 dashboard-cards">
+      <app-stat
+        [bgClass]="'success'"
+        [icon]="'fa-flag'"
+        [count]="reportsList?.delivery_recordsTotal"
+        [label]="'Sales By Kiosk / Cashier'"
+        [url]="'/owner/reports/sales-by-kiosk'"
+      ></app-stat>
+    </div>
+    <div class="col-xl-3 col-lg-6 dashboard-cards">
+      <app-stat
+        [bgClass]="'warning'"
+        [icon]="'fa-flag'"
+        [count]="reportsList?.payout_recordsTotal"
+        [label]="'Payouts'"
+        [url]="'/owner/reports/payout'"
+      ></app-stat>
+    </div>
+    <div class="col-xl-3 col-lg-6 dashboard-cards">
+      <app-stat
+        [bgClass]="'danger'"
+        [icon]="'fa-flag'"
+        [count]="reportsList?.refund_recordsTotal"
+        [label]="'Returns'"
+        [url]="'/owner/reports/return'"
+      ></app-stat>
+    </div>
+    <!-- <div class="col-xl-3 col-lg-6 dashboard-cards">
+      <app-stat
+        [bgClass]="'danger'"
+        [icon]="'fa-flag'"
+        [count]="1"
+        [label]="'Total Sales By Shifts'"
+        [url]="'/owner/reports/total-sales-by-shifts'"
+      ></app-stat>
+    </div>
+    <div class="col-xl-3 col-lg-6 dashboard-cards">
+      <app-stat
+        [bgClass]="'primary'"
+        [icon]="'fa-flag'"
+        [count]="1"
+        [label]="'Summary Sales By Shift'"
+        [url]="'/owner/reports/summary-sales-by-shift'"
+      ></app-stat>
+    </div> -->
+    <div class="col-xl-3 col-lg-6 dashboard-cards">
+      <app-stat
+        [bgClass]="'primary'"
+        [icon]="'fa-flag'"
+        [count]="reportsList.menuitem_recordsTotal"
+        [label]="'Sales By Menu Items'"
+        [url]="'/owner/reports/sales-by-items'"
+      ></app-stat>
+    </div>
+    <!-- <div class="col-xl-3 col-lg-6 dashboard-cards">
+      <app-stat
+        [bgClass]="'lightdark'"
+        [icon]="'fa-flag'"
+        [count]="1"
+        [label]="'Best Sales Items'"
+        [url]="'/owner/reports/best-sales-items'"
+      ></app-stat>
+    </div> -->
+    <div class="col-xl-3 col-lg-6 dashboard-cards">
+      <app-stat
+        [bgClass]="'dark'"
+        [icon]="'fa-flag'"
+        [count]="reportsList?.menu_recordsTotal"
+        [label]="'Sales For Menu Group'"
+        [url]="'/owner/reports/sales-for-menu-group'"
+      ></app-stat>
+    </div>
+    
+    
+    <!-- <div class="col-xl-3 col-lg-6 dashboard-cards">
+      <app-stat
+        [bgClass]="'lightdark'"
+        [icon]="'fa-flag'"
+        [count]="1"
+        [label]="'Summary Sales By Menu Group'"
+        [url]="'/owner/reports/summary-sales-by-menu-group'"
+      ></app-stat>
+    </div> -->
+    
+  </div>
+  <hr />
+</div>

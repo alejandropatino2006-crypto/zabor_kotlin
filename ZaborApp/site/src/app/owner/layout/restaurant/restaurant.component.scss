@@ -1,0 +1,199 @@
+:root {
+    //--scrollbarBG: #CFD8DC;
+    //--thumbBG: #90A4AE;
+    --scrollbarBG: red;
+    --thumbBG: yellow;
+}
+#openTimeForm{
+    padding: 10px;
+}
+#openTimeForm .row{
+    padding: 10px;
+}
+// input.ng-valid{
+//     border-left: 1px solid #ced4da !important
+// }
+a.paginate_button.current{
+    background: #0d7bfe !important;
+    color:#ffffff !important;
+}
+
+.-top\-2px {
+    top: -2px;
+}
+.top\-4px {
+    top: 4px;
+}
+.top\-26px {
+    top: 26px;
+}
+.\-left\-2px {
+    left: -2px;
+}
+.left\-4px {
+    left: 4px;
+}
+.right\-4px {
+    right: 4px;
+}
+.pl-23px {
+    padding-left: 23px;
+}
+.text\-circled {
+    border-radius: 9999px;
+    border: 0.5px solid red;
+    height: 1.3rem;
+    aspect-ratio: 1 / 1;
+    font-size: 12px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.text\-rect\-vert {
+    //background-color: palegoldenrod;
+    background-color: #bebebe;
+    border-radius: 2px;
+    border: 0.5px solid #bebebe;
+    height: 1.3rem;
+    aspect-ratio: 1 / 1;
+    font-size: 12px;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.text\-error\-rect {
+    background-color: red;
+    border-radius: 2px;
+    border: 0.5px solid red;
+    height: 1.3rem;
+    width: max-content;
+    padding: 0 0.25rem;
+    font-size: 11px;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+.text\-warn\-rect {
+    background-color: coral;
+    border-radius: 2px;
+    border: 0.5px solid red;
+    height: 1.3rem;
+    width: max-content;
+    padding: 0 0.25rem;
+    font-size: 11px;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+.text\-new\-rect {
+    background-color:mediumseagreen;
+    border-radius: 2px;
+    border: 0.5px solid forestgreen;
+    height: 1.3rem;
+    width: max-content;
+    padding: 0 0.25rem;
+    font-size: 11px;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+.up-down-btn {
+    width: 100%;
+    padding: 4px 0;
+    border: 0.5px solid lightgray;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    outline: 0;
+
+    box-shadow: 0 2px 0 0 var(--primary-dark), 0 5px 15px -4px black;
+    transition: box-shadow 200ms ease-in-out, margin-top 200ms ease-in-out, opacity 200ms ease-in-out;
+
+    &:hover, &:focus {
+        background-color: white;
+        border: 0.5px solid black;
+    }
+    &:active {
+        box-shadow: none;
+        margin-top: 2px;
+    }
+}
+#items-container1 {
+    scrollbar-width: thin;
+    transition: scrollbar-color 0.3s ease-out;
+}
+#items-container1::-webkit-scrollbar {
+    //scrollbar-width: thin;
+    width: 0.5rem;
+    scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+    scrollbar-gutter: stable both-edges;
+    transition: scrollbar-color 0.3s ease-out;
+}
+#items-container1::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+    background: var(--scrollbarBG);
+}
+#items-container1::-webkit-scrollbar-thumb {
+    outline: 1px solid slategrey;
+    //background-color: darkgrey;
+    background-color: var(--thumbBG) ;
+    border-radius: 6px;
+    border: 3px solid var(--scrollbarBG);
+}
+
+#items-container::-webkit-scrollbar-track
+{
+    border-radius: 6px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: #F5F5F5;
+}
+#items-container::-webkit-scrollbar
+{
+    width: 6px;
+    background-color: #F5F5F5;
+}
+#items-container::-webkit-scrollbar-thumb
+{
+    border-radius: 6px;
+    background-color: #000000;
+}
+
+html::-webkit-scrollbar {
+    width: 0.5em;
+}
+html::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+html::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
+}
+.new-payment-card-image {
+    border: 1px solid lightseagreen;
+    border-radius: 8px;
+    padding: 4px;
+    background-color: honeydew;
+}
+label.double-line {
+    position: relative;
+}
+label.double-line > span {
+    position: absolute;
+    left: 0;
+    top: 0.75rem;
+    font-size: 12px;
+}

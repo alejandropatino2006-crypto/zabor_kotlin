@@ -1,0 +1,64 @@
+<div [@routerTransition]>
+    <h2 class="text-muted">{{ "Dashboard"|translate }} </h2>
+    <hr>
+    <div class="row ">
+        <div class="col-xl-3 col-lg-6 dashboard-cards">
+            <app-stat [bgClass]="'dark'" [icon]="'fa-cutlery'" [count]="dashboardData.restaurant"
+                [label]="'Restaurants'" [url]="'/owner/restaurants/list'"></app-stat>
+        </div>
+        <div class="col-xl-3 col-lg-6 dashboard-cards">
+            <app-stat [bgClass]="'success'" [icon]="'fas fa-bullhorn'" [count]="dashboardData.advert" [label]="'Advert'"
+                [url]="'/owner/promotionals/advert'">
+            </app-stat>
+        </div>
+        <div class="col-xl-3 col-lg-6 dashboard-cards">
+            <app-stat [bgClass]="'danger'" [icon]="'fa-video-camera'" [count]="dashboardData.promovideo"
+                [label]="'Promovideo'" [url]="'/owner/promotionals/video'"></app-stat>
+        </div>
+        <div class="col-xl-3 col-lg-6 dashboard-cards">
+            <app-stat [bgClass]="'primary'" [icon]="'fa-cart-arrow-down'" [count]="dashboardData.orders"
+                [label]="'Orders'" [url]="'/owner/orders'"></app-stat>
+        </div>
+    </div>
+    <hr />
+
+
+</div>
+
+<div class="notification-panel card card-default" *ngIf="notifications?.length > 0">
+    <div class="card-header">
+        <i class="fa fa-bell fa-fw"></i>
+        {{ "Notifications"|translate }}        
+    </div>
+    <!-- /.panel-heading -->
+    <div class="card-body">
+        <ul class="notification" *ngFor="let noti of notifications">
+
+            <li class="left clearfix" attr.data-userid="{{noti.sender_id}}">
+
+                <span class="notification-img pull-left">
+                    <img src="{{fileurl+'/'+noti.profileimage}}" alt="User Avatar" class="img-circle"
+                        *ngIf="noti.profileimage && noti.profileimage != null && noti.profileimage != '' else dummyimage">
+                    <ng-template #dummyimage><img src="assets/images/img_avatar.png" width="100"></ng-template>
+                </span>
+                <div class="notification-body clearfix">
+                    <div class="header">
+                        <strong class="primary-font">{{ noti.name | titlecase}}</strong>
+                        <small class="pull-right text-muted">
+                            <i class="fa fa-clock-o fa-fw"></i> {{noti.created_at}}
+                        </small>
+                    </div>
+                    <p>
+                        {{noti.msg}}
+                    </p>
+                </div>
+            </li>
+
+        </ul>
+        <div class="">
+            <button class="btn btn-warning btn-sm pull-right" (click)="morenotifiacations()"
+                *ngIf="showmorebutton">{{ "View More"|translate }}</button>
+        </div>
+    </div>
+
+</div>

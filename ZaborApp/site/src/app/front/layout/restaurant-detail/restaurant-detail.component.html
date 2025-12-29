@@ -1,0 +1,338 @@
+<main>
+  <section class="property-top-slider">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12 p-0">
+          <owl-carousel-o [options]="customOptions" *ngIf="resImg?.length > 0">
+
+            <ng-template carouselSlide *ngFor="let item of resImg">
+              <div class="item">
+                <img src={{fileUrl}}{{item.image}} alt="">
+              </div>
+            </ng-template>
+
+
+          </owl-carousel-o>
+
+
+          <div class="show-all" *ngIf="resImg?.length > 0">
+            <a [routerLink]="['/gallery',res_id]" class="btn btn-global">{{'See All'|translate}}</a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="sec sec-detail">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="sec-detail-left">
+            <h2>{{resdetail?.restaurant_name}}<a [routerLink]="['/claim',res_id]" class="unclaimed-link small"
+                *ngIf="resdetail?.claimed == 0"><i
+                  class="fa fa-question-circle text-warning"></i>{{'Unclaimed'|translate}}</a><a
+                href="javascript:void(0)" class="unclaimed-link small" *ngIf="resdetail?.claimed == 1"><i
+                  class="fa fa-check-circle text-success"></i>{{'Claimed'|translate}}</a></h2>
+            <p>{{resdetail?.address+' , '+resdetail?.city}}</p>
+            <div class="rating" *ngIf="resdetail?.rating">
+              <star-rating [value]="resdetail?.rating.toFixed(1)" [totalstars]="5" checkedcolor="#F1C40F"
+                uncheckedcolor="#d4d3d3" size="20px" [readonly]="true"></star-rating>
+
+              &nbsp;
+              <span> {{resdetail?.rating.toFixed(1)}} </span>
+            </div>
+
+            <!-- <div class="dilvery-time">
+              <label class="badge badge-warning">30-45 mins | @1.99 Delivery Fee</label>
+            </div> -->
+
+            <p class="unavailable" *ngIf="!resOpened">{{'Restaurant currently unavailable.'|translate}} </p>
+
+            <div class="action-search-details">
+
+              <label class="badge badge-light" type="button" (click)="openRatingModal()"><img
+                  src="assets/images/review.svg" alt="">{{'Write a Review'|translate}} </label>
+              <!-- <label class="badge badge-light"><img src="assets/images/camera.svg" alt="">Add Photo</label> -->
+              <!-- <label class="badge badge-light"><img src="assets/images/share.svg" alt="">Share</label> -->
+              <a [routerLink]="['/menu',res_id]"> <label class="badge badge-light"><img src="assets/images/menu.svg"
+                    alt="">{{'Menu'|translate}} </label></a>
+            </div>
+
+            <ul class="order-ammount">
+              <li *ngIf="resdetail?.min_order_value">{{'Min Order Amount'|translate}}:<strong>
+                  {{resdetail?.min_order_value | currency}}
+                </strong></li>
+              <li *ngIf="resdetail?.max_order_value">{{'Max Order Amount'|translate}}:<strong>
+                  {{resdetail?.max_order_value | currency}}
+                </strong></li>
+            </ul>
+            <hr>
+
+            <ul class="d-flex call-price-info">
+              <li class="call"><img src="assets/images/phone-result.svg">{{'Call'|translate}}:<a
+                  href=tel:{{resdetail?.contact}}>{{resdetail?.contact}}</a></li>
+              <li><img src="assets/images/money.svg">{{'Average Cost'|translate}}:<strong>
+                  {{resdetail?.avg_cost | avgcost}}
+
+                </strong></li>
+            </ul>
+
+
+            <div class="location-map p-2 border mb-3">
+              <agm-map [latitude]="lat" [longitude]="lng" [zoom]="15">
+                <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+              </agm-map>
+              <ul class="fa-ul mb-0">
+                <li><i class="fa fa-li fa-map-marker"></i>{{resdetail?.address}}</li>
+              </ul>
+            </div>
+            <div class="alert alert-warning" role="alert">
+              <img src="assets/images/lightbulb-on.svg"
+                alt="">{{'Restaurant seat reservation is only available on mobile app.'|translate}}
+            </div>
+            <div class="open-close-time">
+
+              <table class="table">
+                <tr>
+                  <td>{{'Monday'|translate}}:</td>
+                  <td>{{opencloseTime?.monopen_time | timeformateChange}} -
+                    {{opencloseTime?.monclose_time | timeformateChange}}</td>
+                </tr>
+                <tr>
+                  <td>{{'Tuesday'|translate}}:</td>
+                  <td>{{opencloseTime?.tueopen_time | timeformateChange}} -
+                    {{opencloseTime?.tueclose_time | timeformateChange}}</td>
+                </tr>
+                <tr>
+                  <td>{{'Wednesday'|translate}}:</td>
+                  <td>{{opencloseTime?.wedopen_time | timeformateChange}} -
+                    {{opencloseTime?.wedclose_time | timeformateChange}}</td>
+                </tr>
+                <tr>
+                  <td>{{'Thursday'|translate}}:</td>
+                  <td>{{opencloseTime?.thuopen_time | timeformateChange}} -
+                    {{opencloseTime?.thuclose_time | timeformateChange}}</td>
+                </tr>
+                <tr>
+                  <td>{{'Friday'|translate}}:</td>
+                  <td>{{opencloseTime?.friopen_time | timeformateChange}} -
+                    {{opencloseTime?.friclose_time | timeformateChange}}</td>
+                </tr>
+                <tr>
+                  <td>{{'Saturday'|translate}}:</td>
+                  <td>{{opencloseTime?.satopen_time | timeformateChange}} -
+                    {{opencloseTime?.satclose_time | timeformateChange}}</td>
+                </tr>
+                <tr>
+                  <td>{{'Sunday'|translate}}:</td>
+                  <td>{{opencloseTime?.sunopen_time| timeformateChange}} -
+                    {{opencloseTime?.sunclose_time | timeformateChange}}</td>
+                </tr>
+              </table>
+
+
+            </div>
+
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="sec-detail-right">
+
+            <h3 style="font-size: 18px;">
+              {{translation.lang =='en' ? resdetail?.description : resdetail?.description_es }}</h3>
+            <app-offers [offers]="discounts" *ngIf="discounts.length > 0" [showApply]="0"></app-offers>
+            <ul class="list-unstyled d-flex flex-wrap product-twol-col-gallery">
+              <li *ngFor="let item of resImg; let idx = index">
+                <div class="detail-pic-see">
+                  <img src={{fileUrl}}{{item.image}} alt="">
+                  <div class="detail-pic-overlay">
+                    <a [routerLink]="['/gallery',res_id]" class="btn btn-global">{{'See All'|translate}} </a>
+                  </div>
+                </div>
+              </li>
+
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec-pop-dish" *ngIf="popularRes?.length > 0">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="card card-white">
+            <div class="card-header d-flex justify-content-between rating-col-pop align-items-center">
+              <h4 class="m-0">{{'Popular Restaurants'|translate}}</h4>
+              <a class="view-all" [routerLink]="['/allrestaurant/5']">{{'View All'|translate}}</a>
+            </div>
+            <div class="card-body">
+              <div class="row">
+
+                <div class="col-lg-3 col-md-6 mt-2 mb-2" *ngFor="let item of popularRes">
+                  <div class="card card-pop-dish">
+                    <div class="card-header p-0">
+                      <a [routerLink]="['/restaurant',item.id]"><img src={{fileUrl}}{{item.restaurantpic}} alt=""></a>
+                    </div>
+                    <div class="card-body text-center">
+                      <h4 class="res-title"><a [routerLink]="['/restaurant',item.id]">{{item.name}}</a></h4>
+                      <p>
+                        {{item.address}}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <section class="sec sec-review-wrap" *ngIf="review.length > 0">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="card card-white">
+            <div class="card-header d-flex justify-content-between rating-col-pop align-items-center">
+              <h4 class="m-0">{{'Latest Reviews'|translate}}</h4>
+              <a [routerLink]="['/allreview',res_id]" class="view-all">{{'View All'|translate}}</a>
+            </div>
+            <div class="card-body">
+              <div class="row">
+
+                <div class="col-md-6 mt-2 mb-2" *ngFor="let item of review">
+                  <div class="card card-review-bx">
+                    <div class="card-header">
+                      <div class="media align-items-center">
+                        <img src="{{fileUrl+item?.profileimage}}" alt="{{item?.user_name}}" class="mr-3 rounded-circle"
+                          style="width:80px; height: 80px;">
+                        <div class="media-body">
+                          <div class="d-flex align-items-center justify-content-between">
+                            <div class="rating-left">
+                              <h4 class="m-0">{{item?.user_name}}</h4>
+                              <div class="rating">
+                                {{item.rating}}<small>/5</small>
+                                <div class="start-rating">
+                                  <star-rating [value]="item.rating" [totalstars]="5" checkedcolor="#F1C40F"
+                                    uncheckedcolor="#d4d3d3" size="20px" [readonly]="true">
+                                  </star-rating>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="date">{{item.created_at | getDateFormated}}</div>
+
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="card-body">
+                      <p>{{item?.comment}}</p>
+                    </div>
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal -->
+  <div class="modal fade write-review-pop" id="Write-Review" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <img src="assets/images/close.svg" alt="">
+          </button>
+          <h2 class="text-uppercase">{{'Write Review'|translate}}</h2>
+          <p>{{'Please give Ratings below'|translate}}</p>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="d-flex justify-content-between rating-col-pop">
+                <span>{{'Waiting'|translate}}</span>
+                <star-rating [value]="0" [totalstars]="5" checkedcolor="#F1C40F" uncheckedcolor="#d4d4d4" size="24px"
+                  [readonly]="false" (rate)="RateWaiting($event)"></star-rating>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="d-flex justify-content-between rating-col-pop">
+                <span>{{'Food'|translate}}</span>
+                <star-rating [value]="0" [totalstars]="5" checkedcolor="#F1C40F" uncheckedcolor="#d4d4d4" size="24px"
+                  [readonly]="false" (rate)="RateFood($event)"></star-rating>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="d-flex justify-content-between rating-col-pop">
+                <span>{{'Restrooms'|translate}}</span>
+                <star-rating [value]="0" [totalstars]="5" checkedcolor="#F1C40F" uncheckedcolor="#d4d4d4" size="24px"
+                  [readonly]="false" (rate)="RateRestroom($event)"></star-rating>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="d-flex justify-content-between rating-col-pop">
+                <span>{{'Pricing'|translate}}</span>
+                <star-rating [value]="0" [totalstars]="5" checkedcolor="#F1C40F" uncheckedcolor="#d4d4d4" size="24px"
+                  [readonly]="false" (rate)="RatePrice($event)"></star-rating>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="d-flex justify-content-between rating-col-pop">
+                <span>{{'Ambience'|translate}}</span>
+                <star-rating [value]="0" [totalstars]="5" checkedcolor="#F1C40F" uncheckedcolor="#d4d4d4" size="24px"
+                  [readonly]="false" (rate)="RateAmbience($event)"></star-rating>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="d-flex justify-content-between rating-col-pop">
+                <span>{{'Management'|translate}}</span>
+                <star-rating [value]="0" [totalstars]="5" checkedcolor="#F1C40F" uncheckedcolor="#d4d4d4" size="24px"
+                  [readonly]="false" (rate)="RateManagement($event)"></star-rating>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="d-flex justify-content-between rating-col-pop">
+                <span>{{'Service'|translate}}</span>
+                <star-rating [value]="0" [totalstars]="5" checkedcolor="#F1C40F" uncheckedcolor="#d4d4d4" size="24px"
+                  [readonly]="false" (rate)="RateService($event)"></star-rating>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="d-flex justify-content-between rating-col-pop">
+                <span>{{'Locality'|translate}}</span>
+                <star-rating [value]="0" [totalstars]="5" checkedcolor="#F1C40F" uncheckedcolor="#d4d4d4" size="24px"
+                  [readonly]="false" (rate)="RateLocality($event)"></star-rating>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <textarea class="form-control" placeholder="Write Review Here" #commentSec></textarea>
+          </div>
+
+          <div class="text-center">
+            <button type="button" class="btn btn-global text-uppercase ml-auto mr-auto"
+              (click)="submitRating()">{{'Post Review'|translate}}</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</main>

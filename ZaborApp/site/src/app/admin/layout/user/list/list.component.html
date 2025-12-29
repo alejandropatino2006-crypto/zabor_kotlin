@@ -1,0 +1,59 @@
+<div class="row">
+  <div class="col col-xs-12">
+    <div class="card mb-3">
+      <div class="card-header">
+        <h4>Users</h4>
+      </div>
+      <div class="card-body table-responsive">
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table-hover table-bordered">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Profile pic</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Created Date</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="userList.length > 0">
+
+            <tr *ngFor="let user of userList; index as i;">
+              <th scope="row">{{ i+1 }}</th>
+              <td><a routerLink="/admin/user/view/{{ user.id}}"><img src="{{ profile_url+user.profileimage}}"
+                    *ngIf="user.profileimage && user.profileimage != null && user.profileimage != '' else dummyimage"
+                    width="100">
+                  <ng-template #dummyimage><img src="assets/images/img_avatar.png" width="100"></ng-template>
+                </a></td>
+              <td>{{ user.name | titlecase}}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.role | titlecase }}</td>
+              <td>{{ user.created_date}}</td>
+              <td *ngIf="user.status == 1; else elseBlock">
+                <ui-switch [checked]="true" defaultBgColor="red" (change)="changeStatus($event,user.id)">
+                </ui-switch>
+              </td>
+              <ng-template #elseBlock>
+                <td>
+                  <ui-switch defaultBgColor="red" (change)="changeStatus($event,user.id)"></ui-switch>
+                </td>
+              </ng-template>
+              <td><a routerLink="/admin/user/view/{{ user.id}}" class="btn btn-warning btn-sm badge"><i
+                    class="fa fa-eye"></i>
+                  View</a></td>
+            </tr>
+
+          </tbody>
+          <tbody *ngIf="userList.length == 0">
+            <tr>
+              <td class="no-data-available" colspan="8">No matching records found</td>
+            </tr>
+          </tbody>
+        </table>
+
+
+      </div>
+    </div>
+  </div>

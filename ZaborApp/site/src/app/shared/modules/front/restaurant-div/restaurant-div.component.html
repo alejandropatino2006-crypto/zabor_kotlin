@@ -1,0 +1,13 @@
+<a [routerLink]="['/restaurant',resid]">
+  <div class="restaurant-box " [ngClass]="{ResUnavailablea: isAvail == 0}">
+    <div class="restaurant-img">
+      <span class="zobor-overlay-logo" *ngIf="claimed ==1"><img src="assets/images/claim-logo.png"></span>
+      <img src="{{respic}}" alt="restaurant-image ">
+    </div>
+    <div class="restaurant-content">
+      <h5>{{resname}} </h5>
+      <p>{{resaddress.length > 30 ? resaddress.substring(0,30)+'...' : resaddress}} </p>
+      <p>{{distance}}KM</p>
+    </div>
+  </div>
+</a>

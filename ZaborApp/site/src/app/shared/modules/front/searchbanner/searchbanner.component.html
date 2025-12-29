@@ -1,0 +1,39 @@
+<div class="banner-content" (focusout)="focusOutFunction()">
+  <div class="banner-logo"><img src="assets/images/logo.svg" alt="logo-img"> </div>
+  <div class="banner-form">
+
+    <div class="form-group">
+      <input type="text" class="input-control" placeholder="{{ 'Restaurants in Current Location'|translate }}"
+        [(ngModel)]="searchValue" (keyup)="onKeyUp($event)" (focus)="focusFunction()">
+      <select class="input-control select-control" [(ngModel)]="city">
+        <option value="">{{'City' | translate}}</option>
+        <option value="{{item}}" *ngFor="let item of cityLists">{{item}}</option>
+      </select>
+      <input type="submit" class="search-btn" (click)="search()">
+    </div>
+
+    <div class="search-dropdown" aria-labelledby="dropdownMenuButton" *ngIf="ShowFilter && suggestedRes.length > 0">
+      <li class="dropdown-item suggest-item" *ngFor="let item of suggestedRes" (click)="suggestionclick(item.name)">
+        {{item.name}}</li>
+      <!-- <a class="dropdown-item suggest-item" [routerLink]="['/restaurant',item.id]"
+        *ngFor="let item of suggestedRes">{{item.name}}</a> -->
+    </div>
+
+    <ul class="banner-nav">
+
+      <li class="cat-img" *ngFor="let item of this.restaurantService.categories; index as i;">
+        <a [routerLink]="['/catres',item.id]"><img src="assets/images/restaurants.svg">
+          {{item.name | titlecase}}</a>
+      </li>
+
+    </ul>
+    <!-- <ul class="banner-nav" *ngIf="this.restaurantService?.categories?.length > 5">
+      <ng-container *ngFor="let item of this.restaurantService.categories; index as i;">
+        <li class="cat-img" *ngIf="i >= 5">
+          <a [routerLink]="['/catres',item.id]"><img src="assets/images/restaurants.svg">
+            {{item.name | titlecase}}</a>
+        </li>
+      </ng-container>
+    </ul> -->
+  </div>
+</div>

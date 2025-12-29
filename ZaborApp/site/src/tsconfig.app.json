@@ -1,0 +1,28 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+     "paths": {
+//       "exceljs": [
+//         "node_modules/exceljs/dist/exceljs.min.js"
+//       ],
+       "moment": [
+         "../node_modules/moment/min/moment.min.js"
+       ]
+     },
+    "outDir": "../out-tsc/app",
+    "types": [
+      "googlemaps"
+    ]
+  },
+  "files": [
+    "main.ts",
+    "polyfills.ts"
+  ],
+  "include": [
+    "**/*.d.ts"
+  ],
+  "exclude": [
+    "test.ts",
+    "**/*.spec.ts"
+  ]
+}

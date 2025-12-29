@@ -1,0 +1,153 @@
+<div class="row">
+  <div class="col col-xs-12">
+    <div class="card mb-3">
+      <div class="card-header">
+        <h4>{{ "Sales By Take Out" | translate }}</h4>
+        <button class="btn btn-secondary btn-padding-1 pull-right" routerLink="/owner/reports">  {{ "Back to List" | translate }}</button>
+      </div>
+      <div class="card-body table-responsive">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="restaurantId">{{ "Restaurant" | translate }}*</label>
+              <select
+                id="restaurantId"
+                class="form-control"
+                [(ngModel)]="resId"
+                (change)="onRestaurantChange()"
+              >
+                <option value="-1">
+                  {{ "Select Restaurant" | translate }}
+                </option>
+                <option
+                  value="{{ item.id }}"
+                  *ngFor="let item of restaurantList"
+                >
+                  {{ item.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="date-range"
+                >{{ "Select date" | translate }} *</label
+              >
+              <div class="input-group mb-3">
+                <input
+                  id="date-range"
+                  type="text"
+                  opens="right"
+                  placeholder="{{ 'Select date' | translate }}"
+                  ngxDaterangepickerMd
+                  [locale]="{ applyLabel: 'ok', format: 'DD-MM-YYYY' }"
+                  class="form-control"
+                  [maxDate]="maxDate"
+                  [(ngModel)]="selectedDate"
+                  [showDropdowns]="true"
+                  (datesUpdated)="inputChanged($event)"
+                  [singleDatePicker]="true"
+                  [closeOnAutoApply]="true"
+                  [autoApply]="true"
+                />
+                <div class="input-group-append">
+                  <span class="input-group-text" id="basic-addon1"
+                    ><i class="fa fa-calendar" aria-hidden="true"></i
+                  ></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="shiftId">{{ "Shifts" | translate }}*</label>
+              <select
+                id="shiftId"
+                class="form-control"
+                [(ngModel)]="shiftId"
+                (change)="onShiftChange()"
+              >
+                <option value="-1">{{ "Select Shift" | translate }}</option>
+                <option value="{{ shift.id }}" *ngFor="let shift of shiftList">
+                  {{
+                    "Start : " +
+                    convertDateToDDMMYYYYHHMMSS(shift.open_date_time) +
+                      " - End : " +
+                      convertDateToDDMMYYYYHHMMSS(shift.close_date_time)
+                  }}
+                </option>
+              </select>
+            </div>
+          </div>          
+        </div>
+        <div class="row">
+          <div class="col-md-3">
+            <div class="form-group">
+              <button class="btn btn-primary mr-2" (click)="rerender()">
+                {{ "Filter" | translate }}
+              </button>
+              <button class="btn btn-danger mr-2" (click)="resetFilters()">
+                {{ "Reset" | translate }}
+              </button>
+              <!--<button class="btn btn-info" (click)="report()">Report</button>-->
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div
+              class="alert alert-primary text-center"
+              style="cursor: pointer"
+              (click)="handleCriteria('last-week')"
+              role="alert"
+            >
+              <span>{{ "Last week's report" | translate }}</span>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div
+              class="alert alert-warning text-center"
+              style="cursor: pointer"
+              (click)="handleCriteria('last-30-days')"
+              role="alert"
+            >
+              <span>{{ "Last 30 days' report" | translate }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="w-100">
+          <h3 class="w-100 text-center">{{ tableTitle }}</h3>
+          <h4 class="w-100 text-center">
+            {{ "Restaurant Name" | translate }} = {{ restaurantName }}
+          </h4>
+        </div>
+        <div class="w-100">
+          <h4 class="w-100 text-center">Total Sales Amount : {{ total_sales_amount }}, Total Food Tax : {{ total_food_tax }}</h4>
+          <h4 class="w-100 text-center">Total Liquor Tax : {{ total_liquor_tax }}, Total Generic Tax : {{ total_generic_tax }}</h4>
+          <h4 class="w-100 text-center">Total Convenience Charges : {{ total_convenience_fee }}, Total Items Sold : {{ quantity_items_sold }}</h4>
+        </div>
+        <table
+          id="sales-data-table"
+          datatable
+          [dtOptions]="dtOptions"
+          [dtTrigger]="dtTrigger"
+          class="table-hover table-responsive table table-bordered"
+        >
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>{{ "Order ID" | translate }}</th>
+              <th>{{ "Invoice Number" | translate }}</th>
+              <th>{{ "Ordered By" | translate }}</th>
+              <th>{{ "Order Code" | translate }}</th>
+              <th>{{ "Sales Amount" | translate }}</th>
+              <th>{{ "Food Tax" | translate }}</th>
+              <th>{{ "Liquor Tax" | translate }}</th>
+              <th>{{ "Generic Tax" | translate }}</th>
+              <th>{{ "Convenience Charges" | translate }}</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

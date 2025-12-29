@@ -1,0 +1,187 @@
+<div class="step-template">
+  <h2>Step {{step.stepIndex}} : {{ step.label }}</h2>
+  <!-- 16:9 aspect ratio -->
+  <div *ngIf="step.stepIndex === 1" class="" id="userDetails">
+    <form class="form-address" [formGroup]="registerForm" (ngSubmit)="onRegisterSubmit()">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="form-group col-md-4">
+            <label>{{'First Name'| translate}}</label>
+            <input type="text" class="form-control" placeholder="Lorem" formControlName="firstname">
+            <span class="text-danger" *ngIf="
+                    !registerForm.controls['firstname'].valid &&
+                    registerForm.controls['firstname'].touched
+                ">{{'First name is invalid'| translate}}</span>
+          </div>
+          <div class="form-group col-md-4">
+            <label>{{'Middle Name'| translate}}</label>
+            <input type="text" class="form-control" placeholder="Lorem" formControlName="middlename">
+            <span class="text-danger" *ngIf="
+                    !registerForm.controls['middlename'].valid &&
+                    registerForm.controls['middlename'].touched
+                ">{{'Middle name is invalid'| translate}}</span>
+          </div>
+          <div class="form-group col-md-4">
+            <label>{{'Last Name'| translate}}</label>
+            <input type="text" class="form-control" placeholder="Lorem" formControlName="lastname">
+            <span class="text-danger" *ngIf="
+                    !registerForm.controls['lastname'].valid &&
+                    registerForm.controls['lastname'].touched
+                ">{{'Last name is invalid'| translate}}</span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-md-5">
+            <label>{{'Email'| translate}}</label>
+            <input type="email" class="form-control" placeholder="Lorem@abc.com" formControlName="email">
+            <span class="text-danger" *ngIf="
+                    !registerForm.controls['email'].valid &&
+                    registerForm.controls['email'].touched
+                ">{{'Email is invalid'| translate}}</span>
+          </div>
+          <div class="form-group col-md-3">
+            <label>{{'Phone'| translate}}</label>
+            <input type="text" class="form-control" placeholder="+0143583479" formControlName="phone">
+            <span class="text-danger" *ngIf="
+                    !registerForm.controls['phone'].valid &&
+                    registerForm.controls['phone'].touched
+                ">{{'Phone is invalid'| translate}}</span>
+          </div>
+          <!--<div class="form-group col-md-4">
+            <label>{{'City'| translate}}</label>
+            <input type="text" class="form-control" placeholder="City" formControlName="city">
+            <span class="text-danger" *ngIf="
+                    !registerForm.controls['city'].valid &&
+                    registerForm.controls['city'].touched
+                ">{{'City is invalid'| translate}}</span>
+          </div>-->
+        </div>
+
+        <!--<div class="row">
+          <div class="form-group col-md-4">
+            <label>{{'State'| translate}}</label>
+            <input type="text" class="form-control" placeholder="State/Province" formControlName="state">
+            <span class="text-danger" *ngIf="
+                    !registerForm.controls['state'].valid &&
+                    registerForm.controls['state'].touched
+                ">{{'State is invalid'| translate}}</span>
+          </div>
+          <div class="form-group col-md-4">
+            <label>{{'Country'| translate}}</label>
+            <input type="text" class="form-control" placeholder="Lorem" formControlName="country">
+            <span class="text-danger" *ngIf="
+                !registerForm.controls['country'].valid &&
+                registerForm.controls['country'].touched
+            ">{{'Country is invalid'| translate}}</span>
+          </div>
+          <div class="form-group col-md-4">
+            <label>{{'Postcode'| translate}}</label>
+            <input type="text" class="form-control" placeholder="01 011 011 0111" formControlName="pincode">
+            <span class="text-danger" *ngIf="
+                  !registerForm.controls['pincode'].valid &&
+                  registerForm.controls['pincode'].touched
+              ">{{'Pincode is invalid'| translate}}</span>
+          </div>
+        </div>-->
+
+        <!--<div class="row">
+          <div class="form-group col-md-6">
+            <label>{{'House No.'| translate}}</label>
+            <input type="text" class="form-control" placeholder="House No." formControlName="houseno">
+            <span class="text-danger" *ngIf="
+              !registerForm.controls['houseno'].valid &&
+              registerForm.controls['houseno'].touched
+          ">{{'House No. is invalid'| translate}}</span>
+          </div>
+        </div>-->
+
+        <!--<div class="row">
+          <div class="form-group col-md-12">
+            <label>{{'Address'| translate}}</label>
+            <textarea rows="2" cols="80" class="form-control" formControlName="address" placeholder="Address"></textarea>
+            <div class="form-control-feedback"
+                 *ngIf="registerForm.controls['address'].errors && (registerForm.controls['address'].dirty || registerForm.controls['address'].touched)">
+              <span class="text-danger" *ngIf="registerForm.controls['address'].errors.maxlength">Address exceeds 512 characters</span>
+              <span class="text-danger" *ngIf="registerForm.controls['address'].errors.required">Address is required</span>
+              <span class="text-danger" *ngIf="registerForm.controls['address'].errors.addressValid">Address is invalid</span>
+            </div>
+          </div>
+        </div>-->
+
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label>{{'Password'| translate}}</label>
+            <input type="password" class="form-control" placeholder="Password" formControlName="password">
+            <span class="text-danger" *ngIf="
+                    !registerForm.controls['password'].valid &&
+                    registerForm.controls['password'].touched
+                ">{{'Password is invalid'| translate}}</span>
+          </div>
+          <div class="form-group col-md-6">
+            <label>{{'Confirm password'| translate}}</label>
+            <input type="password" class="form-control" placeholder="Confirm password" formControlName="confirmPassword">
+            <span class="text-danger" *ngIf="
+                !registerForm.controls['confirmPassword'].valid &&
+                registerForm.controls['confirmPassword'].touched
+            ">{{'Confirm password is invalid'| translate}}</span>
+          </div>
+        </div>
+
+        <div class="row px-3 mt-2 mb-2">
+          <button class="btn btn-ad-card btn-global" type="submit" [disabled]="!registerForm.valid">Register</button>
+          <button class="btn btn-ad-card btn-danger ml-2" type="button" (click)="handleCancelLogin()">Cancel</button>
+          <button class="btn btn-ad-card btn-iceblue ml-2" type="button" (click)="doLogin($event)">Login</button>
+        </div>
+
+      </div>
+    </form>
+  </div>
+
+  <div *ngIf="step.stepIndex === 2" class="" id="userPasscode">
+
+    <form class="form-address" [formGroup]="passcodeForm" (ngSubmit)="onPasscodeSubmit()">
+      <div class="col-md-12">
+        <div class="row">
+          <span class="col-sm-12">Enter the passcode sent to your email address for verification!</span>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-4">
+            <label>{{'Passcode'| translate}}</label>
+            <input maxlength="6" type="text" class="form-control" placeholder="Lorem" formControlName="passcode">
+            <span class="text-danger" *ngIf="
+                    !passcodeForm.controls['passcode'].valid &&
+                    passcodeForm.controls['passcode'].touched
+                ">{{'Passcode is invalid'| translate}}</span>
+          </div>
+        </div>
+
+        <div class="row px-3 mt-2 mb-2">
+          <button class="btn btn-ad-card btn-global" type="submit" [disabled]="!passcodeForm.valid">Verify Email</button>
+          <button class="btn btn-ad-card btn-danger ml-2" type="button" (click)="handleCancelLogin()">Cancel</button>
+        </div>
+
+      </div>
+    </form>
+
+  </div>
+
+  <div *ngIf="step.stepIndex === 3" class="" id="userCheckout">
+
+    <div class="form-address">
+      <div class="col-md-12">
+        <div class="row">
+          <span class="col-sm-12">You are now logged in and can proceed to checkout!</span>
+        </div>
+
+        <div class="row px-3 mt-2 mb-2">
+          <button class="btn btn-block btn-global w-122px" (click)="proceedToCheckout()">{{'Checkout' | translate}}</button>
+          <button class="btn btn-ad-card btn-danger ml-2" (click)="handleCancelLogin()">Cancel</button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>

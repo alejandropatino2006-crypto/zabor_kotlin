@@ -1,0 +1,111 @@
+<div class="row">
+  <div class="col-sm-4">
+    <div class="card">
+      <div class="card-header">{{ title }}<button class="btn btn-success btn-sm pull-right" *ngIf="editsubcategory"
+          (click)="addCat()">Add SubCategory</button>
+      </div>
+      <div class="card-body">
+        <div class="login-page">
+          <div class="row justify-content-md-center">
+            <div class="col-md-12">
+              <form role="form" [formGroup]="subcategoryform" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+
+                <div class="row form-content">
+                  <div class="col-sm-12">
+                    <div class="form-group">
+                      <label for="name">Full Name*</label>
+                      <input type="text" class="form-control input-underline input-lg" id="name" formControlName="name"
+                        placeholder="{{ 'Full Name'  }}" maxlength="40" />
+
+                      <ng-container *ngIf="!subcategoryform.controls['name'].valid &&
+                        subcategoryform.controls['name'].touched">
+                        <span class="text-danger" *ngIf="subcategoryform.controls['name'].hasError(
+                                                    'required'
+                                                ) else elsename
+                                            ">name is required.</span>
+                        <ng-template #elsename>
+                          <span class="text-danger" *ngIf="subcategoryform.controls['name'].hasError(
+                                                    'whitespace'
+                                                )
+                                            ">only white space is not allowed.</span></ng-template>
+                      </ng-container>
+
+                    </div>
+                  </div>
+
+                  <div class="col-sm-12">
+                    <div class="form-group">
+
+                      <label for="description">Description*</label>
+                      <textarea class="form-control input-underline input-lg" id="description"
+                        formControlName="description" placeholder="{{ 'description'  }}" maxlength="200"></textarea>
+
+                      <ng-container *ngIf="!subcategoryform.controls['description'].valid &&
+                        subcategoryform.controls['description'].touched">
+                        <span class="text-danger" *ngIf="subcategoryform.controls['description'].hasError(
+                                                    'required'
+                                                ) else elsedescription
+                                            ">description is required.</span>
+                        <ng-template #elsedescription>
+                          <span class="text-danger" *ngIf="subcategoryform.controls['description'].hasError(
+                                                    'whitespace'
+                                                )
+                                            ">only white space is not allowed.</span></ng-template>
+                      </ng-container>
+
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label for="parentid">Parent*</label>
+                      <select class="custom-select" id="parentid" formControlName="parentid">
+                        <option value="" selected>Select</option>
+                        <ng-container *ngFor="let parentcat of parentCategories">
+                          <option value="{{ parentcat.id }}">{{ parentcat.name}}</option>
+                        </ng-container>
+                      </select>
+
+                    </div>
+                  </div>
+
+                </div>
+                <button [disabled]="!subcategoryform.valid" class="btn btn-success" type="submit">
+                  Save</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-8">
+    <div class="card">
+      <div class="card-header">Sub Category</div>
+      <div class="card-body table-responsive">
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table-hover table-bordered">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Parent Category</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let category of subcategories; index as i;">
+              <th scope="row">{{ i+1 }}</th>
+              <td>{{ category.name}}</td>
+              <td>{{ category.description }}</td>
+              <td>{{category.parentcatname}}</td>
+              <td><button class="btn btn-primary btn-sm badge" (click)="editCat(category.id)">Edit</button>&nbsp;<button
+                  class="btn btn-danger btn-sm badge" (click)="deleteCat(category.id)">Delete</button></td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

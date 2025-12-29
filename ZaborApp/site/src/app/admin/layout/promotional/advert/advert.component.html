@@ -1,0 +1,57 @@
+<div class="row">
+  <div class="col col-xs-12">
+    <div class="card mb-3">
+      <div class="card-header">
+        Adverts
+        <!-- <button class="btn btn-success btn-sm pull-right" routerLink="/restaurants/create"> + Add
+          restaurant</button> -->
+      </div>
+      <div class="card-body table-responsive">
+        <app-datatables-net-table [rowsCount]="rowsCount" [headingColumnsCount]="headingColumnsCount">
+          <tr *ngFor="let advert of advertList; index as i;">
+            <td scope="row">{{ i+1 }}</td>
+            <td><img src="{{ pic_url+advert.pic}}" width="100" (click)="openModel( pic_url+advert.pic)"></td>
+            <td><a routerLink="/admin/restaurant/view/{{ advert.restaurant_id}}">{{ advert.restaurant_name}}</a></td>
+            <td><a routerLink="/admin/user/view/{{advert.user_id}}">{{ advert.userName}}</a></td>
+            <td>{{ advert.start_date}}</td>
+            <td>{{ advert.end_date}}</td>
+            <td *ngIf="advert.status == 1; else elseBlock">
+              <ui-switch [checked]="true" defaultBgColor="red" (change)="changeStatus($event,advert.id)"></ui-switch>
+            </td>
+            <ng-template #elseBlock>
+              <td>
+                <ui-switch defaultBgColor="red" (change)="changeStatus($event,advert.id)"></ui-switch>
+              </td>
+            </ng-template>
+            <td>{{ advert.created_at}}</td>
+            <td>
+              <button class="btn btn-danger btn-sm badge" (click)="deleteAdvert($event,advert.id)">{{ "Delete" | translate }}</button>
+            </td>
+          </tr>
+        </app-datatables-net-table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="advertModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+
+
+        <div class="modal-body">
+
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+
+          <img src="" id='advert-image'>
+
+
+
+        </div>
+
+      </div>
+    </div>
+  </div>

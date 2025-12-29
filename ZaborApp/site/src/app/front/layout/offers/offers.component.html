@@ -1,0 +1,27 @@
+<main>
+  <section class="inner-banner overlay" style="background-image:url(./assets/images/searh-detail.jpg);">
+
+  </section>
+
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a [routerLink]="['/']">Home</a></li>
+    </ol>
+  </nav>
+
+  <div class="sec sec-rating-wrap">
+    <div class="container">
+      <div class="row offers-list">
+        <div class="col-sm-6 mt-5" *ngFor="let item of discounts">
+          <div class="res-div col-sm-12">
+            <img src="{{fileurl+item.pic}}" alt="" width="100px" [routerLink]="['/restaurant/',item.res_id]">
+            <h4 class="mt-2">{{item.res_name}}</h4>
+          </div>
+          <div class="col-sm-12" *ngIf="item?.discounts.length >0">
+            <app-offers [(offers)]="item.discounts" [showApply]="0"></app-offers>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

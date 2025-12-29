@@ -1,0 +1,217 @@
+<div class="overlay-mobile" id="jash" (click)="openMenuMobile()"></div>
+
+<header class="site-header">
+    <div class="container">
+        <nav class="navbar navbar-expand-sm">
+
+            <button class="navbar-toggler" (click)="navbarToggle()" type="button" data-toggle="collapse"
+                data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <i class="fa fa-bars" aria-hidden="true"></i>
+            </button>
+            <div class="logo-header">
+                <a [routerLink]="['/']"><img src="assets/images/zaborplus.png" alt=""></a>
+            </div>
+            <div class="show-mobile">
+                <li class="nav-item dropdown" *ngIf="isLoggedIn">
+                    <a class="nav-link dropdown-toggle header-cart after-none" (click)="showCart()">
+                        <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                        <span
+                            class="number-count">{{(this.restaurantservice.cart.cart?.length > 0) ? this.restaurantservice.cart.cart?.length : 0}}</span>
+                    </a>
+                    <div class="dropdown-menu caetsec">
+                        <ul class="cart-drop-list">
+                            <li class="d-flex" *ngFor="let item of this.restaurantservice.cart.cart">
+                                <!-- <div class="img-cart"><img src="assets/images/cart-img-1.png" alt=""></div> -->
+                                <div class="cart-right d-flex justify-content-between">
+                                    <div class="cart-info">
+                                        <h6>{{item.itemName}} &nbsp;* <span>{{item.quantity}}</span></h6>
+
+                                    </div>
+                                    <div class="cart-price">
+                                        <strong>{{item.itemPrice*item.quantity |currency}}</strong>
+                                    </div>
+                                    <!-- <div class="remove-cart">
+                                        <button class="remove-cart-btn"><i class="fa fa-close"></i></button>
+                                    </div> -->
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="view-cart">
+                            <a (click)="showManu(this.restaurantservice.cart.res_id)"
+                                class="cart-drop_btn btn-global btn-filled"
+                                *ngIf="this.restaurantservice.cart.cart?.length > 0"> {{'View Cart'|translate}} </a>
+                            <a (click)="clearCart()" class="cart-drop_btn btn-global btn-clear btn-filled ml-2"
+                                *ngIf="this.restaurantservice.cart.cart?.length > 0"> {{'Clear Cart'|translate}} </a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item dropdown user-dashboard-dropdown" *ngIf="isLoggedIn">
+                    <button type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                        <img *ngIf="usersService.profilepic != null && usersService.profilepic.length > 0 else noprofileimg"
+                             src="{{imagepath+usersService.profilepic}}" alt=""
+                             [appImgFallback]="imagepath+'profilepic-1572686877515.png'"
+                        />
+                    </button>
+
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" [routerLink]="['/dashboard/profile']">{{'View Profile' |translate}}</a>
+                        <a class="dropdown-item"
+                            [routerLink]="['/dashboard/changepassword']">{{'Change Password' |translate}}</a>
+                        <a class="dropdown-item" [routerLink]="['/dashboard/orders']">{{'Order History' |translate}}</a>
+                        <a class="dropdown-item" [routerLink]="['/dashboard/address']">{{'Address' |translate}}</a>
+                        <a class="dropdown-item" (click)="logout()">{{'Logout' |translate}}</a>
+                    </div>
+
+                </li>
+                <li class="nav-item dropdown">
+                    <img src="/assets/images/search-icon.svg" alt="" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false" class="search-drop" (click)="openSearch()">
+                    <div class="dropdown-menu search-div">
+                        <div class="input-group">
+                            <input type="text" name="search" placeholder="Search.." class="form-control"
+                                [(ngModel)]="searchValue" (keyup)="onKeyUp($event)" autocomplete="off">
+                            <div class="input-group-append">
+                                <button class="btn btn-warning" type="button" (click)="search()"> <img
+                                        src="/assets/images/search-icon.svg" /></button>
+                            </div>
+                        </div>
+                        <div class="search-dropdown" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item suggest-item" [routerLink]="['/restaurant',item.id]"
+                                *ngFor="let item of suggestedRes">{{item.name}}</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item dropdown language-select">
+                    <app-lang-change></app-lang-change>
+                </li>
+            </div>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto align-items-center">
+                    <li class="nav-item active">
+                        <a class="nav-link hover-line" [routerLink]="['/pages/3']">{{ 'About us'|translate }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link hover-line" [routerLink]="['/faq']">{{ "FAQ's"|translate }}</a>
+                    </li>
+                </ul>
+                <ul class=" ml-auto navbar-nav align-items-center">
+
+                    <li class="nav-item active" *ngIf="!isLoggedIn">
+                        <a class="nav-link hover-line" [routerLink]="['/login']">{{ 'Login' | translate }}</a>
+                    </li>
+                    <li class="nav-item" *ngIf="!isLoggedIn">
+                        <a class="nav-link sign-up-outline" [routerLink]="['/signup']">{{ 'Sign up'|translate }}</a>
+                    </li>
+                    <li class="nav-item portal-link" *ngIf="isLoggedIn">
+                        <a class="nav-link " [routerLink]="['/owner/dashboard']"
+                            *ngIf="loggedInUserType == 'owner'">{{ 'Restaurant Portal'|translate }}</a>
+                        <a class="nav-link " [routerLink]="['/admin/dashboard']"
+                            *ngIf="loggedInUserType == 'admin'">{{ 'Admin Portal'|translate }}</a>
+                    </li>
+                    <li class="nav-item dropdown hide-mobile" *ngIf="isLoggedIn">
+                        <a class="nav-link dropdown-toggle header-cart after-none" (click)="showCart()">
+                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                            <span
+                                class="number-count">{{(this.restaurantservice.cart.cart?.length > 0) ? this.restaurantservice.cart.cart?.length : 0}}</span>
+                        </a>
+                        <div class="dropdown-menu caetsec">
+                            <ul class="cart-drop-list">
+                                <li class="d-flex" *ngFor="let item of this.restaurantservice.cart.cart">
+                                    <!-- <div class="img-cart"><img src="assets/images/cart-img-1.png" alt=""></div> -->
+                                    <div class="cart-right d-flex justify-content-between">
+                                        <div class="cart-info">
+                                            <h6>{{item.itemName}} &nbsp;* <span>{{item.quantity}}</span></h6>
+
+                                        </div>
+                                        <div class="cart-price">
+                                            <strong>{{item.itemPrice*item.quantity |currency}}</strong>
+                                        </div>
+                                        <!-- <div class="remove-cart">
+                                            <button class="remove-cart-btn"><i class="fa fa-close"></i></button>
+                                        </div> -->
+                                    </div>
+                                </li>
+
+                            </ul>
+                            <div class="view-cart">
+                                <a (click)="showManu(this.restaurantservice.cart.res_id)"
+                                    class="cart-drop_btn btn-global btn-filled"
+                                    *ngIf="this.restaurantservice.cart.cart?.length > 0">{{'View Cart'|translate}}</a>
+                                <a (click)="clearCart()" class="cart-drop_btn btn-clear btn-global btn-filled ml-2"
+                                    *ngIf="this.restaurantservice.cart.cart?.length > 0"> {{'Clear Cart'|translate}}
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown user-dashboard-dropdown hide-mobile" *ngIf="isLoggedIn">
+                        <button type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                            <img *ngIf="usersService.profilepic != null && usersService.profilepic.length > 0 else noprofileimg"
+                                 src="{{imagepath+usersService.profilepic}}" alt=""
+                                 [appImgFallback]="imagepath+'profilepic-1572686877515.png'" />
+                        </button>
+
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item"
+                                [routerLink]="['/dashboard/profile']">{{'View Profile' |translate}}</a>
+                            <a class="dropdown-item"
+                                [routerLink]="['/dashboard/changepassword']">{{'Change Password' |translate}}</a>
+                            <a class="dropdown-item"
+                                [routerLink]="['/dashboard/orders']">{{'Order History' |translate}}</a>
+                            <a class="dropdown-item" [routerLink]="['/dashboard/address']">{{'Address' |translate}}</a>
+                            <a class="dropdown-item" (click)="logout()">{{'Logout' |translate}}</a>
+                        </div>
+
+                    </li>
+                    <li class="search-div-li">
+                        <div class="search-div">
+                            <div class="input-group">
+                                <input type="text" name="search" placeholder="Search.."
+                                    class="form-control search-field" [(ngModel)]="searchValue"
+                                    (keyup)="onKeyUp($event)" autocomplete="off">
+                                <div class="input-group-append">
+                                    <button class="btn btn-warning" type="button" (click)="search()"> <img
+                                            src="/assets/images/search-icon.svg" /></button>
+                                </div>
+                            </div>
+                            <div class="search-dropdown onexpend" aria-labelledby="dropdownMenuButton"
+                                *ngIf="ShowFilter && suggestedRes.length > 0">
+                                <a class="dropdown-item suggest-item" [routerLink]="['/restaurant',item.id]"
+                                    *ngFor="let item of suggestedRes">{{item.name}}</a>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- <li class="nav-item dropdown">
+                        <img src="/assets/images/search-icon.svg" alt="" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false" class="search-drop" (click)="openSearch()">
+                        <div class="dropdown-menu search-div">
+                            <div class="input-group">
+                                <input type="text" name="search" placeholder="Search.." class="form-control"
+                                    [(ngModel)]="searchValue" (keyup)="onKeyUp($event)" #search>
+                                <div class="input-group-append">
+                                    <button class="btn btn-warning" type="button" (click)="search()"> <img
+                                            src="/assets/images/search-icon.svg" /></button>
+                                </div>
+                            </div>
+                            <div class="search-dropdown" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item suggest-item" [routerLink]="['/restaurant',item.id]"
+                                    *ngFor="let item of suggestedRes">{{item.name}}</a>
+                            </div>
+                        </div>
+                    </li> -->
+                    <li class="nav-item dropdown language-select hide-mobile">
+                        <app-lang-change></app-lang-change>
+                    </li>
+
+                </ul>
+
+            </div>
+        </nav>
+    </div>
+</header>
+
+<ng-template #noprofileimg>
+    <i class="fa fa-user-circle-o fa-2x"></i>
+</ng-template>

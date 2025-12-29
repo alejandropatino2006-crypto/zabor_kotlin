@@ -1,0 +1,89 @@
+<div class="row">
+  <div class="col-sm-12 my-2">
+    <h6>Account Selected : {{ this.account_id }}</h6>
+    <h6>Location Selected : {{ this.location_id }}</h6>
+    <button routerLink="/admin/terminal/location/list/{{ this.account_id }}" class="btn btn-secondary btn-padding-1 pull-right" type="button">Back</button>
+  </div>
+  <div class="col-sm-12 my-2">
+    <div class="card">
+      <div class="card-header">
+        <h5>Discovered Terminals/Readers</h5>        
+
+      </div>
+      <div class="card-body">
+        <div class="row" *ngIf="discoveredReadersList.length > 0">
+          <div class="col-sm-12">
+            <div class="w-100 d-flex flex-row justify-content-start align-items-center gap-3">
+              <span class="w-40px font-weight-bold">S#</span>
+              <span class="w-260px font-weight-bold">Label</span>
+              <span class="w-260px font-weight-bold">Serial</span>
+              <span class="w-160px font-weight-bold">IP</span>
+            </div>
+            <div class="w-100 d-flex flex-row justify-content-start align-items-center gap-3" *ngFor="let reader of discoveredReadersList; index as i">
+              <span class="w-40px">{{ i + 1 }} - </span>
+              <span class="w-260px">{{ reader.label }}</span>
+              <span class="w-260px">{{ reader.serial_number }}</span>
+              <span class="w-160px">{{ reader.ip_address }}</span>
+              <span><button [attr.data-reader-index]="i" class="btn btn-iceblue" routerLink="/admin/terminal/test/simulator/{{reader.id}}/{{ this.location_id }}/{{ this.account_id }}">Connect</button></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="discoveredReadersList.length === 0">
+          <div class="col-sm-12">
+            <div>
+              <span>No terminals/readers found...</span>
+              <p>You can also use the simulator reader by
+                clicking the <strong>Connect to Simulator</strong> button, if you don't have hardware. 
+
+                <br/><br/>
+
+                <button class="btn btn-warning" type="button" (click)="handleDiscoverClicked()">Discover Again</button>
+                
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-12 my-2">
+    <div class="card">
+      <div class="card-header">
+        <h5>Simulated Terminals/Readers</h5>
+        
+      </div>
+      <div class="card-body">
+        <div class="row" *ngIf="discoveredSimlatedReadersList.length > 0">
+          <div class="col-sm-12">
+            <div class="w-100 d-flex flex-row justify-content-start align-items-center gap-3">
+              <span class="w-40px font-weight-bold">S#</span>
+              <span class="w-260px font-weight-bold">Label</span>
+              <span class="w-260px font-weight-bold">Serial</span>
+              <span class="w-160px font-weight-bold">IP</span>
+            </div>
+            <div class="w-100 d-flex flex-row justify-content-start align-items-center gap-3" *ngFor="let reader of discoveredSimlatedReadersList; index as i">
+              <span class="w-40px">{{ i + 1 }} - </span>
+              <span class="w-260px">{{ reader.label }}</span>
+              <span class="w-260px">{{ reader.serial_number }}</span>
+              <span class="w-160px">{{ reader.ip_address }}</span>
+              <span><button [attr.data-reader-index]="i" class="btn btn-iceblue" routerLink="/admin/terminal/test/simulator/{{reader.id}}/{{ this.location_id }}/{{ this.account_id }}">Connect Simulator</button></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="discoveredSimlatedReadersList.length === 0">
+          <div class="col-sm-12">
+            <div>
+              <span>No Simulated terminals/readers found...</span>
+              <br/><br/>
+              <button class="btn btn-warning" type="button" (click)="handleSimulatedDiscoverClicked()">Discover Simulators Again</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

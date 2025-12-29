@@ -1,0 +1,61 @@
+<div class="login-sec customer">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6 login-bg">
+        <!--<div class="login-image" [class.invisible]="leftBackgroundImagePath == null || leftBackgroundImagePath.length == 0" ><img [src]="leftBackgroundImagePath" alt="" (error)="setDefaultBackgroundImage()" /></div>-->
+        <div class="login-image" [class.invisible]="leftBackgroundImagePath == null || leftBackgroundImagePath.length == 0" ><img [src]="(leftBackgroundImagePath | pictureLoad:'assets/images/login-bg.jpg') | async" /></div>
+        <a [routerLink]="['/']" class="login-logo"><img src="assets/images/logo.png" alt="" /></a>
+      </div>
+      <div class="col-md-6 login-form">
+        <div class="lang-chg-drop">
+          <a [routerLink]="[ '/' ]" class="text-dark"><b>zabor</b></a>
+          <app-lang-change></app-lang-change>
+        </div>
+        <div class="login-box">
+          <h2>{{ 'Login' | translate }}</h2>
+          <form (keydown.enter)="$event.preventDefault()" [formGroup]="loginForm" (ngSubmit)="onSubmit()" role="form">
+            <div class="form-field ">
+              <input type="text" id="email" formControlName="email" class="form-control input-underline input-lg"
+                placeholder="Email" maxlength="40" />
+
+              <span class="form-icon"><img src="assets/images/user-icon.svg" alt="" /></span>
+            </div>
+            <label class="text-danger"
+              *ngIf="!loginForm.controls['email'].valid && loginForm.controls['email'].touched && loginForm.controls['email'].hasError('required') ">{{ 'Email is required.' | translate }}</label>
+            <label class="text-danger"
+              *ngIf="!loginForm.controls['email'].hasError('required') && !loginForm.controls['email'].valid && loginForm.controls['email'].touched && loginForm.controls['email'].hasError('email') ">{{ 'Email is invalid.' | translate }}</label>
+            <div class="form-field position-relative">
+              <input [type]="passwordFieldType" id="password" formControlName="password" autocomplete="off"
+                class="form-control input-underline input-lg" placeholder="Password" />
+              <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password" [ngClass]="{'fa-eye-slash': passwordFieldType === 'text'}" (click)="handlePasswordToggle($event)"></span>
+              <span class="form-icon"><img src="assets/images/password-icon.svg" alt="" /></span>
+            </div>
+            <span class="text-danger"
+              *ngIf="!loginForm.controls['password'].valid && loginForm.controls['password'].touched && loginForm.controls['password'].hasError('required') ">{{ 'Password  is required.' | translate }}
+            </span>
+            <span class="text-danger"
+              *ngIf="!loginForm.controls['password'].valid && loginForm.controls['password'].touched && loginForm.controls['password'].hasError('minlength') ">{{ 'Password requires atleast 6 characters.' | translate }}</span>
+            <div class="form-field">
+              <div class="form-field-col">
+                <div class="check-box">
+                  <input type="checkbox" id="remember">
+                  <label for="remember">{{ 'Remember Me' | translate }}</label>
+                </div>
+              </div>
+              <div class="form-field-col for-pass">
+                <a [routerLink]="['/forget-password']">{{ 'Forgot Password?' | translate }}</a>
+              </div>
+            </div>
+            <div class="form-field">
+              <input [disabled]="!loginForm.valid" type="submit" class="btn rounded-btn"
+                value="{{ 'Login' | translate }}" />
+            </div>
+          </form>
+          <app-sociallogin></app-sociallogin>
+          <p class="form-text">{{ "Don't have an account?" | translate }}
+            <a [routerLink]="['/signup']"> {{ 'Create your account.' | translate }}</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

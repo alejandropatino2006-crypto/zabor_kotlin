@@ -1,0 +1,91 @@
+<div class="login-page" [@routerTransition]>
+    <div class="row justify-content-md-center">
+        <div class="col-lg-4">
+            <img class="user-avatar" src="assets/images/logo.png" width="150px" />
+            <h1>ZABOR SIGN UP</h1>
+
+            <form role="form" [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+                <input type="hidden" value="employee" name="role">
+                <div class="form-content">
+                    <div class="form-group">
+                        <input type="text" class="form-control input-underline input-lg" id="name"
+                            formControlName="name" placeholder="Full Name" maxlength="30" />
+                        <span class="text-danger" *ngIf="
+                                !signupForm.controls['name'].valid &&
+                                signupForm.controls['name'].touched &&
+                                signupForm.controls['name'].hasError('required')
+                            ">Name is required.</span>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" class="form-control input-underline input-lg" id="email"
+                            formControlName="email" placeholder="Email" maxlength="40" />
+                        <span class="text-danger" *ngIf="
+                                !signupForm.controls['email'].valid &&
+                                signupForm.controls['email'].touched &&
+                                signupForm.controls['email'].hasError(
+                                    'required'
+                                )
+                            ">Email is required.</span>
+                        <span class="text-danger" *ngIf="
+                                !signupForm.controls['email'].hasError(
+                                    'required'
+                                ) &&
+                                !signupForm.controls['email'].valid &&
+                                signupForm.controls['email'].touched &&
+                                signupForm.controls['email'].hasError('email')
+                            ">Email is invalid.</span>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="password" class="form-control input-underline input-lg" id="password" autocomplete="off"
+                            formControlName="password" placeholder="Password" maxlength="30" />
+                        <span class="text-danger" *ngIf="
+                                !signupForm.controls['password'].valid &&
+                                signupForm.controls['password'].touched &&
+                                signupForm.controls['password'].hasError(
+                                    'required'
+                                )
+                            ">Password is required.</span>
+                        <span class="text-danger" *ngIf="
+                                !signupForm.controls['password'].valid &&
+                                signupForm.controls['password'].touched &&
+                                signupForm.controls['password'].hasError(
+                                    'minlength'
+                                ) &&
+                                !signupForm.controls['password'].hasError(
+                                    'required'
+                                )
+                            ">Password requires atleast 6 characters.</span>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control input-underline input-lg" id="confirmPassword"
+                            formControlName="confirmPassword" placeholder="Repeat Password" maxlength="30" />
+                        <span class="text-danger" *ngIf="
+                                !signupForm.controls['confirmPassword'].valid &&
+                                signupForm.controls['confirmPassword']
+                                    .touched &&
+                                signupForm.controls['confirmPassword'].hasError(
+                                    'required'
+                                )
+                            ">Password is required.</span>
+                        <span class="text-danger" *ngIf="
+                                !signupForm.controls[
+                                    'confirmPassword'
+                                ].hasError('required') &&
+                                !signupForm.controls['confirmPassword'].valid &&
+                                signupForm.controls['confirmPassword']
+                                    .touched &&
+                                signupForm.controls['confirmPassword'].hasError(
+                                    'mustMatch'
+                                )
+                            ">Passwords must match.</span>
+                    </div>
+                </div>
+                <button [disabled]="!signupForm.valid" class="btn rounded-btn" type="submit">Signup</button>
+                &nbsp;
+                <a class="btn rounded-btn" [routerLink]="['/employee/login']">Login</a>
+            </form>
+        </div>
+    </div>
+</div>

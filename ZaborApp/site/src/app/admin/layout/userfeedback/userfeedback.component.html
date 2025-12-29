@@ -1,0 +1,81 @@
+<div class="row">
+  <div class="col col-xs-12">
+    <div class="card mb-3">
+      <div class="card-header">
+        <h4>User's Feedback</h4>
+      </div>
+      <div class="card-body table-responsive">
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table-hover table-bordered">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>User Name</th>
+              <th>Subject</th>
+              <th>Created date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="userfeedbacks.length > 0">
+
+            <tr *ngFor="let feedback of userfeedbacks; index as i;">
+              <th scope="row">{{ i+1 }}</th>
+              <td><a routerLink="/admin/user/view/{{feedback.user_id}}">{{ feedback.username}}</a></td>
+              <td>{{ feedback.subject }}</td>
+              <td>{{feedback.created_at}}</td>
+              <td><a href="javascript:void(0)" class="btn btn-warning btn-sm badge" (click)="show_feedback(i)"><i
+                    class="fa fa-eye" aria-hidden="true"></i>
+                  View</a>&nbsp;
+                <a href="javascript:void(0)" class="btn btn-danger btn-sm badge"
+                  (click)="delete_feedback(feedback.id)"><i class="fa fa-trash" aria-hidden="true"></i>
+                  Delete</a>
+              </td>
+            </tr>
+
+          </tbody>
+          <tbody *ngIf="userfeedbacks.length == 0">
+            <tr>
+              <td class="no-data-available" colspan="5">No matching records found</td>
+            </tr>
+          </tbody>
+        </table>
+
+
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+
+
+        <div class="modal-body">
+
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <!-- 16:9 aspect ratio -->
+          <div class="feedback-block">
+            <div class="row">
+              <div class="col-sm-12">
+                <h5>User Name</h5>
+                <p>{{openFeedback.username}}</p>
+              </div>
+              <div class="col-sm-12">
+                <h5>Subject</h5>
+                <p>{{openFeedback.subject}}</p>
+              </div>
+              <div class="col-sm-12">
+                <h5>Feedback</h5>
+                <p>{{ openFeedback.feedback}}</p>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+
+      </div>
+    </div>
+  </div>

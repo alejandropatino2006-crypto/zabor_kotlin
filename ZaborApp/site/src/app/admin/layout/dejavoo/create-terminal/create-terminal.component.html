@@ -1,0 +1,303 @@
+<div class="row">
+  <div class="col col-xs-12">
+    <div class="card mb-3">
+      <div class="card-header">
+        <h5>Create DEJAVOO Terminal</h5>
+        <button
+          class="btn btn-success btn-sm pull-right"
+          routerLink="/admin/dejavoo"
+        >
+          back
+        </button>
+      </div>
+      <div class="card-body table-responsive">
+        <form
+          role="form"
+          [formGroup]="terminalForm"
+          (ngSubmit)="onTerminalSubmit()"
+        >
+          <div class="row form-content">            
+
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label for="name">TPN*</label>
+                <input
+                  type="text"
+                  class="form-control input-underline input-lg"
+                  id="tpn"
+                  formControlName="tpn"
+                  placeholder="{{ 'TPN' }}"
+                  maxlength="30"
+                />
+                <ng-container
+                  *ngIf="
+                    !terminalForm.controls['tpn'].valid &&
+                    terminalForm.controls['tpn'].touched
+                  "
+                >
+                  <span
+                    class="text-danger"
+                    *ngIf="
+                      terminalForm.controls['tpn'].hasError('required');
+                      else elsename
+                    "
+                    >tpn is required.</span
+                  >
+                  <ng-template #elsename>
+                    <span
+                      class="text-danger"
+                      *ngIf="
+                        terminalForm.controls['tpn'].hasError('whitespace')
+                      "
+                      >only white space is not allowed.</span
+                    ></ng-template
+                  >
+                </ng-container>
+              </div>
+            </div>
+
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label for="name">Register ID*</label>
+                <input
+                  type="text"
+                  class="form-control input-underline input-lg"
+                  id="register_id"
+                  formControlName="register_id"
+                  placeholder="{{ 'Register ID' }}"
+                  maxlength="30"
+                />
+                <ng-container
+                  *ngIf="
+                    !terminalForm.controls['register_id'].valid &&
+                    terminalForm.controls['register_id'].touched
+                  "
+                >
+                  <span
+                    class="text-danger"
+                    *ngIf="
+                      terminalForm.controls['register_id'].hasError('required');
+                      else elsename
+                    "
+                    >register_id is required.</span
+                  >
+                  <ng-template #elsename>
+                    <span
+                      class="text-danger"
+                      *ngIf="
+                        terminalForm.controls['register_id'].hasError(
+                          'whitespace'
+                        )
+                      "
+                      >only white space is not allowed.</span
+                    ></ng-template
+                  >
+                </ng-container>
+              </div>
+            </div>
+
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label for="name">AUTH KEY*</label>
+                <input
+                  type="text"
+                  class="form-control input-underline input-lg"
+                  id="authkey"
+                  formControlName="authkey"
+                  placeholder="{{ 'AUTH KEY' }}"
+                  maxlength="30"
+                />
+                <ng-container
+                  *ngIf="
+                    !terminalForm.controls['authkey'].valid &&
+                    terminalForm.controls['authkey'].touched
+                  "
+                >
+                  <span
+                    class="text-danger"
+                    *ngIf="
+                      terminalForm.controls['authkey'].hasError('required');
+                      else elsename
+                    "
+                    >authkey is required.</span
+                  >
+                  <ng-template #elsename>
+                    <span
+                      class="text-danger"
+                      *ngIf="
+                        terminalForm.controls['authkey'].hasError('whitespace')
+                      "
+                      >only white space is not allowed.</span
+                    ></ng-template
+                  >
+                </ng-container>
+              </div>
+            </div>
+
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label for="name">SECURITY KEY</label>
+                <input
+                  type="text"
+                  class="form-control input-underline input-lg"
+                  id="security_key"
+                  formControlName="security_key"
+                  placeholder="{{ 'SECURITY KEY' }}"
+                  maxlength="30"
+                />
+                <ng-container
+                  *ngIf="
+                    !terminalForm.controls['security_key'].valid &&
+                    terminalForm.controls['security_key'].touched
+                  "
+                >
+                  <span
+                    class="text-danger"
+                    *ngIf="
+                      terminalForm.controls['security_key'].hasError(
+                        'required'
+                      );
+                      else elsename
+                    "
+                    >security_key is required.</span
+                  >
+                  <ng-template #elsename>
+                    <span
+                      class="text-danger"
+                      *ngIf="
+                        terminalForm.controls['security_key'].hasError(
+                          'whitespace'
+                        )
+                      "
+                      >only white space is not allowed.</span
+                    ></ng-template
+                  >
+                </ng-container>
+              </div>
+            </div>
+
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label for="name">Restaurant Id*</label>
+                <input
+                  type="number"
+                  class="form-control input-underline input-lg"
+                  id="rest_id"
+                  formControlName="rest_id"
+                  placeholder="{{ 'Restaurant Id' }}"
+                  maxlength="30"
+                />
+                <ng-container
+                  *ngIf="
+                    !terminalForm.controls['rest_id'].valid &&
+                    terminalForm.controls['rest_id'].touched
+                  "
+                >
+                  <span
+                    class="text-danger"
+                    *ngIf="
+                      terminalForm.controls['rest_id'].hasError('required');
+                      else elsename
+                    "
+                    >Restaurant Id is required.</span
+                  >
+                  <ng-template #elsename>
+                    <span
+                      class="text-danger"
+                      *ngIf="
+                        terminalForm.controls['rest_id'].hasError('whitespace')
+                      "
+                      >only white space is not allowed.</span
+                    ></ng-template
+                  >
+                </ng-container>
+              </div>
+            </div>
+
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label for="name">Device Id</label>
+                <input
+                  type="text"
+                  class="form-control input-underline input-lg"
+                  id="device_id"
+                  formControlName="device_id"
+                  placeholder="{{ 'Device Id' }}"
+                  maxlength="30"
+                />
+                <ng-container
+                  *ngIf="
+                    !terminalForm.controls['device_id'].valid &&
+                    terminalForm.controls['device_id'].touched
+                  "
+                >
+                  <span
+                    class="text-danger"
+                    *ngIf="
+                      terminalForm.controls['device_id'].hasError('required');
+                      else elsename
+                    "
+                    >Device Id is required.</span
+                  >
+                  <ng-template #elsename>
+                    <span
+                      class="text-danger"
+                      *ngIf="
+                        terminalForm.controls['device_id'].hasError('whitespace')
+                      "
+                      >only white space is not allowed.</span
+                    ></ng-template>
+                </ng-container>
+              </div>
+            </div>
+
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label for="name">Device Name</label>
+                <input
+                  type="text"
+                  class="form-control input-underline input-lg"
+                  id="device_name"
+                  formControlName="device_name"
+                  placeholder="{{ 'Device Name' }}"
+                  maxlength="30"
+                />
+                <ng-container
+                  *ngIf="
+                    !terminalForm.controls['device_name'].valid &&
+                    terminalForm.controls['device_name'].touched
+                  "
+                >
+                  <span
+                    class="text-danger"
+                    *ngIf="
+                      terminalForm.controls['device_name'].hasError('required');
+                      else elsename
+                    "
+                    >Device Name is required.</span
+                  >
+                  <ng-template #elsename>
+                    <span
+                      class="text-danger"
+                      *ngIf="
+                        terminalForm.controls['device_name'].hasError('whitespace')
+                      "
+                      >only white space is not allowed.</span
+                    ></ng-template
+                  >
+                </ng-container>
+              </div>
+            </div>
+          </div>
+          <button
+            [disabled]="!terminalForm.valid"
+            class="btn btn-success"
+            type="submit"
+          >
+            Add Terminal
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

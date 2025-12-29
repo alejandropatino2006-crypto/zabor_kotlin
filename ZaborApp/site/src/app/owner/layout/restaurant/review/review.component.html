@@ -1,0 +1,125 @@
+<div class="container-fluid">
+  <div class="d-flex flex-row justify-content-end align-items-center" style="text-align: right;">
+    <div class="d-flex flex-row justify-content-start align-items-center gap-3">
+      <button (click)="handleBackClicked($event)" class="btn btn-secondary btn-padding-1" type="button">{{'Back' | translate}}</button>
+      <div><span>{{ "Store ID" | translate }}: </span>&nbsp;<span>{{restaurantId}}</span></div>
+    </div>
+  </div>
+  <h3>{{ "Reviews" | translate }}</h3>
+  <div class="row">
+    <div class="col-sm-4 avgrating-sec" *ngIf="reviewsatatus?.avgrating != 'NaN'">
+      <h2>{{reviewsatatus?.avgrating}} <span>({{reviewsatatus?.totaluser}} {{ "users" | translate }})</span></h2>
+    </div>
+  </div>
+  <div class="row form-group">
+
+    <div class="col-sm-2">
+      <input type="text" name="search" class="form-control" placeholder='{{ "Search" | translate }}' #search>
+    </div>
+    <div class="col-sm-2">
+      <select class="custom-select" #sortby>
+        <option value=-1>{{ "Sort By" | translate }}</option>
+        <option value="1">{{ "Highest Popularity" | translate }}</option>
+        <option value="2">{{ "Lowest Popularity" | translate }}</option>
+        <option value="3">{{ "Newest First" | translate }}</option>
+        <option value="4">{{ "Oldest First" | translate }}</option>
+      </select>
+    </div>
+    <div class="col-sm-2">
+      <button class="btn btn-sm btn-success" (click)="searchReview()"> {{ "Search" | translate }}</button> &nbsp;
+      <button class="btn btn-sm btn-danger" (click)="reset()">{{ "Reset" | translate }}</button>
+    </div>
+
+  </div>
+  <div *ngIf="userReviews.length > 0 else noreview">
+    <div *ngFor="let item of userReviews">
+      <div class="card">
+        <div class="card-body">
+          <div class="rating-div row review-{{item.id}}">
+            <div class="col-xl-1 userdiv">
+              <img src="{{picurl+item.profileimage}}"
+                *ngIf="item.profileimage && item.profileimage != null && item.profileimage!= '' else showdummyImage">
+              <ng-template #showdummyImage>
+                <img src="assets/images/img_avatar.png">
+              </ng-template>
+              <p>{{item.name | titlecase}}</p>
+            </div>
+            <div class="col-xl-11 reatingdiv">
+              <div>
+                <star-rating [value]="item.rating" [totalstars]="5" checkedcolor="#ea9a0f" uncheckedcolor="#d4d3d3"
+                  size="24px" [readonly]="true">
+                </star-rating>
+              </div>
+
+              <p>{{item.comment}}</p>
+              <div class="row">
+                <div class="extrarating">
+                  <p><span>{{ "Pricing" | translate }} </span>
+                    <star-rating [value]="item.pricing" [totalstars]="5" checkedcolor="#ea9a0f" uncheckedcolor="#d4d3d3"
+                      size="24px" [readonly]="true">
+                    </star-rating>
+                  </p>
+                </div>
+                <div class="extrarating">
+                  <p><span>{{ "Waiting" | translate }} </span>
+                    <star-rating [value]="item.waiting" [totalstars]="5" checkedcolor="#ea9a0f" uncheckedcolor="#d4d3d3"
+                      size="24px" [readonly]="true">
+                    </star-rating>
+                  </p>
+                </div>
+                <div class="extrarating">
+                  <p><span>{{ "Ambience" | translate }}</span>
+                    <star-rating [value]="item.ambience" [totalstars]="5" checkedcolor="#ea9a0f"
+                      uncheckedcolor="#d4d3d3" size="24px" [readonly]="true">
+                    </star-rating>
+                  </p>
+                </div>
+                <div class="extrarating">
+                  <p><span>{{ "Food" | translate }}</span>
+                    <star-rating [value]="item.food" [totalstars]="5" checkedcolor="#ea9a0f" uncheckedcolor="#d4d3d3"
+                      size="24px" [readonly]="true">
+                    </star-rating>
+                  </p>
+                </div>
+                <div class="extrarating">
+                  <p><span>{{ "Locality" | translate }} </span>
+                    <star-rating [value]="item.locality" [totalstars]="5" checkedcolor="#ea9a0f"
+                      uncheckedcolor="#d4d3d3" size="24px" [readonly]="true">
+                    </star-rating>
+                  </p>
+                </div>
+                <div class="extrarating">
+                  <p><span>{{ "Management" | translate }} </span>
+                    <star-rating [value]="item.management" [totalstars]="5" checkedcolor="#ea9a0f"
+                      uncheckedcolor="#d4d3d3" size="24px" [readonly]="true">
+                    </star-rating>
+                  </p>
+                </div>
+                <div class="extrarating">
+                  <p><span>{{ "Restrooms" | translate }}</span>
+                    <star-rating [value]="item.restrooms" [totalstars]="5" checkedcolor="#ea9a0f"
+                      uncheckedcolor="#d4d3d3" size="24px" [readonly]="true">
+                    </star-rating>
+                  </p>
+                </div>
+                <div class="extrarating">
+                  <p><span>{{ "Service" | translate }}</span>
+                    <star-rating [value]="item.service" [totalstars]="5" checkedcolor="#ea9a0f" uncheckedcolor="#d4d3d3"
+                      size="24px" [readonly]="true">
+                    </star-rating>
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-warning" (click)="moreReview()" *ngIf="showMoreButton">{{ "View More" | translate }}</button>
+  </div>
+  <ng-template #noreview>
+    <p>{{ "No Review Found" | translate }}</p>
+  </ng-template>
+
+</div>

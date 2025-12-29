@@ -1,0 +1,140 @@
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { RestaurantService } from './../../../../shared/services/restaurant.service';
+import { Router, ActivatedRoute } from '@angular/router';
+import { NgxSpinnerService } from "ngx-spinner";
+import { environment } from "../../../../../environments/environment";
+import Swal from 'sweetalert2';
+import { SwalErrorToast, SwalConfirm, SwalSuccessToast } from 'src/app/shared/helpers/swalFunctionsData';
+
+@Component({
+  selector: 'app-review',
+  templateUrl: './review.component.html',
+  styleUrls: ['./review.component.scss']
+})
+export class ReviewComponent implements OnInit {
+  @ViewChild('search') search: ElementRef;
+  @ViewChild('sortby') sortby: ElementRef;
+
+  public restaurantId: number = -1;
+  public userReviews: Array<any> = [];
+  public picurl: string = environment.fileurl + '/';
+  public searchvalue: string = "";
+  public sortbyvalue: number = -1;
+  public page: number = 1;
+  public showMoreButton = true;
+
+  public reviewsatatus: any
+
+
+  constructor(private spinner: NgxSpinnerService, private restaurantservice: RestaurantService, private route: ActivatedRoute, private _router: Router, ) { }
+
+
+  ngOnInit() {
+    // get restaurant id
+    this.restaurantId = parseInt(this.route.snapshot.paramMap.get("id"), 10);
+    this.spinner.show();
+    this.restaurantservice.getreviewstatus(this.restaurantId).subscribe(
+      response => {
+        if (response.status) {
+          this.reviewsatatus = {
+            avgrating: parseFloat(response.data[0][0].avgrating).toFixed(1),
+            totaluser: parseInt(response.data[0][0].totaluser, 10),
+            onestar: parseInt(response.data[1][0].oneratingcount, 10),
+            twostar: parseInt(response.data[2][0].tworatingcount, 10),
+            threestar: parseInt(response.data[3][0].threeratingcount, 10),
+            fourstar: parseInt(response.data[4][0].fourratingcount, 10),
+            fivestar: parseInt(response.data[5][0].fiveratingcount, 10)
+          };
+          this.getReviews();
+        }
+      },
+      error => {
+
+      }
+    ).add(() => {
+      this.spinner.hide();
+    })
+
+
+  }
+
+  searchReview() {
+    this.searchvalue = this.search.nativeElement.value;
+    this.sortbyvalue = this.sortby.nativeElement.value;
+    this.userReviews = [];
+    this.showMoreButton = true;
+    this.page = 1;
+    this.getReviews();
+  }
+
+  reset() {
+    this.search.nativeElement.value = "";
+    this.sortby.nativeElement.value = -1;
+    this.searchvalue = "";
+    this.sortbyvalue = -1;
+    this.showMoreButton = true;
+    this.page = 1;
+  }
+  getReviews() {
+    this.spinner.show();
+    let data = {
+      res_id: this.restaurantId,
+      search: this.searchvalue,
+      sortby: this.sortbyvalue,
+      page: this.page
+    }
+    this.restaurantservice.getReview(data).subscribe(
+      response => {
+        if (response.status) {
+          if (response.response.length > 0) {
+            response.response.map((item) => {
+              this.userReviews.push(item);
+            })
+            if (response.response.length < 10)
+              this.showMoreButton = false;
+          } else {
+            this.showMoreButton = false;
+          }
+        }
+      },
+      error => {
+        Swal.fire(SwalErrorToast(error))
+      }
+    ).add(() => {
+      this.spinner.hide();
+    })
+  }
+
+  moreReview() {
+    this.page += 1;
+    this.getReviews();
+  }
+
+  delete(review_id) {
+    Swal.fire(SwalConfirm("Are you sure want to delete review? ")).then(result => {
+      if (result.value && review_id > 0) {
+        this.spinner.show();
+        this.restaurantservice.deletereview(review_id).subscribe(
+          data => {
+            if (data.status) {
+              Swal.fire(SwalSuccessToast(data.msg));
+              this.userReviews.map((item, index) => {
+                if (item.id == review_id) {
+                  this.userReviews.splice(index, 1);
+                }
+              });
+            } else {
+              Swal.fire(SwalErrorToast(data.msg));
+            }
+          },
+          error => {
+            Swal.fire(SwalErrorToast(error));
+          }
+        ).add(() => {
+          this.spinner.hide();
+        })
+      }
+    })
+  }
+
+}

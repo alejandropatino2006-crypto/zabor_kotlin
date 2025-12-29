@@ -1,0 +1,190 @@
+<div class="row">
+
+  <div class="col-sm-12 mb-2">
+    <div class="card">
+      <div class="card-header">
+        <h5>Stripe Registered Locations</h5>
+      </div>
+      <div class="card-body">
+        <table class="table-locations">
+          <thead>
+          <tr>
+            <th class="w-30px">S#</th>
+            <th class="w-180px">Name</th>
+            <th class="w-180px">ID</th>
+            <th class="w-90px">Country</th>
+            <th class="w-90px">City</th>
+            <th class="w-90px">State</th>
+            <th class="w-80px">Postal Code</th>
+            <th class="w-80px"></th>
+            <th class="w-80px"></th>
+            <th class="w-80px"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let location of locationsList; index as i">
+            <td>{{ i + 1 }} - </td>
+            <td>{{ location.display_name }}</td>
+            <td>{{ location.id }}</td>
+            <td>{{ location.address.country }}</td>
+            <td>{{ location.address.city }}</td>
+            <td>{{ location.address.state }}</td>
+            <td>{{ location.address.postal_code }}</td>
+            <td><button [attr.data-location-index]="i" class="btn btn-iceblue" (click)="handleViewLocationClicked($event)">View Data</button></td>
+            <td><button [attr.data-location-index]="i" class="btn btn-warning" (click)="handleDiscoverForLocationClicked($event)">Discover</button></td>
+            <td><button [attr.data-location-index]="i" class="btn btn-danger" (click)="handleDeleteLocationClicked($event)">Delete</button></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="point1" class="point-placeholder"></div>
+  <ng-container *ngTemplateOutlet="getTopTemplate()"></ng-container>
+
+  <ng-template #locationFormWrapper>
+    <div class="col-sm-12 my-2">
+      <div class="card">
+        <div class="card-header">
+          <h5>{{ locationFormTitle }}</h5>
+        </div>
+        <div class="card-body">
+          <form role="form" [formGroup]="locationForm" (ngSubmit)="onLocationFormSubmit($event)" enctype="multipart/form-data">
+
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label>Location Name*</label>
+                  <input type="text" class="form-control input-underline input-lg" formControlName="display_name"
+                         placeholder="Zabor Head Quarters" maxlength="40" />
+                </div>
+              </div>
+
+            </div>
+
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label>Address Line 1*</label>
+                  <textarea placeholder="72ND AVE, NW" formControlName="line1" class="form-control input-underline input-lg"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label>Address Line 2</label>
+                  <textarea placeholder="Provide address (optional)" formControlName="line2" class="form-control input-underline input-lg"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label>City*</label>
+                  <input type="text" class="form-control input-underline input-lg" formControlName="city"
+                         placeholder="Miami" maxlength="40" />
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label>State*</label>
+                  <input type="text" class="form-control input-underline input-lg" formControlName="state"
+                         placeholder="Florida" maxlength="40" />
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label>Country*</label>
+                  <input type="text" class="form-control input-underline input-lg" formControlName="country"
+                         placeholder="US" maxlength="40" />
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label>Postal/Zip code*</label>
+                  <input type="text" class="form-control input-underline input-lg" formControlName="postal_code"
+                         placeholder="Florida" maxlength="40" />
+                </div>
+              </div>
+            </div>
+
+            <div class="w-100 d-flex flex-row justify-content-start align-items-center gap-3">
+              <button [hidden]="!canRegisterLocation" class="btn btn-success" type="submit">Register Location</button>
+              <button [hidden]="!canUpdateLocation" class="btn btn-success" type="submit">Update</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <div id="point2" class="point-placeholder"></div>
+  <ng-container *ngTemplateOutlet="getBottomTemplate()"></ng-container>
+
+  <ng-template #discoverWrapper>
+    <div class="col-sm-12 my-2">
+      <div class="card">
+        <div class="card-header">
+          <h5>Discovered Terminals/Readers for selected location</h5>
+        </div>
+        <div class="card-body">
+
+          <div class="row" *ngIf="showDiscoveryResults && discoveredReadersList.length > 0">
+            <table class="table-readers mb-3">
+              <thead>
+              <tr>
+                <th class="w-30px">S#</th>
+                <th class="w-180px">Label</th>
+                <th class="w-180px">Serial</th>
+                <th class="w-90px">IP</th>
+                <th class="w-80px"></th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let reader of discoveredReadersList; index as i">
+                <td>{{ i + 1 }} - </td>
+                <td>{{ reader.label }}</td>
+                <td>{{ reader.serial_number }}</td>
+                <td>{{ reader.ip_address }}</td>
+                <td><button [attr.data-reader-index]="i" class="btn btn-iceblue" (click)="handleConnectReaderClicked($event)">Connect</button></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="row" *ngIf="showDiscoveryResults && discoveredReadersList.length === 0">
+            <div class="col-sm-12">
+              <div>
+                <span>No terminals/readers could be found...</span>
+                <p>
+                  <button class="btn btn-warning" type="button" (click)="handleRegisterNewLocationClicked($event)">Register a new location</button>
+                  , then discover readers on your account for this location. You can also use the simulator reader by
+                  clicking the <strong>Connect to Simulator</strong> button, if you don't have hardware.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="discovering">
+            <div class="col-sm-12">
+              <div>
+                <p class="blinking-text">Discovering...</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="w-100 d-flex flex-row justify-content-start align-items-center gap-3">
+            <button [disabled]="!canDiscover" class="btn btn-warning" type="button" (click)="handleDiscoverClicked($event)">{{ discovering ? 'Cancel Discovery' : 'Discover Again' }}</button>
+            <button [disabled]="discovering || !discoveredOnce" class="btn btn-warning" type="button" (click)="handleSimulatorConnectClicked($event)">Connect to Simulator</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+</div>

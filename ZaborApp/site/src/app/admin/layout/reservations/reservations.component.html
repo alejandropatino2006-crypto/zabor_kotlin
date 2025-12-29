@@ -1,0 +1,46 @@
+<div class="row">
+  <div class="col col-xs-12">
+    <div class="card mb-3">
+      <div class="card-header">
+        <h4>Reservations</h4>
+
+      </div>
+      <div class="card-body table-responsive">
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table-hover table table-bordered">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Reservation ID</th>
+              <th>User Name</th>
+              <th>Restaurnt </th>
+              <th>Created Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody *ngIf="reservationList.length > 0">
+
+            <tr *ngFor="let reservation of reservationList; index as i;">
+              <td scope="row">{{ i+1 }}</td>
+              <td>{{reservation.revid}}</td>
+              <td>{{reservation.username}}</td>
+              <td><a routerLink="/owner/restaurants/edit/{{ reservation.res_id }}"> {{ reservation.res_name}} </a>
+              </td>
+              <td>{{ reservation.created_at}}</td>
+
+              <td><a routerLink="/admin/reservation/detail/{{ reservation.revid}}"
+                  class="btn badge btn-primary btn-sm"><i class="fa fa-pencil"></i> Detail</a></td>
+            </tr>
+
+          </tbody>
+          <tbody *ngIf="reservationList.length == 0">
+            <tr>
+              <td class="no-data-available" colspan="8">No matching records found</td>
+            </tr>
+          </tbody>
+        </table>
+
+
+      </div>
+    </div>
+<!--   </div> -->

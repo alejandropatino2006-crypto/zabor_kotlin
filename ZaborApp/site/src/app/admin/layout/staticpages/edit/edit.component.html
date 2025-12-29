@@ -1,0 +1,40 @@
+<div class="card">
+  <div class="card-header">
+    <h4> Edit Page </h4>
+  </div>
+  <div class="card-body">
+    <form role="form" [formGroup]="form" (ngSubmit)="update()" enctype="multipart/form-data">
+      <div class="row">
+        <div class="col-12">
+          <button [disabled]="!form.valid" class="btn btn-success mt-2" type="submit">Update</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label>Page Title</label>
+            <input type="text" class="form-control" formControlName="page" />
+          </div>
+          <label>Content</label>
+          <ejs-richtexteditor id='defaultRTE' [toolbarSettings]='tools' formControlName="content"></ejs-richtexteditor>
+          <span class="text-danger" *ngIf="!form.controls['content'].valid &&
+            form.controls['content'].touched && form.controls['content'].hasError(
+          'required' )">Page Content is Required</span>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label>Page Title(es)</label>
+            <input type="text" class="form-control" formControlName="page_es" />
+          </div>
+          <label>Content(es)</label>
+          <ejs-richtexteditor id='defaultRTE2' [toolbarSettings]='tools' formControlName="content_es">
+          </ejs-richtexteditor>
+          <span class="text-danger" *ngIf="!form.controls['content_es'].valid &&
+            form.controls['content_es'].touched && form.controls['content_es'].hasError(
+          'required' )">Page Spenish Content is Required</span>
+        </div>
+        <button [disabled]="!form.valid" class="btn btn-success mt-2" type="submit">Update</button>
+      </div>
+    </form>
+  </div>
+</div>

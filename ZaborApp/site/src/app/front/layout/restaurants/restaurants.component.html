@@ -1,0 +1,18 @@
+<main>
+  <section class="inner-banner overlay search-banner">
+    <app-searchbanner></app-searchbanner>
+  </section>
+  <section class="sec sec-result">
+    <div class="container">
+      <div class="search-filter">
+
+      </div>
+      <div class="result-section">
+
+        <app-restaurantlist (childEvent)="newRestaurant($event)" [restaurants]="restaurants" #childComp>
+        </app-restaurantlist>
+
+      </div>
+    </div>
+  </section>
+</main>

@@ -1,0 +1,75 @@
+<div class="row">
+  <div class="col-md-3" [style.margin-bottom]="'10px'" *ngIf="groupList?.length > 0 else nogroupfound">
+    <div class="card">
+      <div class="card-header">
+        <b>Group names</b>
+      </div>
+      <ul class="list-group list-group-flush" *ngFor="let gl of groupList; index as i">
+        <li class="list-group-item">{{ gl.group_name }} <a href="javascript:void(0)" class="pull-right text-warning"
+            style="margin-right:10px" title="view" (click)="detailGroup(gl.id)"><span><i
+                class="fa fa-eye"></i></span></a>
+          &nbsp;</li>
+      </ul>
+    </div>
+  </div>
+  <ng-template #nogroupfound>
+    <div class="col-md-3">
+      <p>No Group Found</p>
+    </div>
+
+  </ng-template>
+
+  <div class="col-md-9" *ngIf="showdetailsection">
+    <div class="card detailcard">
+      <div class="card-header">
+        <b>{{detailGroupName | titlecase}}</b>
+      </div>
+      <div class="col-md-12">
+        <div class="col-md-12 menus">
+          <div class="row">
+            <div class="col-md-3">
+              <b> Image </b>
+            </div>
+            <div class="col-md-2">
+              <b>Name</b>
+            </div>
+            <div class="col-md-2">
+              <b>Price</b>
+            </div>
+            <div class="col-md-2">
+              <b>Quantity</b>
+            </div>
+            <div class="col-md-2">
+              <b>Tax Type</b>
+            </div>
+
+          </div>
+        </div>
+        <ng-container *ngFor="let item of detailGroupMenuitems">
+
+          <div class="col-md-12 menus">
+            <div class="row">
+              <div class="col-md-3">
+                <img src={{itemImagePath}}{{item.item_pic}} width="100px" [style.padding]="'10px'"
+                  *ngIf="item.item_pic != null && item.item_pic != 'null'">
+              </div>
+              <div class="col-md-2">
+                <p>{{item.item_name}}</p>
+              </div>
+              <div class="col-md-2">
+                <p>{{item.item_price | currency}}</p>
+              </div>
+              <div class="col-md-2">
+                <p>{{item.item_quantity }}</p>
+              </div>
+              <div class="col-md-2">
+                <p>{{item.taxtype }}</p>
+              </div>
+
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

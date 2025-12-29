@@ -1,0 +1,196 @@
+<nav class="sidebar" [ngClass]="{sidebarPushRight: isActive, collapsed: collapsed}">
+    <div class="list-group">
+        <a routerLink="/admin/dashboard" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-fw fa-dashboard"></i>
+            <span>Dashboard</span>
+        </a>
+        <a routerLink="/admin/user/list" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-user" aria-hidden="true"></i>
+            <span>Users</span>
+        </a>
+        <a routerLink="/admin/restaurant/list" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-cutlery" aria-hidden="true"></i>
+            <span>Restaurants</span>
+        </a>
+        <a routerLink="/admin/drivers/list" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-car" aria-hidden="true"></i>
+            <span>Drivers</span>
+        </a>
+        <a routerLink="/admin/orders" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-cart-arrow-down" aria-hidden="true"></i>
+            <span>Orders</span>
+        </a>
+        <a routerLink="/admin/reservation" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-ticket" aria-hidden="true"></i>
+            <span>Reservations</span>
+        </a>
+        <a routerLink="/admin/promotionals/advert" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-gift" aria-hidden="true"></i>
+            <span>Promotional Advert</span>
+        </a>
+        <a routerLink="/admin/promotionals/video" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-gift" aria-hidden="true"></i>
+            <span>Promotional Video</span>
+        </a>
+
+        <div class="nested-menu">
+            <a class="list-group-item" (click)="addExpandClass('pages')">
+                <i class="fa fa-plus"></i>
+                <span>Static Pages</span>
+            </a>
+            <li class="nested side-nested" [class.expand]="showMenu === 'pages'">
+                <ul class="submenu">
+                    <li>
+                        <a class="list-group-item" routerLink="/admin/static-pages/add" [routerLinkActive]="['router-link-active']">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                            <span>Add New</span>
+                        </a>
+                    </li>
+                    <ng-container *ngFor="let item of staticPages">
+                        <li>
+                            <a class="list-group-item" routerLink="/admin/static-pages/edit/{{item.id}}"
+                                [routerLinkActive]="['router-link-active']">
+                                <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                                <span>{{ item.page | titlecase }}</span>
+                            </a>
+                        </li>
+                    </ng-container>
+
+
+                </ul>
+            </li>
+        </div>
+
+        <a routerLink="/admin/category" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-tag" aria-hidden="true"></i>
+            <span>Category</span>
+        </a>
+        <a routerLink="/admin/subcategory" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-list-alt" aria-hidden="true"></i>
+            <span>Subcategory</span>
+        </a>
+        <a routerLink="/admin/faq" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-question" aria-hidden="true"></i>
+            <span>Faqs</span>
+        </a>
+        <a routerLink="/admin/driver-reg" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-car" aria-hidden="true"></i>
+            <span>Drivers Request</span>
+        </a>
+        <a routerLink="/admin/res-reg" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa  fa-cutlery" aria-hidden="true"></i>
+            <span>Restaurant Request</span>
+        </a>
+        <a routerLink="/admin/user-feedback" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-comments-o" aria-hidden="true"></i>
+            <span>User's Feedback</span>
+        </a>
+        <a routerLink="/admin/category-suggestion" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-lightbulb-o" aria-hidden="true"></i>
+            <span>Category Suggestion</span>
+        </a>
+        <a routerLink="/admin/reports" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-table" aria-hidden="true"></i>
+            <span>Reports</span>
+        </a>
+        <a (click)="messagemodel()" class="list-group-item">
+            <i class="fa fa-envelope" aria-hidden="true"></i>
+            <span>Send Message </span>
+        </a>
+        <a routerLink="/admin/setting" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-cog" aria-hidden="true"></i>
+            <span>Settings</span>
+        </a>
+        <a routerLink="/admin/terminal" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-cog" aria-hidden="true"></i>
+            <span>Stripe Terminals</span>
+        </a>
+        <a routerLink="/admin/dejavoo" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-cog" aria-hidden="true"></i>
+            <span>Dejavoo Terminals</span>
+        </a>
+        <a href="javascript:void(0);" (click)="onLoggedout()" class="list-group-item">
+            <i class="fa fa-fw fa-power-off"></i>
+            <span>Log Out</span>
+        </a>
+        <!-- 
+
+        <div class="header-fields">
+
+            <div class="nested-menu">
+                <a class="list-group-item" (click)="addExpandClass('profile')">
+                    <span><i class="fa fa-user"></i>&nbsp; {{user.currentUser.first_name}}</span>
+                </a>
+                <li class="nested" [class.expand]="showMenu === 'profile'">
+                    <ul class="submenu">
+                        <li>
+                            <a href="javascript:void(0)">
+                                <span><i class="fa fa-fw fa-user"></i> Profile</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="javascript:void(0)">
+                                <span><i class="fa fa-fw fa-gear"></i> Settings</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);" (click)="onLoggedout()">
+                                <span><i class="fa fa-fw fa-power-off"></i> Log Out</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </div>
+        </div> -->
+    </div>
+    <div class="toggle-button" [ngClass]="{collapsed: collapsed}" (click)="toggleCollapsed()">
+        <i class="fa fa-fw fa-angle-double-{{collapsed?'right':'left'}}"></i>&nbsp;
+        <span>Collapse Sidebar</span>
+    </div>
+</nav>
+
+
+<div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+
+            <div class="modal-body">
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="messagemodel">
+                    <form role="form" [formGroup]="sendmessageform" (ngSubmit)="submitmsg()">
+                        <div class="row">
+                            <div class="form-group col-sm-12">
+                                <label>Message</label>
+                                <textarea class="form-control" formControlName="msg" rows=5>
+                                 </textarea>
+                            </div>
+                            <div class="col-sm-12 form-group">
+
+                                <label class="radio-inline">
+                                    <input type="radio" formControlName="role" value="owner" checked> Restaurant Owner
+                                </label>
+                                &nbsp;
+                                <label class="radio-inline">
+                                    <input type="radio" formControlName="role" value="user"> App User
+                                </label>
+
+                            </div>
+                            <div class="col-sm-12 form-group">
+                                <button [disabled]="!sendmessageform.valid" class="btn btn-success mt-2"
+                                    type="submit">Send</button>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

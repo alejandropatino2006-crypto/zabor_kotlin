@@ -1,0 +1,21 @@
+<main>
+  <section class="inner-banner overlay search-banner">
+    <app-searchbanner></app-searchbanner>
+  </section>
+
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a [routerLink]="['/']">Home</a></li>
+    </ol>
+  </nav>
+
+  <section class="sec sec-result">
+    <div class="container">
+      <div class="result-section">
+        <app-restaurantlist (childEvent)="newRestaurant($event)" [restaurants]="restaurants">
+        </app-restaurantlist>
+
+      </div>
+    </div>
+  </section>
+</main>

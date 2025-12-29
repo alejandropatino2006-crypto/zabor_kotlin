@@ -1,0 +1,51 @@
+<div class="row">
+  <div class="col col-xs-12">
+    <div class="card mb-3">
+      <div class="card-header">
+        <h4>{{ "Inventory List" | translate }}<button class="btn btn-primary btn-sm pull-right" routerLink="/owner/restaurants/inventory/create/{{ restaurantId }}"> + {{ "Add" | translate }}
+          {{ "Inventory" | translate }}</button></h4>
+          <button routerLink="/owner/restaurants/list" class="btn btn-secondary btn-padding-1" type="button">{{'Back' | translate}}</button>
+        </div>
+
+      </div>
+      <div class="card-body table-responsive">
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table-hover table table-bordered">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>{{"Name" | translate}}</th>
+              <th>{{"Quantity In Hand" | translate}}</th>
+              <th>{{"Total Pack Size Value" | translate}}</th>
+              <th>{{"Actions" | translate}}</th>
+            </tr>
+          </thead>
+
+          <tbody *ngIf="inventoryList.length > 0">
+
+            <tr *ngFor="let inventory of inventoryList; index as i;">
+              <!-- <td scope="row">{{ i+1 }}</td>               -->
+              <td>{{ inventory.id}}</td>
+              <td>{{ inventory.name}}</td>
+              <td>{{ inventory.pack_size_quantity_on_hand}}</td>
+              <td>{{ inventory.total_pack_size_value}}</td>
+              <td><a routerLink="/owner/restaurants/inventory/edit/{{ inventory.id}}/{{ restaurantId }}" class="btn badge btn-primary btn-sm"><i
+                    class="fa fa-pencil"></i>{{"Edit" | translate}} </a> &nbsp;<a
+                  routerLink="/owner/restaurants/inventory/view/{{ inventory.id}}/{{ restaurantId }}" class="btn badge btn-warning btn-sm"><i
+                    class="fa fa-eye"></i>{{"View" | translate}} </a>
+                    <a (click)="deleteInventory($event, inventory.id)" class="btn badge btn-danger btn-sm"><i
+                    class="fa fa-trash"></i>{{"Delete" | translate}} </a>
+              </td>
+            </tr>
+
+          </tbody>
+          <tbody *ngIf="inventoryList.length == 0">
+            <tr>
+              <td class="no-data-available" colspan="8">{{ "No matching records found" | translate }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+
+      </div>
+    </div>
+  </div>

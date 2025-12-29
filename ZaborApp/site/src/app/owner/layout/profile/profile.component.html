@@ -1,0 +1,185 @@
+<div class="card">
+  <div class="card-header">
+    <h4>{{ "" | translate }}Edit Profile</h4>
+  </div>
+  <div class="card-body">
+    <div>
+      <img src={{ProfileImage}} *ngIf="ProfileImage != ''" class="profileImage" alt="profilepic" width="150px">
+    </div>
+    <div class="login-page">
+      <div class="row justify-content-md-center">
+        <div class="col-md-12">
+          <form (keydown.enter)="$event.preventDefault()" role="form" [formGroup]="ProfileForm" (ngSubmit)="onSubmit()"
+            enctype="multipart/form-data">
+
+            <div class="row form-content">
+
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="name">{{ "Full Name" | translate }}*</label>
+                  <input type="text" class="form-control input-underline input-lg" id="name" formControlName="name"
+                    placeholder='{{ "Full Name" | translate }}' maxlength="40" />
+                  <ng-container *ngIf="!ProfileForm.controls['name'].valid &&
+                    ProfileForm.controls['name'].touched">
+                    <span class="text-danger" *ngIf="ProfileForm.controls['name'].hasError(
+                                                'required'
+                                            ) else elsename
+                                        ">{{ "name is required" | translate }}.</span>
+                    <ng-template #elsename>
+                      <span class="text-danger" *ngIf="ProfileForm.controls['name'].hasError(
+                                                'whitespace'
+                                            )
+                                        ">{{ "only white space is not allowed" | translate }}.</span></ng-template>
+                  </ng-container>
+                </div>
+              </div>
+
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="email">{{ "Email" | translate }}*</label>
+                  <input type="text" class="form-control input-underline input-lg" id="email" formControlName="email"
+                    placeholder='{{ "Email" | translate }}' maxlength="40" />
+                  <ng-container *ngIf="!ProfileForm.controls['email'].valid &&
+                    ProfileForm.controls['email'].touched">
+                    <span class="text-danger" *ngIf="ProfileForm.controls['email'].hasError(
+                                                'required'
+                                            ) else elseemail
+                                        ">{{ "Email is required" | translate }}.</span>
+                    <ng-template #elseemail>
+                      <span class="text-danger" *ngIf="ProfileForm.controls['email'].hasError(
+                                                'email'
+                                            )
+                                        ">{{ "Email is not valid" | translate }}.</span></ng-template>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="city">{{ "City" | translate }}*</label>
+                  <input type="text" class="form-control input-underline input-lg" id="city" formControlName="city"
+                    placeholder='{{ "City" | translate }}' maxlength="25" />
+                  <ng-container *ngIf="!ProfileForm.controls['city'].valid &&
+                    ProfileForm.controls['city'].touched">
+                    <span class="text-danger" *ngIf="ProfileForm.controls['city'].hasError(
+                                                'required'
+                                            ) else elsecity
+                                        ">{{ "City is required" | translate }}.</span>
+                    <ng-template #elsecity>
+                      <span class="text-danger" *ngIf="ProfileForm.controls['city'].hasError(
+                                                'whitespace'
+                                            )
+                                        ">{{ "Only whitespace is not allowed" | translate }}.</span></ng-template>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="phone">{{ "Contact No" | translate }}*</label>
+                  <input type="text" id="phone" placeholder='{{ "Contact No" | translate }}' formControlName="phone"
+                    class="form-control" maxlength="15" />
+                  <ng-container *ngIf="!ProfileForm.controls['phone'].valid &&
+                    ProfileForm.controls['phone'].touched">
+                    <span class="text-danger" *ngIf="ProfileForm.controls['phone'].hasError(
+                                                'required'
+                                            ) else elsephone
+                                        ">{{ "phone is required" | translate }}.</span>
+                    <ng-template #elsephone>
+                      <span class="text-danger" *ngIf="ProfileForm.controls['phone'].hasError(
+                                                'pattern'
+                                            )
+                                        ">{{ "Pattern is not allowed" | translate }}</span></ng-template>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label for="">{{ "Date Of Birth" | translate }}</label>
+                  <input type="text" class='form-control' formControlName='dob' ngxDaterangepickerMd
+                    [showDropdowns]="true" [singleDatePicker]="true" [autoApply]="true" [maxDate]="maxDate" />
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="about">{{ "About" | translate }}</label>
+                  <textarea class="form-control input-underline input-lg" id="about" formControlName="about"
+                    placeholder='{{ "About" | translate }}' maxlength="200"></textarea>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="address">{{ "Address" | translate }}*</label>
+                  <textarea class="form-control input-underline input-lg" id="address" formControlName="address"
+                    placeholder='{{ "Address" | translate }}' maxlength="200"></textarea>
+
+                  <ng-container *ngIf="!ProfileForm.controls['address'].valid &&
+                    ProfileForm.controls['address'].touched">
+                    <span class="text-danger" *ngIf="ProfileForm.controls['address'].hasError(
+                                                'required'
+                                            ) else elseaddress
+                                        ">{{ "address is required" | translate }}.</span>
+                    <ng-template #elseaddress>
+                      <span class="text-danger" *ngIf="ProfileForm.controls['address'].hasError(
+                                                'whitespace'
+                                            )
+                                        ">{{ "Only whitespace is not allowed" | translate }}.</span></ng-template>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="close_shift_email">{{ "Close Shift Email" | translate }}*</label>
+                  <input type="text" class="form-control input-underline input-lg" id="close_shift_email" formControlName="close_shift_email"
+                         placeholder='{{ "Close Shift Email" | translate }}' maxlength="40" />
+                  <ng-container *ngIf="!ProfileForm.controls['close_shift_email'].valid &&
+                    ProfileForm.controls['close_shift_email'].touched">
+                    <span class="text-danger" *ngIf="ProfileForm.controls['close_shift_email'].hasError(
+                                                'required'
+                                            ) else else_close_shift_email
+                                        ">{{ "Close Shift Email is required" | translate }}.</span>
+                    <ng-template #else_close_shift_email>
+                      <span class="text-danger" *ngIf="ProfileForm.controls['close_shift_email'].hasError(
+                                                'email'
+                                            )
+                                        ">{{ "Close Shift Email is not valid" | translate }}.</span></ng-template>
+                  </ng-container>
+                </div>
+              </div>
+
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label>{{ "Choose Profile Pic" | translate }}</label>
+                  <div class="custom-file">
+
+                    <input type="file" name="profilepic" class="custom-file-input" id="profilepic"
+                      (change)="fileChangeEvent($event,'profilepic')" accept="image/*">
+                    <label class="custom-file-label" for="customFile">{{ "Choose file" | translate }}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div *ngIf="showImagecropper" class="w-100">
+                  <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="1"
+                    [resizeToWidth]="200" format="png" (imageCropped)="imageCropped($event)"
+                    (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()">
+                  </image-cropper>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div *ngIf="showImagecropper" class="w-100">
+                  <img [src]="croppedImage" style="padding: 5px;" />
+                </div>
+              </div>
+
+            </div>
+
+
+
+
+            <button [disabled]="!ProfileForm.valid" class="btn btn-success" type="submit">
+              {{ "Update" | translate }}</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

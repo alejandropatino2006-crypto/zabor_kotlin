@@ -1,0 +1,208 @@
+<div class="row">
+
+  <div class="col-sm-12 mb-3">
+    <div class="card">
+      <div class="card-header">
+        <h5>Current Reader</h5>
+      </div>
+      <div class="card-body">
+        <div class="row" *ngIf="!!currentReader">
+          <div class="col-sm-3">
+            <div class="form-group">
+              <label>Reader Name</label>
+              <span class="form-control input-underline input-lg">{{ currentReader.label }}</span>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="form-group">
+              <label>Serial Number</label>
+              <span class="form-control input-underline input-lg">{{ currentReader.serial_number }}</span>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="form-group">
+              <label>IP Address</label>
+              <span class="form-control input-underline input-lg">{{ currentReader.ip_address }}</span>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="form-group">
+              <label>Location</label>
+              <span class="form-control input-underline input-lg">{{ currentReader.id === 'SIMULATOR' ? 'NONE' : currentLocation.display_name }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="!currentReader">
+          <div class="col-sm-12">
+            <div class="w-100 d-flex flex-row justify-content-start align-items-center gap-3">
+              <span *ngIf="discovering" class="blinking-text">Discovering once again...</span>
+              <span *ngIf="connecting" class="blinking-text">Connecting to reader...</span>
+              <span *ngIf="connectFailed" class="text-danger font-weight-bold">Reader connection failed...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-12 mb-3">
+    <div class="card">
+      <div class="card-header">
+        <h5>Sample test items for Payment</h5>
+      </div>
+      <div class="card-body">
+
+        <form role="form" [formGroup]="paymentForm" (ngSubmit)="onPaymentSubmit($event)" enctype="multipart/form-data">
+
+          <div class="row">
+            <div class="col-sm-12 text-center table-responsive">
+              <table class="table table-striped table-hover table-bordered table-sm">
+                <thead class="thead-dark">
+                <tr>
+                  <th scope="col" class="w-40px">S#</th>
+                  <th scope="col">Name</th>
+                  <th scope="col" class="w-100px">Attribute</th>
+                  <th scope="col" class="w-60px">Quantity</th>
+                  <th scope="col" class="w-180px">Price/Item</th>
+                  <th scope="col" class="w-180px">Amount</th>
+                </tr>
+                </thead>
+                <tbody>
+                <ng-container formArrayName="array">
+                <tr scope="row" *ngFor="let item of lineItems;index as i">
+                  <ng-container [formGroupName]="i">
+                    <td>{{ i + 1 }}</td>
+                    <td><input class="px-2" formControlName="itemName" placeholder="Name" /></td>
+                    <td><input class="w-100px px-2" formControlName="itemAttr" placeholder="Color/Flavor, etc." /></td>
+                    <td><input class="w-60px px-2" formControlName="quantity" placeholder="Quantity" type="number" /></td>
+                    <td><input class="w-180px px-2" readonly formControlName="pricePerItem" placeholder="Price per item" /></td>
+                    <td><input class="w-180px px-2" readonly formControlName="amount" /></td>
+                  </ng-container>
+                </tr>
+                </ng-container>
+                <tr scope="row">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><h4>Grand Total</h4></td>
+                    <td><input readonly formControlName="grandTotal" /></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label>Currency*</label>
+                <input type="text" class="form-control input-underline input-lg" formControlName="currency"
+                       placeholder="{{ 'Currency'  }}" maxlength="40" />
+              </div>
+            </div>
+            <ng-container *ngIf="usingSimulator">
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label>Card Number*</label>
+                <!--<input type="text" class="form-control input-underline input-lg" formControlName="card_number"
+                       placeholder="{{ 'Card Number'  }}" maxlength="40" />-->
+                <select type="select-one" class="form-control input-underline input-lg" formControlName="card_number" #card_number (change)="updateCardText(card_number.options[card_number.selectedIndex].text)">
+                  <option value="4000000000000002">4000000000000002 - charge_declined</option>
+                  <option value="4000000000009995">4000000000009995 - insufficient_funds</option>
+                  <option value="4000000000009987">4000000000009987 - lost_card</option>
+                  <option value="4000000000009979">4000000000009979 - stolen_card</option>
+                  <option value="4000000000000069">4000000000009979 - expired_card</option>
+                  <option value="4000000000000119">4000000000009979 - processing_error</option>
+                  <option value="4000000000000119">4000000000009979 - processing_error</option>
+                  <option value="4242424242424242">4242424242424242 - visa</option>
+                  <option value="4000056655665556">4000056655665556 - visa_debit</option>
+                  <option value="5555555555554444">5555555555554444 - mastercard</option>
+                  <option value="5200828282828210">5200828282828210 - mastercard_debit</option>
+                  <option value="5105105105105100">5105105105105100 - mastercard_prepaid</option>
+                  <option value="378282246310005">378282246310005 - amex</option>
+                  <option value="371449635398431">371449635398431 - amex2</option>
+                  <option value="6011111111111117">6011111111111117 - discover</option>
+                  <option value="6011000990139424">6011000990139424 - discover2</option>
+                  <option value="3056930009020004">3056930009020004 - diners</option>
+                  <option value="36227206271667">36227206271667 - diners_14digit</option>
+                  <option value="3566002020360505">3566002020360505 - jcb</option>
+                  <option value="6200000000000005">6200000000000005 - unionpay</option>
+                  <option value="4506445006931933">4506445006931933 - interac</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label>Payment Method*</label>
+                <input readonly type="text" class="form-control input-underline input-lg" value="visa" formControlName="payment_method"
+                       placeholder="{{ 'Payment Method'  }}" maxlength="40" />
+              </div>
+            </div>
+            </ng-container>
+          </div>
+
+          <div class="w-100 d-flex flex-row justify-content-start align-items-center gap-3">
+            <button [disabled]="!canPay" class="btn btn-success" type="submit">Pay</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- Modal confirmPaymentModal -->
+<div class="modal fade" data-backdrop="static" id="confirmPaymentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <div class="modal-body">
+
+        <!-- 16:9 aspect ratio -->
+        <div class="" id="paymentDetails">
+          <div class="row">
+            <div class="col-sm-12 text-center">
+              <h4><strong>Confirm you payment!</strong></h4>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-12 text-center table-responsive">
+            <table class="table table-striped table-hover table-bordered table-sm">
+              <!--<caption>Currency: USD</caption>-->
+              <thead class="thead-dark">
+              <tr>
+                <th scope="col" class="w-40px">S#</th>
+                <th scope="col">Item</th>
+                <th scope="col" class="w-60px">Quantity</th>
+                <th scope="col" class="w-180px">Amount</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr scope="row" *ngFor="let item of lineItems;index as i">
+                <td>{{ i + 1 }}</td>
+                <td>{{ item.description }}</td>
+                <td>{{ item.quantity }}</td>
+                <td><strong>{{ currency }}</strong>&nbsp;{{ item.amountText }}</td>
+              </tr>
+              </tbody>
+            </table>
+            </div>
+          </div>
+
+          <div class="col-sm-12 btn-container">
+            <button type="submit" class="btn btn-ad-card btn-global" (click)="processPayment($event)">Confirm</button>
+            <button type="submit" class="btn btn-ad-card btn-danger ml-2" (click)="cancelPayment($event)">Cancel</button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>

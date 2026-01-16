@@ -1,17 +1,16 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
-
 export const environment = {
   production: true,
-  socketapi: "ws://zabor-api.delve-it.com/ws",
-  apiUrl: "http://zabor-api.delve-it.com",
-  fileurl: "http://zabor-api.delve-it.com",
+  socketapi: "wss://zabor-api.delve-it.com/ws",
+  apiUrl: "https://zabor-api.delve-it.com",
+  fileurl: "https://zabor-api.delve-it.com",
   // fileurl: "https://api.zaboreats.com",
   GoogleMapApiKey: "AIzaSyAfxEnHzdr3k9Cglf3WpNgzP1XGqLNX4nI",
   stripe_key: "pk_test_lRz8873Lk5axb5QUnywYIfY900dpsCQsO2",
   stripe_publishable_key: "pk_test_51LJNuQJIWoRaw7nsDlDuHybmm5Brm7qYizqBXb8TCWMcgmJFEubi3XdOmbmXC0d9Ph3LQJHbDJwCLrU8YYIik8qJ00ebTyVdbu",
-  ignoreSSL: true,
+  ignoreSSL: false,
   usingFirebaseAuth: false,
   firebase: {
     apiKey: "AIzaSyCUdOC2P-E7ENvh7B8DKZsd_tvr-2-n3QY",

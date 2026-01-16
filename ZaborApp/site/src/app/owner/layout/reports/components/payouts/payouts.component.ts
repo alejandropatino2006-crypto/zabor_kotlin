@@ -47,7 +47,9 @@ function simpleCurrencyLabel(data, type) {
       const [dollars, cents] = data.split('.');
       //console.log('totalValue', totalValue);
       console.log("cents", cents, "---- dollars", dollars);
-      const formattedDollars = dollars.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      // const formattedDollars = dollars.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	  const formattedDollars = new Intl.NumberFormat('en-US').format(parseInt(dollars));
+	  
       let formattedCents = '';
       if (cents) {
         formattedCents = cents ? "."+cents.slice(0, 2).padEnd(2, '0') : '.00';
@@ -68,7 +70,8 @@ function simpleCurrencyLabel(data, type) {
     }
 
     const [dollars, cents] = data.split('.');
-    const formattedDollars = dollars.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    // const formattedDollars = dollars.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	const formattedDollars = new Intl.NumberFormat('en-US').format(parseInt(dollars));
 
     return `${formattedDollars}${cents ? `.${cents.slice(0, 2).padEnd(2, '0')}` : '.00'}`;
   } else {
@@ -81,7 +84,8 @@ function simpleCurrencyLabel(data, type) {
     }
 
     const [dollars, cents] = data.split('.');
-    const formattedDollars = dollars.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    // const formattedDollars = dollars.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	const formattedDollars = new Intl.NumberFormat('en-US').format(parseInt(dollars));
 
     let formattedCents = '';
     if (cents) {

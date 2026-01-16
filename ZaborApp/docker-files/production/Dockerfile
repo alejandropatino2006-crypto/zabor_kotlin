@@ -3,6 +3,7 @@ FROM 697481710535.dkr.ecr.us-east-1.amazonaws.com/zabor/ng-base-image:latest as 
 
 LABEL maintainer="Umar Ali Khan <uak282006@gmail.com>"
 
+# Comandos privilegiados primero
 RUN echo "vm.overcommit_memory = 1" >> /etc/sysctl.conf
 
 RUN mkdir -p /var/run/sshd-local && mkdir -p /run/sshd  \
@@ -45,6 +46,7 @@ COPY ./docker-files/production/nginx/options-ssl-nginx.conf /etc/nginx/options-s
 COPY ./docker-files/production/nginx/proxy_params /etc/nginx/proxy_params
 
 RUN mkdir -p /app
+
 COPY ./docker-files/production/entrypoint.sh /app
 COPY ./scripts/linux/reload.sh /app
 COPY ./scripts/letsencrypt.tar.zstd /app
@@ -63,23 +65,41 @@ COPY --chown=nginx:nginx ./site/dist/production /app/site/zabor-app
 # Make the entrypoint file and other scripts executable
 RUN chmod +x ./entrypoint.sh ./reload.sh ./letsencrypt-fix.sh ./letsencrypt-renew.sh && true
 
+# Crear usuario nginx si no existe
+RUN id nginx 2>/dev/null || (addgroup -g 101 nginx && adduser -D -u 101 -G nginx nginx)
+
+# Ajustar permisos para nginx
+RUN chown -R nginx:nginx /app && \
+    chown -R nginx:nginx /var/cache/nginx && \
+    chown -R nginx:nginx /var/log/nginx && \
+    chown -R nginx:nginx /etc/nginx && \
+    chown -R nginx:nginx /var/run && \
+    mkdir -p /var/lib/nginx/tmp && \
+    chown -R nginx:nginx /var/lib/nginx && \
+    touch /var/run/nginx.pid && \
+    chown nginx:nginx /var/run/nginx.pid && \
+    chown -R nginx:nginx /run/sshd && \
+    chown -R nginx:nginx /var/run/sshd-local
+
 # custom aliases
-RUN echo '' >> ~/.profile \
-    && echo 'alias pl="netstat -tulpn"'>> ~/.profile \
-    && echo 'alias site="cd /app/site/zabor-app && pwd"' >> ~/.profile \
-    && echo 'alias home="cd /app && pwd"' >> ~/.profile \
-    && echo 'alias reload="/app/reload.sh"' >> ~/.profile \
-    && true
+RUN mkdir -p /home/nginx && \
+    echo '' >> /home/nginx/.profile && \
+    echo 'alias pl="netstat -tulpn"' >> /home/nginx/.profile && \
+    echo 'alias site="cd /app/site/zabor-app && pwd"' >> /home/nginx/.profile && \
+    echo 'alias home="cd /app && pwd"' >> /home/nginx/.profile && \
+    echo 'alias reload="/app/reload.sh"' >> /home/nginx/.profile && \
+    chown -R nginx:nginx /home/nginx && \
+    true
+
+# Cambiar a usuario no privilegiado
+USER nginx
 
 # Expose web port 80
 EXPOSE 80
-
 # Expose web port 443 for https
 EXPOSE 443
-
-# Expose sftp port 22
-EXPOSE 22
-
+# Expose sftp port 2222
+EXPOSE 2222
 # Expose range of ports for ftp connections
 #EXPOSE 6100-6200
 

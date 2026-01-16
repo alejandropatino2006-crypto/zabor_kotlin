@@ -204,26 +204,42 @@ export class RestaurantDetailComponent implements OnInit, OnDestroy {
     this.opencloseTime = []
   }
 
+  /**
+   * Genera un número aleatorio criptográficamente seguro
+   * @param max Valor máximo (exclusivo)
+   * @returns Número aleatorio entre 0 y max-1
+   */
+  private getSecureRandomInt(max: number): number {
+    const randomBuffer = new Uint32Array(1);
+    crypto.getRandomValues(randomBuffer);
+    return randomBuffer[0] % max;
+  }
 
-  getRandom4Res(res) {
-    if (res.length > 4) {
-      //get random 4 restaurant
-      let temp = [];
-      let returnObj = [];
-      Math.floor(Math.random() * res.length)
-
-      for (let index = 0; index < 100; index++) {
-        let tempIndex = Math.floor(Math.random() * res.length);
-        if (!temp.includes(tempIndex)) {
-          temp.push(tempIndex);
-          returnObj.push(res[tempIndex]);
-          if (returnObj.length == 4)
-            break;
-        }
-      }
-      return returnObj;
+  /**
+   * Obtiene 4 restaurantes aleatorios de forma segura
+   * @param res Array de restaurantes
+   * @returns Array con 4 restaurantes aleatorios o todos si hay menos de 4
+   */
+  getRandom4Res(res: any[]): any[] {
+    if (res.length <= 4) {
+      return res;
     }
-    return res;
+
+    const selected: any[] = [];
+    const available = [...res]; // Copia del array original
+
+    for (let i = 0; i < 4; i++) {
+      // Generar índice aleatorio seguro
+      const randomIndex = this.getSecureRandomInt(available.length);
+      
+      // Seleccionar restaurante
+      selected.push(available[randomIndex]);
+      
+      // Remover del array disponible para evitar duplicados
+      available.splice(randomIndex, 1);
+    }
+
+    return selected;
   }
 
 

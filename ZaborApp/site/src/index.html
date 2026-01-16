@@ -2,54 +2,42 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <!--<meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' http://www.google.com https://js.stripe.com https://js.stripe.com/v3/;">-->
-  <!--<meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-eval' https://www.google.com https://m.stripe.network https://js.stripe.com https://js.stripe.com/v3/">-->
-  <!--<meta http-equiv="Content-Security-Policy"
-        content="
-      default-src     'self' data: gap: http://localhost:4001 https://accounts.google.com https://ssl.gstatic.com https://secure.safewebservices.com https://js.stripe.com 'unsafe-eval';
-      connect-src     'self' data: gap: ws://localhost:4001/ws http://localhost:4001 wss://api.zaboreats.com/ws https://api.zaboreats.com https://myexternalip.com/raw https://www.facebook.com https://maps.googleapis.com https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser https://secure.safewebservices.com/token/api/create;
-      script-src-elem 'self' 'unsafe-inline' data: gap: https://www.gstatic.com https://secure.safewebservices.com https://applepay.cdn-apple.com http://connect.facebook.net/en_US/sdk.js https://maps.googleapis.com https://apis.google.com https://js.stripe.com/v3/;
-      script-src      'self' 'unsafe-inline' data: gap: https://accounts.google.com https://www.gstatic.com https://apis.google.com https://connect.facebook.net https://developers.facebook.com https://applepay.cdn-apple.com https://secure.safewebservices.com https://www.google.com https://maps.googleapis.com https://m.stripe.network https://js.stripe.com https://js.stripe.com/v3 'unsafe-eval';
-      style-src       'self' 'unsafe-inline' https://secure.safewebservices.com https://fonts.googleapis.com;
-      font-src        'self' data: https://fonts.gstatic.com;
-      img-src         'self' data: gap: https://maps.gstatic.com https://maps.googleapis.com https://api.zaboreats.com content:;
-      media-src       *;
-            "
-  >-->
-  <!--<meta http-equiv="Content-Security-Policy" content="
-      default-src * data: mediastream: blob: filesystem: about: ws: wss: 'unsafe-eval' 'wasm-unsafe-eval' 'unsafe-inline';
-      script-src * data: blob: 'unsafe-inline' 'unsafe-eval';
-      script-src-elem * data: blob: 'unsafe-inline' 'unsafe-eval';
-      connect-src * data: blob: 'unsafe-inline';
-      img-src * data: blob: 'unsafe-inline';
-      media-src * data: blob: 'unsafe-inline';
-      frame-src * data: blob: ;
-      style-src * data: blob: 'unsafe-inline';
-      font-src * data: blob: 'unsafe-inline';
-      frame-ancestors * data: blob:
-            ">-->
-  <!--style-src   'self' data: gap: webpack:///node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js https://secure.safewebservices.com https://fonts.googleapis.com;-->
   <meta http-equiv="Content-Security-Policy" content="
     default-src *;
-    style-src 'self' 'unsafe-inline' secure.safewebservices.com fonts.googleapis.com;
-    font-src 'self' fonts.gstatic.com data:;
+    style-src 'self' 'unsafe-inline' https://secure.safewebservices.com https://fonts.googleapis.com;
+    font-src 'self' https://fonts.gstatic.com data:;
     script-src 'self'
     'sha256-NhXZ7896xiOBjo0Cp7hXAWCbjkCDuV3a7SqroGcwnQg=' 'sha256-t9gwIL4Q0MbRZKhZZ5Q9UDIhFr8mqcFkwfMtf1LY6xU='
     'sha256-7kmZsiSw09/0PkmbUqwcOwEPHZmkGr/uC0FKeBf13Yw=' 'sha256-kISNae90KTDB27DoAsAUCvmaQY+mQ6jWu0zxsXLkj08='
     'sha256-hHUpxG06sCMTxk0oJgYdDNkai4FVQ0oNjpx2z4HmPxw='
-    'unsafe-inline' 'unsafe-eval' stackexchange.com secure.safewebservices.com applepay.cdn-apple.com js.stripe.com maps.googleapis.com;
+    'unsafe-inline' 'unsafe-eval' https://stackexchange.com https://secure.safewebservices.com https://applepay.cdn-apple.com https://js.stripe.com https://maps.googleapis.com;
     img-src * data: blob: 'unsafe-inline';
   ">
   <title>Zabor</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="https://secure.safewebservices.com/token/Collect.js" data-tokenization-key="C3NKT9-Pp87f5-s2Gj33-Ha8423"></script>
+  
+  <!-- SafeWebServices Collect.js con SRI -->
+  <script 
+    src="https://secure.safewebservices.com/token/Collect.js" 
+    data-tokenization-key="C3NKT9-Pp87f5-s2Gj33-Ha8423"
+    integrity="sha384-HASH_DE_COLLECT_JS_AQUI"
+    crossorigin="anonymous"
+    referrerpolicy="origin">
+  </script>
+  
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#1976d2">
 </head>
 <body>
-<script src="https://js.stripe.com/v3/"></script>
+<!-- Stripe con SRI -->
+<script 
+  src="https://js.stripe.com/v3/" 
+  integrity="sha512-54VBuLoZ0h4I9soEJdXcT5vtH2JgNxa4FNlCzfSbv0ynShAQP8V4XPQJmLjB0p1ohw2V9ZhNJxOEMZ/JlPjLRg==" 
+  crossorigin="anonymous"
+  referrerpolicy="origin">
+</script>
 <noscript>You need to enable JavaScript to run this app.</noscript>
 <app-root></app-root>
 <link rel="stylesheet" type="text/css" href="assets/css/laterOverrides.css">

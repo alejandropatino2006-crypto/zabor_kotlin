@@ -1,4 +1,10 @@
-<script src="https://js.stripe.com/v3/"></script>
+<script 
+  src="https://js.stripe.com/v3/" 
+  integrity="sha512-54VBuLoZ0h4I9soEJdXcT5vtH2JgNxa4FNlCzfSbv0ynShAQP8V4XPQJmLjB0p1ohw2V9ZhNJxOEMZ/JlPjLRg==" 
+  crossorigin="anonymous"
+  referrerpolicy="origin">
+</script>
+
 <main>
   <!-- <section class="inner-banner overlay search-banner">
   </section> -->
@@ -21,7 +27,7 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-12 text-center mb-5" *ngIf="!isLoggedIn">
-          <p class="mb-1">{{'Returning customer? Click here to' | translate}} <a
+          <p class="mb-1">{{'Returning customer? Click here to' | translate}} 
               [routerLink]="['/login']">{{'Login' | translate}}</a></p>
           <span>{{'Please log in to avail offers' | translate}}</span>
         </div>
